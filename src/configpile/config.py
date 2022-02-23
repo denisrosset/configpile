@@ -31,8 +31,9 @@ import class_doc
 
 from . import sources, types
 from .arg import Arg, BaseArg, Cmd, Positional
+from .collector import Instance
 from .errors import ArgErr, Err, ManyErr, Result, collect, map_result
-from .sources import CommandLine, EnvironmentVariables, IniSectionSource, Instance, Source
+from .sources import CommandLine, EnvironmentVariables, IniSectionSource, Source
 from .util import dict_from_multiple_keys, filter_ordered_dict_by_value_type
 
 if TYPE_CHECKING:

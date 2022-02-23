@@ -1,34 +1,64 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = ["setuptools", "wheel"]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool.poetry]
+authors = ["Denis Rosset <physics@denisrosset.com>"]
+description = "Configuration from command line parameters, configuration files and environment variables"
+license = "MIT"
+name = "configpile"
+readme = "README.rst"
+repository = "https://github.com/denisrosset/configpile.git"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+class-doc = "^0.2.6"
+parsy = "^1.4.0"
+python = "^3.8"
+rich = "^11.2.0"
+typing-extensions = "^4.1.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.1.0"
+mypy = "^0.931"
+pytest = "^7.0.1"
+pytest-black = "^0.3.12"
+pytest-cov = "^3.0.0"
+pytest-mypy-plugins = "^1.9.3"
 
 [tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
 files = [
   "src",
   "tests",
 ]
+no_implicit_optional = true
+no_implicit_reexport = true
 python_version = "3.8"
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+show_none_errors = true
+strict_equality = true
+strict_optional = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
 
-# check_untyped_defs = true
-# disallow_incomplete_defs = true
-# disallow_untyped_decorators = true
-# disallow_any_generics = true
-# disallow_subclassing_any = true
-# disallow_untyped_calls = true
-# disallow_untyped_defs = true
-# ignore_missing_imports = true
-# no_implicit_optional = true
-# no_implicit_reexport = true
-# show_column_numbers = true
-# show_error_codes = true
-# show_error_context = true
-# show_none_errors = true
-# strict_equality = true
-# strict_optional = true
-# warn_redundant_casts = true
-# warn_return_any = true
-# warn_unused_configs = true
-# warn_unused_ignores = true
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = 'parsy'
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = 'class_doc'
 
 [tool.pytest.ini_options]
 addopts = [

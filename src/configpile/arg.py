@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import abc
 import dataclasses
-from abc import abstractmethod
 from dataclasses import dataclass
 from enum import Enum
 from typing import (
@@ -28,6 +27,20 @@ W = TypeVar("W", covariant=True)  #: Wrapped item type
 
 if TYPE_CHECKING:
     from .config import Config
+
+
+def f(x: int, y: int) -> int:
+    """
+    Adds two numbers
+
+    Args:
+        x: First number
+        y: Second number
+
+    Returns:
+
+    """
+    return x + y
 
 
 class AutoArgName(Enum):

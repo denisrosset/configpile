@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import (
     TYPE_CHECKING,
+    Any,
     Callable,
     List,
     Optional,
@@ -47,7 +48,7 @@ class GenErr(SingleErr):
 
 @dataclass
 class ArgErr(SingleErr):
-    arg: Arg
+    arg: Arg[Any]
     err: Err
 
     def markdown(self) -> Sequence[str]:
@@ -140,8 +141,8 @@ def collect(
     pass
 
 
-def collect(*args):
-    ok: List = []
+def collect(*args):  # type: ignore[no-untyped-def]
+    ok: List[Any] = []
     errs: List[Err] = []
     for arg in args:
         if isinstance(arg, Err):

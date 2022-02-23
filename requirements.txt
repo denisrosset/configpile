@@ -1,4 +1,0 @@
-parsy
-class-doc
-typing_extensions
-rich

@@ -1,9 +1,0 @@
-build
-twine
-pytest
-pytest-cov
-mypy
-black
-pytest-black
-pytest-mypy-plugins
-

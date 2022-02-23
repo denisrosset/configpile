@@ -15,6 +15,7 @@ from typing import (
     Sequence,
     Type,
     TypeVar,
+    cast,
 )
 
 import parsy
@@ -149,7 +150,7 @@ class _Parsy(ArgType[T]):
     def parse(self, arg: str) -> Result[T]:
         res = (self.parser << parsy.eof)(arg, 0)  # Inspired by Parser.parse
         if res.status:
-            return res.value
+            return cast(T, res.value)
         else:
             return ParseErr(res.expected, arg, res.furthest)
 

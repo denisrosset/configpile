@@ -26,7 +26,7 @@ class FitsImportInventory(configpile.app.App):
     info_file: Arg[Path] = Arg.store(path, default_value=None)
 
 
-app: configpile.app.App = FitsImportInventory.app_()
+app = FitsImportInventory.app_()
 c = app.parse_()
 print(f"dace_file = {app.dace_file(c)}")
 print(f"instrument = {app.instrument(c)}")

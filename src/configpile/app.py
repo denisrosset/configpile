@@ -48,19 +48,22 @@ class Args:
     #: All arguments present in the app, for which a value is recovered
     #:
     #: Those are indexed
-    fields: Mapping[str, Arg]
+    fields: Mapping[str, Arg]  # type: ignore[type-arg]
 
     #: All command line flags that expand into a (key, value) pair of strings
     #:
     #:
     cl_commands: Mapping[str, Cmd]
     #: All command line arguments that are followed by a value
-    cl_flag_value: Mapping[str, Arg]
+    cl_flag_value: Mapping[str, Arg]  # type: ignore[type-arg]
     #: The positional arguments
-    cl_positional: Optional[Arg]
+    cl_positional: Optional[Arg]  # type: ignore[type-arg]
 
-    cf_keys: Mapping[str, Arg]  #: Map of all config file keys
-    env_vars: Mapping[str, Arg]  #: Map of all supported env. variables
+    #: Map of all config file keys
+    cf_keys: Mapping[str, Arg]  # type: ignore[type-arg]
+
+    #: Map of all supported env. variables
+    env_vars: Mapping[str, Arg]  # type: ignore[type-arg]
 
     @staticmethod
     def populated_base_args(cls: Type[A]) -> OrderedDictT[str, BaseArg]:
@@ -87,7 +90,8 @@ class Args:
                 name,
                 arg.updated(name=name, help=get_help(name), env_prefix=cls.env_prefix_),
             )
-            for (name, arg) in cls.__dict__.items()
+            for parent_including_itself in cls.__mro__
+            for (name, arg) in parent_including_itself.__dict__.items()
             if isinstance(arg, BaseArg) and not name.endswith("_")
         ]
         return OrderedDict(elements)
@@ -104,24 +108,24 @@ class Args:
             An object holding the arguments/flags sorted by type
         """
         all: OrderedDictT[str, BaseArg] = Args.populated_base_args(cls)
-        fields: OrderedDictT[str, Arg] = filter_ordered_dict_by_value_type(Arg, all)
+        fields: OrderedDictT[str, Arg] = filter_ordered_dict_by_value_type(Arg, all)  # type: ignore[type-arg]
 
         cl_all: Mapping[str, BaseArg] = dict_from_multiple_keys(
             [(arg.all_flags(), arg) for arg in all.values()]
         )
         cl_commands: Mapping[str, Cmd] = {k: v for (k, v) in cl_all.items() if isinstance(v, Cmd)}
-        cl_flag_args: Mapping[str, Arg] = {k: v for (k, v) in cl_all.items() if isinstance(v, Arg)}
-        cl_pos_args: Sequence[Arg] = [a for a in fields.values() if a.positional.is_positional()]
+        cl_flag_args: Mapping[str, Arg] = {k: v for (k, v) in cl_all.items() if isinstance(v, Arg)}  # type: ignore[type-arg]
+        cl_pos_args: Sequence[Arg] = [a for a in fields.values() if a.positional.is_positional()]  # type: ignore[type-arg]
         if len(cl_pos_args) == 0:
             cl_positional = None
         elif len(cl_pos_args) == 1:
             cl_positional = cl_pos_args[0]
         else:
             raise ValueError("At most one positional argument can be given")
-        cf_keys: Mapping[str, Arg] = dict_from_multiple_keys(
+        cf_keys: Mapping[str, Arg] = dict_from_multiple_keys(  # type: ignore[type-arg]
             [(arg.all_config_key_names(), arg) for arg in fields.values()]
         )
-        env_vars: Mapping[str, Arg] = dict_from_multiple_keys(
+        env_vars: Mapping[str, Arg] = dict_from_multiple_keys(  # type: ignore[type-arg]
             [(arg.all_env_var_names(), arg) for arg in fields.values()]
         )
         assert not any(
@@ -193,6 +197,8 @@ class App:
         if res.description_ is None:
             res.description_ = cls.__doc__
         res.args_ = Args.from_app_class(cls)
+        for name, arg in res.args_.all.items():
+            res.__setattr__(name, arg)
         return res
 
     def parse_(
