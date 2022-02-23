@@ -1,0 +1,12 @@
+{
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "restructuredtext.languageServer.disabled": true,
+    "restructuredtext.builtDocumentationPath": "${workspaceFolder}/docs/build/html",
+    "restructuredtext.confPath": "${workspaceFolder}/docs/source",
+    "restructuredtext.updateOnTextChanged"    : "true",
+    "restructuredtext.updateDelay": 300,
+    "cSpell.words": [
+        "RASSINE"
+    ],
+}

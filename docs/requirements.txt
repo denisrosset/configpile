@@ -1,0 +1,3 @@
+sphinx-book-theme
+sphinx-autodoc-typehints
+myst-nb

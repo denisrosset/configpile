@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run test command line",
+            "type": "python",
+            "request": "launch",
+            "program": "test_configfile.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--instrument",
+                "HARPS",
+                "--dace-file",
+                "test.csv",
+                "--input-folder",
+                "data/",
+                "--info-file",
+                "test.h5"
+            ]
+        }
+    ]
+}
