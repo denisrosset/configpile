@@ -26,6 +26,12 @@ def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[K], V]]) -> Dict[K, V
 
 
 def filter_ordered_dict_by_value_type(w: Type[W], od: OrderedDictT[K, V]) -> OrderedDictT[K, W]:
+    """
+    Filters values of an ordered dictionary that correspond to a given type
+
+    Returns:
+        A new dictionary
+    """
     pairs: Sequence[Tuple[K, W]] = [(k, v) for (k, v) in od.items() if isinstance(v, w)]
     return OrderedDict(pairs)
 
@@ -34,6 +40,16 @@ def filter_ordered_dict(
     f: Callable[[K, V], bool],
     od: OrderedDictT[K, V],
 ) -> OrderedDictT[K, V]:
+    """
+    Filters items of an ordered dictionary based on a predicate
+
+    Args:
+        f: Predicate taking a key/value pair as arguments
+        od: Ordered dictionary to filter
+
+    Returns:
+        A new dictionary
+    """
     return OrderedDict([(k, v) for (k, v) in od.items() if f(k, v)])
 
 
