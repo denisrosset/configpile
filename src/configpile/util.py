@@ -73,4 +73,9 @@ def filter_sequence_by_value_type(
 
 
 def assert_never(value: NoReturn) -> NoReturn:
+    """
+    Function used for exhaustiveness checks
+
+    See `<https://github.com/python/cpython/pull/30842>`_
+    """
     assert False, f"Unhandled value: {value} ({type(value).__name__})"
