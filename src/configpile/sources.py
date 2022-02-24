@@ -8,9 +8,8 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, Generic, Iterable, List, Literal, Mapping, Sequence, Tuple, TypeVar
 
-from configpile.collector import Instance
-
-from .arg import Arg, Positional
+from .arg import Param, Positional
+from .collector import Instance
 from .errors import ArgErr, Err, GenErr, ManyErr, Result, collect_seq
 
 T = TypeVar("T")  #: Item type
@@ -22,24 +21,44 @@ class Source(abc.ABC):
     """
 
     @abstractmethod
-    def get_strings(self, arg: Arg[T]) -> Result[Sequence[str]]:
+    def get_strings(self, param: Param[T]) -> Result[Sequence[str]]:
+        """
+        Returns a sequence of string values corresponding to the given parameter
+
+        Args:
+            param: Parameter to collect the strings for
+
+        Returns:
+            A sequence of strings or an error
+        """
         pass
 
-    def __getitem__(self, arg: Arg[T]) -> Result[Sequence[Instance[T]]]:
-        res = self.get_strings(arg)
+    def __getitem__(self, param: Param[T]) -> Result[Sequence[Instance[T]]]:
+        """
+        Returns instances of all parsed values corresponding to the given parameter
+
+        Args:
+            param: Parameter to collect the instance for
+
+        Returns:
+            A sequence of instances or an error
+        """
+        res = self.get_strings(param)
         if isinstance(res, Err):
             return res
         else:
-            return collect_seq([Instance.parse(s, arg.arg_type, source=self) for s in res])
+            return collect_seq([Instance.parse(s, param.param_type, source=self) for s in res])
 
     @staticmethod
-    def collect_instances(sources: Sequence[Source], arg: Arg[T]) -> Result[Sequence[Instance[T]]]:
+    def collect_instances(
+        sources: Sequence[Source], param: Param[T]
+    ) -> Result[Sequence[Instance[T]]]:
         """
-        Parses all instances of an argument in a sequence of sources
+        Parses all instances of a parameter in a sequence of sources
 
         Args:
             sources: Sequence of sources to get the strings from
-            arg: Argument to parse
+            param: Param to parse
 
         Returns:
             A sequence of instances or an error
@@ -47,7 +66,7 @@ class Source(abc.ABC):
         ok: List[Instance[T]] = []
         errs: List[Err] = []
         for source in sources:
-            res = source[arg]
+            res = source[param]
             if isinstance(res, ManyErr):
                 errs.extend(res.errs)
             elif isinstance(res, Err):
@@ -60,28 +79,32 @@ class Source(abc.ABC):
             return ok
 
     @staticmethod
-    def collect(sources: Sequence[Source], arg: Arg[T]) -> Result[T]:
+    def collect(sources: Sequence[Source], param: Param[T]) -> Result[T]:
         """
-        Parses and collect the value of an argument from a sequence of sources
+        Parses and collect the value of a parameter from a sequence of sources
 
         Args:
             sources: Sequence of sources to get the strings from
-            arg: Argument to parse and collect
+            param: Parameter to parse and collect
 
         Returns:
             The collected value or an error
         """
-        instances = Source.collect_instances(sources, arg)
+        instances = Source.collect_instances(sources, param)
         if isinstance(instances, Err):
             return instances
-        return arg.collector.collect(instances)
+        return param.collector.collect(instances)
 
 
 @dataclass(frozen=True)
 class EnvironmentVariables(Source):
+    """
+    Source coming from environment variables
+    """
+
     env: Mapping[str, str]
 
-    def get_strings(self, arg: Arg[T]) -> Result[Sequence[str]]:
+    def get_strings(self, arg: Param[T]) -> Result[Sequence[str]]:
         if isinstance(arg.env_var_name, str) and arg.env_var_name in self.env:
             return [self.env[arg.env_var_name]]
         else:
@@ -90,17 +113,25 @@ class EnvironmentVariables(Source):
 
 @dataclass(frozen=True)
 class IniSection:
+    """
+    Describes a section of an INI file to include in the current configuration
+    """
+
     name: str  #: Section name
     strict: bool  #: Whether all the keys must correspond to parsed arguments
 
 
 @dataclass(frozen=True)
 class IniSectionSource(Source):
+    """
+    Source coming from the section of an INI file
+    """
+
     filename: Path
     section_name: str
     elements: Mapping[str, str]
 
-    def get_strings(self, arg: Arg[T]) -> Result[Sequence[str]]:
+    def get_strings(self, arg: Param[T]) -> Result[Sequence[str]]:
         if isinstance(arg.config_key_name, str) and arg.config_key_name in self.elements:
             return [self.elements[arg.config_key_name]]
         else:
@@ -139,11 +170,15 @@ class IniSectionSource(Source):
 
 @dataclass(frozen=True)
 class CommandLine(Source):
+    """
+    Source describing command line arguments
+    """
+
     pairs: Sequence[Tuple[str, str]]  #: Key/value argument pairs
     positional: Sequence[str]  #: Remaining positional values
     commands: Sequence[str]  #: Remaining commands
 
-    def get_strings(self, arg: Arg[T]) -> Result[Sequence[str]]:
+    def get_strings(self, arg: Param[T]) -> Result[Sequence[str]]:
         from_pairs: List[str] = [value for (key, value) in self.pairs if key in arg.all_flags()]
         from_pos: List[str] = []
         if arg.positional != Positional.FORBIDDEN:

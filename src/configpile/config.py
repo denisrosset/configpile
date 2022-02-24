@@ -30,7 +30,7 @@ from typing import Sequence, Tuple, Type, TypeVar, Union, cast
 import class_doc
 
 from . import sources, types
-from .arg import Arg, BaseArg, Cmd, Positional
+from .arg import Arg, Expander, Param, Positional
 from .collector import Instance
 from .errors import ArgErr, Err, ManyErr, Result, collect, map_result
 from .sources import CommandLine, EnvironmentVariables, IniSectionSource, Source
@@ -45,11 +45,15 @@ T = TypeVar("T", covariant=True)
 
 @dataclass(frozen=True)
 class Config:
+    """
+    Holds parsed parameter values
+    """
+
     values: Mapping[str, Any]
 
-    def __getitem__(self, arg: Arg[T]) -> T:
-        assert arg.name is not None
-        return cast(T, self.values[arg.name])
+    def __getitem__(self, param: Param[T]) -> T:
+        assert param.name is not None
+        return cast(T, self.values[param.name])
 
     @staticmethod
     def make(
@@ -63,6 +67,10 @@ class Config:
 
 @dataclass(frozen=True)
 class Processor:
+    """
+    Processes environment variables, configuration files and command line arguments
+    """
+
     app: App  #: App describing the configuration arguments
     cwd: Path  #: Path from which relative paths for conf. files are resolved
     args: Sequence[str]  #: Command line arguments as a sequence of strings
@@ -75,8 +83,8 @@ class Processor:
         Returns:
             A source or an error
         """
-        exp_flags = {flag: cmd.inserts() for (flag, cmd) in self.app.args_.cl_commands.items()}
-        val_flags = frozenset(self.app.args_.cl_flag_value.keys())
+        exp_flags = {flag: cmd.inserts() for (flag, cmd) in self.app.args_.cl_expanders.items()}
+        val_flags = frozenset(self.app.args_.cl_params.keys())
         return CommandLine.make(self.args, exp_flags, val_flags)
 
     def environment_variables(self) -> Result[EnvironmentVariables]:
@@ -90,10 +98,10 @@ class Processor:
 
     def process(self) -> Result[Config]:
         """
-        Process the
+        Runs the processing
 
         Returns:
-
+            A parsed configuration or an error
         """
         app = self.app
         config_sources: Result[Tuple[CommandLine, EnvironmentVariables]] = collect(
@@ -114,7 +122,7 @@ class Processor:
         ]
         for fn in ini_instances:
             sections_res = IniSectionSource.from_file(
-                self.cwd / fn, app.ini_sections_(), app.args_.cf_keys
+                self.cwd / fn, app.ini_sections_(), app.args_.cf_params
             )
             if isinstance(sections_res, Err):
                 return sections_res
@@ -122,7 +130,7 @@ class Processor:
         sources.append(cl)
         values: List[Tuple[str, Any]] = []
         errs: List[Err] = []
-        for name, arg in app.args_.fields.items():
+        for name, arg in app.args_.params.items():
             res = Source.collect(sources, arg)
             if isinstance(res, Err):
                 errs.append(ArgErr(arg, res))

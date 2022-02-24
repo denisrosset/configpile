@@ -43,19 +43,19 @@ class ForceCase(Enum):
     LOWER = 2  #: Change to lowercase
 
 
-class ArgType(ABC, Generic[T]):
-    """Describes an argument type"""
+class ParamType(ABC, Generic[T]):
+    """Describes a parameter type"""
 
     @abstractmethod
     def parse(self, arg: str) -> Result[T]:
         """
-        Parses a string argument into a result type
+        Parses a string into a result
 
         This method reports parsing errors using a result type instead of raising
         exceptions.
 
         Args:
-            arg: Argument to parse
+            arg: String value to parse
 
         Returns:
             A result containing either the parsed value or a description of an error
@@ -64,23 +64,23 @@ class ArgType(ABC, Generic[T]):
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         return {}
 
-    def empty_means_none(self, strip: bool = True) -> ArgType[Optional[T]]:
+    def empty_means_none(self, strip: bool = True) -> ParamType[Optional[T]]:
         """
-        Returns a new argument type where the empty string means None
+        Returns a new parameter type where the empty string means None
 
         Args:
             strip: Whether to strip whitespace
 
         Returns:
-            A new argument type
+            A new parameter type
         """
         return _EmptyMeansNone(self, strip)
 
     def separated_by(
         self, sep: str, strip: bool = True, remove_empty: bool = True
-    ) -> ArgType[Sequence[T]]:
+    ) -> ParamType[Sequence[T]]:
         """
-        Returns a new argument type that parses values separated by a string
+        Returns a new parameter type that parses values separated by a string
 
         Args:
             sep: Separator
@@ -88,102 +88,106 @@ class ArgType(ABC, Generic[T]):
             remove_empty: Whether to remove empty strings before parsing them
 
         Returns:
-            A new argument type
+            A new parameter type
         """
         return _SeparatedBy(self, sep, strip, remove_empty)
 
     @staticmethod
-    def from_parser(type_: Type[T], parser: parsy.Parser) -> ArgType[T]:
+    def from_parser(type_: Type[T], parser: parsy.Parser) -> ParamType[T]:
         """
-        Creates an argument type from a parsy parser
+        Creates a parameter type from a parsy parser
 
         Args:
             type_: PEP 484 type, used to type the return argument
             parser: Parser returning a value of type ``t``
 
         Returns:
-            Argument type
+            Parameter type
         """
         return _Parsy(parser)
 
     @staticmethod
-    def from_function_that_raises(f: Callable[[str], T]) -> ArgType[T]:
+    def from_function_that_raises(f: Callable[[str], T]) -> ParamType[T]:
         """
-        Creates an argument type from a function that raises exceptions on parse errors
+        Creates a parameter type from a function that raises exceptions on parse errors
 
         Args:
             f: Function that parses the string
 
         Returns:
-            Argument type
+            Parameter type
         """
         return _FunctionThatRaises(f)
 
     @staticmethod
-    def from_result_function(f: Callable[[str], Result[T]]) -> ArgType[T]:
+    def from_result_function(f: Callable[[str], Result[T]]) -> ParamType[T]:
         """
-        Creates an argument type from a function that returns a value or an error
+        Creates a parameter type from a function that returns a value or an error
 
         Args:
             f: Function that parses the string
 
         Returns:
-            Argument type
+            Parameter type
         """
 
         return _ResultFunction(f)
 
     @staticmethod
-    def invalid() -> ArgType[NoReturn]:
+    def invalid() -> ParamType[NoReturn]:
         """
-        Creates an argument type that always errors
+        Creates a parameter type that always return errors
         """
 
         def invalid_fun(s: str) -> NoReturn:
-            raise RuntimeError("Invalid argument type")
+            raise RuntimeError("Invalid parameter type")
 
-        return ArgType.from_function_that_raises(invalid_fun)
+        return ParamType.from_function_that_raises(invalid_fun)
 
     @staticmethod
     def choices_str(
         values: Iterable[str],
         strip: bool = True,
         force_case: ForceCase = ForceCase.NO_CHANGE,
-    ) -> ArgType[str]:
+    ) -> ParamType[str]:
         """
-        Creates an argument type whose values are chosen from a set of strings
+        Creates a parameter type whose values are chosen from a set of strings
 
         Args:
             values: Set of values
             strip: Whether to strip whitespace before looking for choices
 
         Returns:
-            Argument type
+            Parameter type
         """
 
-        return ArgType.choices({v: v for v in values}, strip, force_case)
+        return ParamType.choices({v: v for v in values}, strip, force_case)
 
     @staticmethod
     def choices(
         mapping: Mapping[str, T],
         strip: bool = True,
         force_case: ForceCase = ForceCase.NO_CHANGE,
-    ) -> ArgType[T]:
+    ) -> ParamType[T]:
         """
-        Creates an argument type whose strings correspond to keys in a dictionary
+        Creates a parameter type whose strings correspond to keys in a dictionary
 
         Args:
             mapping: Dictionary mapping strings to values
             strip: Whether to strip whitespace before looking for keys
 
         Returns:
-            Argument type
+            Parameter type
         """
         return _Choices(mapping, strip, force_case)
 
 
 @dataclass(frozen=True)
-class _Choices(ArgType[T]):
+class _Choices(ParamType[T]):
+    """
+    Describes a multiple choice parameter type
+    """
+
     mapping: Mapping[str, T]
     strip: bool
     force_case: ForceCase = ForceCase.NO_CHANGE
@@ -210,7 +214,7 @@ class _Choices(ArgType[T]):
 
 
 @dataclass  # not frozen because mypy bug, please be responsible
-class _FunctionThatRaises(ArgType[T]):
+class _FunctionThatRaises(ParamType[T]):
     """
     Wraps a function that may raise exceptions
     """
@@ -228,7 +232,7 @@ class _FunctionThatRaises(ArgType[T]):
 
 
 @dataclass  # not frozen because mypy bug, please be responsible
-class _ResultFunction(ArgType[T]):
+class _ResultFunction(ParamType[T]):
     """
     Wraps a function that returns a result
     """
@@ -240,7 +244,7 @@ class _ResultFunction(ArgType[T]):
 
 
 @dataclass(frozen=True)
-class _Parsy(ArgType[T]):
+class _Parsy(ParamType[T]):
     """
     Wraps a parser from the parsy library
     """
@@ -256,30 +260,30 @@ class _Parsy(ArgType[T]):
 
 
 @dataclass(frozen=True)
-class _EmptyMeansNone(ArgType[Optional[W]]):
+class _EmptyMeansNone(ParamType[Optional[W]]):
     """
-    Wraps an existing argument type so that "empty means none"
+    Wraps an existing parameter type so that "empty means none"
     """
 
-    wrapped: ArgType[W]  #: Wrapped ArgType called if arg is not empty
+    wrapped: ParamType[W]  #: Wrapped ParamType called if value is not empty
     strip: bool  #:  Whether to strip whitespace before testing for empty
 
-    def parse(self, arg: str) -> Result[Optional[W]]:
+    def parse(self, value: str) -> Result[Optional[W]]:
         if self.strip:
-            arg = arg.strip()
-        if not arg:
+            value = value.strip()
+        if not value:
             return None
         else:
-            return self.wrapped.parse(arg)
+            return self.wrapped.parse(value)
 
 
 @dataclass(frozen=True)
-class _SeparatedBy(ArgType[Sequence[W]]):
+class _SeparatedBy(ParamType[Sequence[W]]):
     """
-    Parses arguments separated by a given separator
+    Parses values separated by a given separator
     """
 
-    item: ArgType[W]  #: ArgType of individual items
+    item: ParamType[W]  #: ParamType of individual items
     sep: str  #: Item separator
     strip: bool  #: Whether to strip whitespace around separated strings
     remove_empty: bool  #: Whether to prune empty strings
@@ -294,6 +298,6 @@ class _SeparatedBy(ArgType[Sequence[W]]):
         return collect_seq(res)
 
 
-path = ArgType.from_function_that_raises(lambda s: pathlib.Path(s))
-integer = ArgType.from_function_that_raises(lambda s: int(s))
-word = ArgType.from_function_that_raises(lambda s: s.strip())
+path = ParamType.from_function_that_raises(lambda s: pathlib.Path(s))
+integer = ParamType.from_function_that_raises(lambda s: int(s))
+word = ParamType.from_function_that_raises(lambda s: s.strip())

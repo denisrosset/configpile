@@ -16,7 +16,7 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    from .arg import Arg
+    from .arg import Param
 
 
 class Err(ABC):
@@ -48,7 +48,7 @@ class GenErr(SingleErr):
 
 @dataclass
 class ArgErr(SingleErr):
-    arg: Arg[Any]
+    arg: Param[Any]
     err: Err
 
     def markdown(self) -> Sequence[str]:

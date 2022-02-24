@@ -7,7 +7,7 @@ from operator import truediv
 from typing import TYPE_CHECKING, Any, Generic, List, Mapping, NoReturn, Sequence, TypeVar
 
 from .errors import GenErr, Result, map_result
-from .types import ArgType
+from .types import ParamType
 
 T = TypeVar("T")  #: Item type
 
@@ -19,16 +19,32 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class Instance(Generic[T]):
-    value: T
-    string: str
-    source: Source
+    """
+    Parameter instance
+    """
+
+    value: T  #: Value parsed from string
+    string: str  #: Parsed string
+    source: Source  #: Parameter source
 
     @staticmethod
-    def parse(s: str, arg_type: ArgType[T], source: Source) -> Result[Instance[T]]:
+    def parse(s: str, param_type: ParamType[T], source: Source) -> Result[Instance[T]]:
+        """
+        Parses a string using a parameter type and constructs a parameter instance
+
+        Args:
+            s: String to parse
+            param_type: Parameter type used as a parser
+            source: Source of the string
+
+        Returns:
+            A parameter instance or an error
+        """
+
         def res_to_instance(v: T) -> Instance[T]:
             return Instance(v, s, source)
 
-        return map_result(res_to_instance, arg_type.parse(s))
+        return map_result(res_to_instance, param_type.parse(s))
 
 
 class Collector(abc.ABC, Generic[T]):
@@ -53,14 +69,23 @@ class Collector(abc.ABC, Generic[T]):
 
     @staticmethod
     def keep_last() -> Collector[T]:
+        """
+        Returns a collector that keeps the last value
+        """
         return _KeepLast()
 
     @staticmethod
     def append() -> Collector[Sequence[W]]:
+        """
+        Returns a collector that appends sequences
+        """
         return _Append()
 
     @staticmethod
     def invalid() -> Collector[NoReturn]:
+        """
+        Returns an invalid collector that always returns an error
+        """
         return _Invalid()
 
 

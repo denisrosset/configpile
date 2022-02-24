@@ -28,7 +28,7 @@ from typing import Sequence, Tuple, Type, TypeVar
 import class_doc
 
 from . import sources, types
-from .arg import Arg, BaseArg, Cmd
+from .arg import Arg, Expander, Param
 from .config import Config
 from .errors import Err
 from .util import dict_from_multiple_keys, filter_ordered_dict_by_value_type
@@ -39,34 +39,37 @@ T = TypeVar("T", covariant=True)
 
 @dataclass(frozen=True)
 class Args:
+    """
+    Describes the arguments present in an app
+    """
 
-    #: All flags and arguments present in the app
+    #: All arguments present in the app
     #:
     #: Those are indexed by the field name
-    all: Mapping[str, BaseArg]
+    all: Mapping[str, Arg]
 
-    #: All arguments present in the app, for which a value is recovered
+    #: All parameters present in the app, for which a value is recovered
     #:
-    #: Those are indexed
-    fields: Mapping[str, Arg]  # type: ignore[type-arg]
+    #: Those are indexed by the field name
+    params: Mapping[str, Param]  # type: ignore[type-arg]
 
     #: All command line flags that expand into a (key, value) pair of strings
-    #:
-    #:
-    cl_commands: Mapping[str, Cmd]
+    cl_expanders: Mapping[str, Expander]
+
     #: All command line arguments that are followed by a value
-    cl_flag_value: Mapping[str, Arg]  # type: ignore[type-arg]
+    cl_params: Mapping[str, Param]  # type: ignore[type-arg]
+
     #: The positional arguments
-    cl_positional: Optional[Arg]  # type: ignore[type-arg]
+    cl_positional: Optional[Param]  # type: ignore[type-arg]
 
     #: Map of all config file keys
-    cf_keys: Mapping[str, Arg]  # type: ignore[type-arg]
+    cf_params: Mapping[str, Param]  # type: ignore[type-arg]
 
     #: Map of all supported env. variables
-    env_vars: Mapping[str, Arg]  # type: ignore[type-arg]
+    env_params: Mapping[str, Param]  # type: ignore[type-arg]
 
     @staticmethod
-    def populated_base_args(cls: Type[A]) -> OrderedDictT[str, BaseArg]:
+    def populated_base_args(cls: Type[A]) -> OrderedDictT[str, Arg]:
         """
         Returns an ordered dictionary of configuration arguments
 
@@ -85,14 +88,14 @@ class Args:
             seq = docs.get(name, [])
             return textwrap.dedent("\n".join(seq))
 
-        elements: List[Tuple[str, BaseArg]] = [
+        elements: List[Tuple[str, Arg]] = [
             (
                 name,
                 arg.updated(name=name, help=get_help(name), env_prefix=cls.env_prefix_),
             )
             for parent_including_itself in cls.__mro__
             for (name, arg) in parent_including_itself.__dict__.items()
-            if isinstance(arg, BaseArg) and not name.endswith("_")
+            if isinstance(arg, Arg) and not name.endswith("_")
         ]
         return OrderedDict(elements)
 
@@ -107,25 +110,27 @@ class Args:
         Returns:
             An object holding the arguments/flags sorted by type
         """
-        all: OrderedDictT[str, BaseArg] = Args.populated_base_args(cls)
-        fields: OrderedDictT[str, Arg] = filter_ordered_dict_by_value_type(Arg, all)  # type: ignore[type-arg]
+        all: OrderedDictT[str, Arg] = Args.populated_base_args(cls)
+        fields: OrderedDictT[str, Param] = filter_ordered_dict_by_value_type(Param, all)  # type: ignore[type-arg]
 
-        cl_all: Mapping[str, BaseArg] = dict_from_multiple_keys(
+        cl_all: Mapping[str, Arg] = dict_from_multiple_keys(
             [(arg.all_flags(), arg) for arg in all.values()]
         )
-        cl_commands: Mapping[str, Cmd] = {k: v for (k, v) in cl_all.items() if isinstance(v, Cmd)}
-        cl_flag_args: Mapping[str, Arg] = {k: v for (k, v) in cl_all.items() if isinstance(v, Arg)}  # type: ignore[type-arg]
-        cl_pos_args: Sequence[Arg] = [a for a in fields.values() if a.positional.is_positional()]  # type: ignore[type-arg]
+        cl_expanders: Mapping[str, Expander] = {
+            k: v for (k, v) in cl_all.items() if isinstance(v, Expander)
+        }
+        cl_flag_args: Mapping[str, Param] = {k: v for (k, v) in cl_all.items() if isinstance(v, Param)}  # type: ignore[type-arg]
+        cl_pos_args: Sequence[Param] = [a for a in fields.values() if a.positional.is_positional()]  # type: ignore[type-arg]
         if len(cl_pos_args) == 0:
             cl_positional = None
         elif len(cl_pos_args) == 1:
             cl_positional = cl_pos_args[0]
         else:
             raise ValueError("At most one positional argument can be given")
-        cf_keys: Mapping[str, Arg] = dict_from_multiple_keys(  # type: ignore[type-arg]
+        cf_keys: Mapping[str, Param] = dict_from_multiple_keys(  # type: ignore[type-arg]
             [(arg.all_config_key_names(), arg) for arg in fields.values()]
         )
-        env_vars: Mapping[str, Arg] = dict_from_multiple_keys(  # type: ignore[type-arg]
+        env_vars: Mapping[str, Param] = dict_from_multiple_keys(  # type: ignore[type-arg]
             [(arg.all_env_var_names(), arg) for arg in fields.values()]
         )
         assert not any(
@@ -133,12 +138,12 @@ class Args:
         ), "Only the last positional argument may take a variable number of values"
         return Args(
             all=all,
-            fields=fields,
-            cl_commands=cl_commands,
-            cl_flag_value=cl_flag_args,
+            params=fields,
+            cl_expanders=cl_expanders,
+            cl_params=cl_flag_args,
             cl_positional=cl_positional,
-            cf_keys=cf_keys,
-            env_vars=env_vars,
+            cf_params=cf_keys,
+            env_params=env_vars,
         )
 
 
@@ -151,7 +156,9 @@ class App:
     #:
     #: The paths are absolute or relative to the current working directory, and
     #: point to existing INI files containing configuration settings
-    ini_files: Arg[Sequence[Path]] = Arg.append(types.path.separated_by(","))
+    ini_files: Param[Sequence[Path]] = Param.append(types.path.separated_by(","))
+
+    # TODO help: Optional[HelpCmd] = HelpCmd(short_flag_name="-h")  #: Show a help message and exit
 
     #: Names of sections to parse in configuration files, with unknown keys ignored
     ini_relaxed_sections_: Sequence[str] = ["Common", "COMMON", "common"]
@@ -207,6 +214,20 @@ class App:
         args: Sequence[str] = sys.argv[1:],
         env: Mapping[str, str] = os.environ,
     ) -> Config:
+        """
+        Parses multiple information sources into a configuration and display help on error
+
+        Default values are taken from the current working directory, the script command line
+        arguments, and the current environment variables.
+
+        Args:
+            cwd: Directory used as a base for the configuration file relative paths
+            args: Command line arguments
+            env: Environment variables
+
+        Returns:
+            A parsed configuration
+        """
         res = Config.make(self, cwd, args, env)
         if isinstance(res, Err):
             try:
@@ -229,7 +250,7 @@ class App:
         Returns an :class:`argparse.ArgumentParser` for documentation purposes
         """
         p = argparse.ArgumentParser(prog=self.prog_, description=self.description_)
-        for arg in self.args_.cl_flag_value.values():
+        for arg in self.args_.cl_params.values():
             p.add_argument(
                 *arg.all_flags(),
                 **arg.argparse_argument_kwargs(),

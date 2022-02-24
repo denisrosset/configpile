@@ -4,7 +4,7 @@ from typing import Optional
 
 import configpile
 import configpile.app
-from configpile.arg import Arg
+from configpile.arg import Param
 from configpile.types import path, word
 
 
@@ -14,16 +14,16 @@ class FitsImportInventory(configpile.app.App):
     """
 
     #: Relative path to the DACE CSV file
-    dace_file: Arg[Optional[Path]] = Arg.store(path.empty_means_none(), default_value="")
+    dace_file: Param[Optional[Path]] = Param.store(path.empty_means_none(), default_value="")
 
     #: Instrument name if DACE file is not provided
-    instrument: Arg[Optional[str]] = Arg.store(word.empty_means_none(), default_value="")
+    instrument: Param[Optional[str]] = Param.store(word.empty_means_none(), default_value="")
 
     #: Relative path to the folder containing input data files
-    input_folder: Arg[Path] = Arg.store(path, default_value=None)
+    input_folder: Param[Path] = Param.store(path, default_value=None)
 
     #: Relative path of the output HDF5 information file
-    info_file: Arg[Path] = Arg.store(path, default_value=None)
+    info_file: Param[Path] = Param.store(path, default_value=None)
 
 
 app = FitsImportInventory.app_()

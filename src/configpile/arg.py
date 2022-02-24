@@ -19,7 +19,7 @@ from typing import (
 )
 
 from .collector import Collector
-from .types import ArgType
+from .types import ParamType
 
 T = TypeVar("T", covariant=True)  #: Item type
 
@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from .config import Config
 
 
-class AutoArgName(Enum):
+class AutoName(Enum):
     """
     Describes automatic handling of an argument name
     """
@@ -41,13 +41,13 @@ class AutoArgName(Enum):
     DERIVED = 1
 
 
-ArgName = Union[str, AutoArgName]
+ArgName = Union[str, AutoName]
 
 
 @dataclass(frozen=True)
-class BaseArg(abc.ABC):
+class Arg(abc.ABC):
     """
-    Base class for command line arguments
+    Base class for all kinds of arguments
     """
 
     help: Optional[str] = None  #: Help for the argument
@@ -58,7 +58,7 @@ class BaseArg(abc.ABC):
     #: Long option name used in command line argument parsing
     #:
     #: It is lowercase, prefixed with ``--`` and words are separated by hyphens
-    long_flag_name: ArgName = AutoArgName.DERIVED
+    long_flag_name: ArgName = AutoName.DERIVED
 
     def all_flags(self) -> Sequence[str]:
         """
@@ -67,7 +67,7 @@ class BaseArg(abc.ABC):
         res: List[str] = []
         if self.short_flag_name is not None:
             res.append(self.short_flag_name)
-        assert self.long_flag_name != AutoArgName.DERIVED
+        assert self.long_flag_name != AutoName.DERIVED
         if isinstance(self.long_flag_name, str):
             res.append(self.long_flag_name)
         return res
@@ -85,11 +85,11 @@ class BaseArg(abc.ABC):
 
         """
         res = {"name": name, "help": help}
-        if self.long_flag_name == AutoArgName.DERIVED:
+        if self.long_flag_name == AutoName.DERIVED:
             res["long_flag_name"] = "--" + name.replace("_", "-")
         return res
 
-    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> BaseArg:
+    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Arg:
         return dataclasses.replace(self, **self.updated_dict_(name, help, env_prefix))
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
@@ -103,9 +103,9 @@ class BaseArg(abc.ABC):
 
 
 @dataclass(frozen=True)
-class Cmd(BaseArg):
+class Expander(Arg):
     """
-    Command flag that expands into a flag/value pair
+    Command-line argument that expands into a flag/value pair
     """
 
     new_flag: str = ""  #: Inserted flag in the command line
@@ -117,7 +117,7 @@ class Cmd(BaseArg):
         """
         return (self.new_flag, self.new_value)
 
-    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Cmd:
+    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Expander:
         return dataclasses.replace(self, **self.updated_dict_(name, help, env_prefix))
 
     @staticmethod
@@ -126,10 +126,10 @@ class Cmd(BaseArg):
         new_value: str,
         *,
         short_flag_name: Optional[str],
-        long_flag_name: ArgName = AutoArgName.DERIVED,
-    ) -> Cmd:
+        long_flag_name: ArgName = AutoName.DERIVED,
+    ) -> Expander:
         """
-        Constructs a command line flag that inserts a flag/value pair in the command line
+        Constructs an expander that inserts a flag/value pair in the command line
 
         At least one of ``short_flag_name`` or ``long_flag_name`` must be defined.
 
@@ -139,7 +139,7 @@ class Cmd(BaseArg):
             short_flag_name: Short flag name of this command flag
             long_flag_name: Long flag name of this command flag
         """
-        res = Cmd(
+        res = Expander(
             new_flag=new_flag,
             new_value=new_value,
             short_flag_name=short_flag_name,
@@ -151,7 +151,7 @@ class Cmd(BaseArg):
 
 class Positional(Enum):
     """
-    Describes the positional behavior of an arg
+    Describes the positional behavior of a parameter
     """
 
     FORBIDDEN = 0  #: The argument is not positional
@@ -161,35 +161,36 @@ class Positional(Enum):
 
     def should_be_last(self) -> bool:
         """
-        Returns whether this positional arg should be the last one
+        Returns whether a positional parameter should be the last one
         """
         return self in {Positional.ZERO_OR_MORE, Positional.ONE_OR_MORE}
 
     def is_positional(self) -> bool:
         """
-        Returns whether this arg is positional
+        Returns whether a parameter is positional
         """
         return self != Positional.FORBIDDEN
 
 
 @dataclass(frozen=True)
-class Arg(BaseArg, Generic[T]):
+class Param(Arg, Generic[T]):
     """
-    Describes a configuration argument
+    Describes an argument holding a value of a given type
 
-    Instances have two "states":
+    .. note::
+        Instances of :class:`.Param` have two "states":
 
-    * Initially, instances of :class:`.Arg` are assigned to class attributes of
-      subclasses of :class:`.App`. In that state, :attr:`.Arg.name` is not set,
-      and the other ``..._name`` attributes contain either a custom name, or
-      instructions about the derivation of the corresponding name.
+        * Initially, instances of :class:`.Param` are assigned to class attributes of
+        subclasses of :class:`.app.App`. In that state, :attr:`.Param.name` is not set,
+        and the other ``XXX_name`` attributes contain either a custom name provided by the user, or
+        instructions about the derivation of the corresponding name.
 
-    * When an instance of :class:`.App` is constructed, the ``..._name`` fields of the
-      instance are populated with updated instances of :class:`.Arg`.
+        * When an instance of :class:`.App` is constructed, the :attr:`.name` attribute and the
+          ``XXX_name`` attributes of the instance are updated.
     """
 
     #: Argument type, parser from string to value
-    arg_type: ArgType[T] = ArgType.invalid()
+    param_type: ParamType[T] = ParamType.invalid()
 
     #: Argument collector
     collector: Collector[T] = Collector.invalid()  # type: ignore
@@ -203,7 +204,7 @@ class Arg(BaseArg, Generic[T]):
     #: Configuration key name used in INI files
     #:
     #: It is lowercase, and words are separated by hyphens.
-    config_key_name: ArgName = AutoArgName.DERIVED
+    config_key_name: ArgName = AutoName.DERIVED
 
     #: Environment variable name
     #:
@@ -214,20 +215,20 @@ class Arg(BaseArg, Generic[T]):
     #:
     #: If a non-empty prefix is given, the name is prefixed with it
     #: (and an underscore).
-    env_var_name: ArgName = AutoArgName.FORBIDDEN
+    env_var_name: ArgName = AutoName.FORBIDDEN
 
     def __call__(self, config: Config) -> T:
         assert self.name is not None, "Needs a constructed App instance to read values from"
         return cast(T, config.values[self.name])
 
-    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Arg[T]:
+    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Param[T]:
         return dataclasses.replace(self, **self.replacements(name, help, env_prefix))
 
     def replacements(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
         r = dict(super().updated_dict_(name, help, env_prefix))
-        if self.config_key_name == AutoArgName.DERIVED:
+        if self.config_key_name == AutoName.DERIVED:
             r["config_key_name"] = name.replace("_", "-")
-        if self.env_var_name == AutoArgName.DERIVED and env_prefix is not None:
+        if self.env_var_name == AutoName.DERIVED and env_prefix is not None:
             if env_prefix:
                 r["env_var_name"] = env_prefix + "_" + name.upper()
             else:
@@ -265,42 +266,42 @@ class Arg(BaseArg, Generic[T]):
         return {
             **res,
             **self.collector.argparse_argument_kwargs(),
-            **self.arg_type.argparse_argument_kwargs(),
+            **self.param_type.argparse_argument_kwargs(),
         }
 
     @staticmethod
     def store(
-        arg_type: ArgType[T],
+        param_type: ParamType[T],
         *,
         default_value: Optional[str] = None,
         positional: Positional = Positional.FORBIDDEN,
         short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoArgName.DERIVED,
-        config_key_name: ArgName = AutoArgName.DERIVED,
-        env_var_name: ArgName = AutoArgName.FORBIDDEN,
-    ) -> Arg[T]:
+        long_flag_name: ArgName = AutoName.DERIVED,
+        config_key_name: ArgName = AutoName.DERIVED,
+        env_var_name: ArgName = AutoName.FORBIDDEN,
+    ) -> Param[T]:
         """
-        Creates an argument that stores the last provided value
+        Creates a parameter that stores the last provided value
 
         If a default value is provided, the argument can be omitted. However,
         if the default_value ``None`` is given (default), then
-        the argument cannot be omitted.
+        the parameter cannot be omitted.
 
         Args:
-            argType: Parser that transforms a string into a value
+            param_type: Parser that transforms a string into a value
             default_value: Default value
-            positional: Whether this argument is present in positional arguments
+            positional: Whether this parameter is present in positional arguments
             short_flag_name: Short option name (optional)
             long_flag_name: Long option name (auto. derived from fieldname by default)
             config_key_name: Config key name (auto. derived from fieldname by default)
             env_var_name: Environment variable name (forbidden by default)
 
         Returns:
-            The constructed Arg instance
+            The constructed Param instance
         """
 
-        return Arg(
-            arg_type=arg_type,
+        return Param(
+            param_type=param_type,
             collector=Collector.keep_last(),
             default_value=default_value,
             positional=positional,
@@ -312,19 +313,19 @@ class Arg(BaseArg, Generic[T]):
 
     @staticmethod
     def append(
-        arg_type: ArgType[Sequence[W]],
+        param_type: ParamType[Sequence[W]],
         *,
         positional: Positional = Positional.FORBIDDEN,
         short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoArgName.DERIVED,
-        config_key_name: ArgName = AutoArgName.DERIVED,
-        env_var_name: ArgName = AutoArgName.FORBIDDEN,
-    ) -> Arg[Sequence[W]]:
+        long_flag_name: ArgName = AutoName.DERIVED,
+        config_key_name: ArgName = AutoName.DERIVED,
+        env_var_name: ArgName = AutoName.FORBIDDEN,
+    ) -> Param[Sequence[W]]:
         """
         Creates an argument that stores the last provided value
 
         Args:
-            argType: Parser that transforms a string into a value
+            param_type: Parser that transforms a string into a value
             positional: Whether this argument is present in positional arguments
             short_flag_name: Short option name (optional)
             long_flag_name: Long option name (auto. derived from fieldname by default)
@@ -334,8 +335,8 @@ class Arg(BaseArg, Generic[T]):
         Returns:
             The constructed Arg instance
         """
-        return Arg(
-            arg_type=arg_type,
+        return Param(
+            param_type=param_type,
             collector=Collector.append(),
             default_value=None,
             positional=positional,
