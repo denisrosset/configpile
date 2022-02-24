@@ -4,9 +4,18 @@
     "restructuredtext.languageServer.disabled": true,
     "restructuredtext.builtDocumentationPath": "${workspaceFolder}/docs/build/html",
     "restructuredtext.confPath": "${workspaceFolder}/docs/source",
-    "restructuredtext.updateOnTextChanged"    : "true",
+    "restructuredtext.updateOnTextChanged": "true",
     "restructuredtext.updateDelay": 300,
     "cSpell.words": [
         "RASSINE"
+    ],
+    "python.terminal.launchArgs": [
+        "-m",
+        "IPython",
+        "--no-autoindent",
+        "--InteractiveShellApp.exec_lines",
+        "%load_ext autoreload",
+        "--InteractiveShellApp.exec_lines",
+        "%autoreload 2"
     ],
 }

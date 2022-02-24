@@ -9,10 +9,11 @@
             "console": "integratedTerminal"
         },
         {
+            "justMyCode": false,
             "name": "Run test command line",
             "type": "python",
             "request": "launch",
-            "program": "test_configfile.py",
+            "program": "test_configpile.py",
             "console": "integratedTerminal",
             "args": [
                 "--instrument",
