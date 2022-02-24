@@ -29,20 +29,6 @@ if TYPE_CHECKING:
     from .config import Config
 
 
-def f(x: int, y: int) -> int:
-    """
-    Adds two numbers
-
-    Args:
-        x: First number
-        y: Second number
-
-    Returns:
-
-    """
-    return x + y
-
-
 class AutoArgName(Enum):
     """
     Describes automatic handling of an argument name
