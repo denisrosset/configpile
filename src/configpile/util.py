@@ -54,3 +54,7 @@ def filter_sequence_by_value_type(
     if predicate is None:
         predicate = lambda w: True
     return [v for v in seq if isinstance(v, w) if predicate(v)]
+
+
+def assert_never(value: NoReturn) -> NoReturn:
+    assert False, f"Unhandled value: {value} ({type(value).__name__})"

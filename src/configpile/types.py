@@ -3,28 +3,44 @@ from __future__ import annotations
 import pathlib
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from enum import Enum
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Generic,
     Iterable,
     List,
+    Literal,
     Mapping,
     NoReturn,
     Optional,
     Sequence,
     Type,
     TypeVar,
+    Union,
     cast,
 )
 
 import parsy
+
+from configpile.util import assert_never
 
 from .errors import ParseErr, Result, collect_seq
 
 T = TypeVar("T", covariant=True)  #: Item type
 
 W = TypeVar("W", covariant=True)  #: Wrapped item type
+
+
+class ForceCase(Enum):
+    """
+    Describes whether a string is normalized to lower or upper case before processing
+    """
+
+    NO_CHANGE = 0  #: Keep case
+    UPPER = 1  #: Change to uppercase
+    LOWER = 2  #: Change to lowercase
 
 
 class ArgType(ABC, Generic[T]):
@@ -129,19 +145,60 @@ class ArgType(ABC, Generic[T]):
         return ArgType.from_function_that_raises(invalid_fun)
 
     @staticmethod
-    def choices_str(values: Sequence[str], strip: bool = True) -> ArgType[str]:
-        return ArgType.choices({v: v for v in values})
+    def choices_str(
+        values: Iterable[str],
+        strip: bool = True,
+        force_case: ForceCase = ForceCase.NO_CHANGE,
+    ) -> ArgType[str]:
+        """
+        Creates an argument type whose values are chosen from a set of strings
+
+        Args:
+            values: Set of values
+            strip: Whether to strip whitespace before looking for choices
+
+        Returns:
+            Argument type
+        """
+
+        return ArgType.choices({v: v for v in values}, strip, force_case)
 
     @staticmethod
-    def choices(mapping: Mapping[str, T]) -> ArgType[T]:
-        return _Choices(mapping)
+    def choices(
+        mapping: Mapping[str, T],
+        strip: bool = True,
+        force_case: ForceCase = ForceCase.NO_CHANGE,
+    ) -> ArgType[T]:
+        """
+        Creates an argument type whose strings correspond to keys in a dictionary
+
+        Args:
+            mapping: Dictionary mapping strings to values
+            strip: Whether to strip whitespace before looking for keys
+
+        Returns:
+            Argument type
+        """
+        return _Choices(mapping, strip, force_case)
 
 
 @dataclass(frozen=True)
 class _Choices(ArgType[T]):
     mapping: Mapping[str, T]
+    strip: bool
+    force_case: ForceCase = ForceCase.NO_CHANGE
 
     def parse(self, arg: str) -> Result[T]:
+        if self.strip:
+            arg = arg.strip()
+        if self.force_case is ForceCase.LOWER:
+            arg = arg.lower()
+        elif self.force_case is ForceCase.UPPER:
+            arg = arg.upper()
+        elif self.force_case is ForceCase.NO_CHANGE:
+            pass
+        else:
+            assert_never(self.force_case)
         if arg in self.mapping:
             return self.mapping[arg]
         else:
