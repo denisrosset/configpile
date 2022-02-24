@@ -141,6 +141,7 @@ class IniSectionSource(Source):
 class CommandLine(Source):
     pairs: Sequence[Tuple[str, str]]  #: Key/value argument pairs
     positional: Sequence[str]  #: Remaining positional values
+    commands: Sequence[str]  #: Remaining commands
 
     def get_strings(self, arg: Arg[T]) -> Result[Sequence[str]]:
         from_pairs: List[str] = [value for (key, value) in self.pairs if key in arg.all_flags()]
@@ -158,6 +159,7 @@ class CommandLine(Source):
         args: Sequence[str],
         expanding_flags: Mapping[str, Tuple[str, str]],
         flags_followed_by_value: Iterable[str],
+        command_flags: Iterable[str] = [],
     ) -> Result[CommandLine]:
         """
         Returns processed command line arguments
@@ -171,6 +173,7 @@ class CommandLine(Source):
             The processed command line
         """
         pairs: List[Tuple[str, str]] = []
+        commands: List[str] = []
         rest: List[str] = []
         i = 0
         while i < len(args):
@@ -185,7 +188,9 @@ class CommandLine(Source):
                 else:
                     v = args[i]
                     pairs.append((k, v))
+            elif k in command_flags:
+                commands.append(k)
             else:
                 rest.append(k)
             i += 1
-        return CommandLine(pairs=pairs, positional=rest)
+        return CommandLine(pairs=pairs, positional=rest, commands=commands)
