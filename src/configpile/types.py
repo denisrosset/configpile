@@ -86,20 +86,47 @@ class ArgType(ABC, Generic[T]):
             parser: Parser returning a value of type ``t``
 
         Returns:
-            An argument type wrapping the parsy parser
+            Argument type
         """
         return _Parsy(parser)
 
     @staticmethod
-    def from_function(f: Callable[[str], T]) -> ArgType[T]:
-        return _Function(f)
+    def from_function_that_raises(f: Callable[[str], T]) -> ArgType[T]:
+        """
+        Creates an argument type from a function that raises exceptions on parse errors
+
+        Args:
+            f: Function that parses the string
+
+        Returns:
+            Argument type
+        """
+        return _FunctionThatRaises(f)
+
+    @staticmethod
+    def from_result_function(f: Callable[[str], Result[T]]) -> ArgType[T]:
+        """
+        Creates an argument type from a function that returns a value or an error
+
+        Args:
+            f: Function that parses the string
+
+        Returns:
+            Argument type
+        """
+
+        return _ResultFunction(f)
 
     @staticmethod
     def invalid() -> ArgType[NoReturn]:
+        """
+        Creates an argument type that always errors
+        """
+
         def invalid_fun(s: str) -> NoReturn:
             raise RuntimeError("Invalid argument type")
 
-        return ArgType.from_function(invalid_fun)
+        return ArgType.from_function_that_raises(invalid_fun)
 
     @staticmethod
     def choices_str(values: Sequence[str], strip: bool = True) -> ArgType[str]:
@@ -126,7 +153,7 @@ class _Choices(ArgType[T]):
 
 
 @dataclass  # not frozen because mypy bug, please be responsible
-class _Function(ArgType[T]):
+class _FunctionThatRaises(ArgType[T]):
     """
     Wraps a function that may raise exceptions
     """
@@ -143,8 +170,24 @@ class _Function(ArgType[T]):
             return ParseErr(str(err), arg, None)
 
 
+@dataclass  # not frozen because mypy bug, please be responsible
+class _ResultFunction(ArgType[T]):
+    """
+    Wraps a function that returns a result
+    """
+
+    fun: Callable[[str], Result[T]]
+
+    def parse(self, arg: str) -> Result[T]:
+        return self.fun(arg)
+
+
 @dataclass(frozen=True)
 class _Parsy(ArgType[T]):
+    """
+    Wraps a parser from the parsy library
+    """
+
     parser: parsy.Parser
 
     def parse(self, arg: str) -> Result[T]:
@@ -157,6 +200,10 @@ class _Parsy(ArgType[T]):
 
 @dataclass(frozen=True)
 class _EmptyMeansNone(ArgType[Optional[W]]):
+    """
+    Wraps an existing argument type so that "empty means none"
+    """
+
     wrapped: ArgType[W]  #: Wrapped ArgType called if arg is not empty
     strip: bool  #:  Whether to strip whitespace before testing for empty
 
@@ -171,6 +218,10 @@ class _EmptyMeansNone(ArgType[Optional[W]]):
 
 @dataclass(frozen=True)
 class _SeparatedBy(ArgType[Sequence[W]]):
+    """
+    Parses arguments separated by a given separator
+    """
+
     item: ArgType[W]  #: ArgType of individual items
     sep: str  #: Item separator
     strip: bool  #: Whether to strip whitespace around separated strings
@@ -186,6 +237,6 @@ class _SeparatedBy(ArgType[Sequence[W]]):
         return collect_seq(res)
 
 
-path = ArgType.from_function(lambda s: pathlib.Path(s))
-integer = ArgType.from_function(lambda s: int(s))
-word = ArgType.from_function(lambda s: s.strip())
+path = ArgType.from_function_that_raises(lambda s: pathlib.Path(s))
+integer = ArgType.from_function_that_raises(lambda s: int(s))
+word = ArgType.from_function_that_raises(lambda s: s.strip())
