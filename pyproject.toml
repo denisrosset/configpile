@@ -20,6 +20,7 @@ typing-extensions = "^4.1.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
+commitizen = "^2.21.2"
 mypy = "^0.931"
 pytest = "^7.0.1"
 pytest-black = "^0.3.12"
@@ -82,3 +83,24 @@ target_version = ['py38']
 line_length = 99
 profile = "black"
 py_version = 38
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+style = [
+  ["qmark", "fg:#ff9d00 bold"],
+  ["question", "bold"],
+  ["answer", "fg:#ff9d00 bold"],
+  ["pointer", "fg:#ff9d00 bold"],
+  ["highlighted", "fg:#ff9d00 bold"],
+  ["selected", "fg:#cc5454"],
+  ["separator", "fg:#cc5454"],
+  ["instruction", ""],
+  ["text", ""],
+  ["disabled", "fg:#858585 italic"],
+]
+tag_format = "v$major.$minor.$patch$prerelease"
+version = "0.1.0"
+version_files = [
+  "src/configpile/__init__.py:version",
+  "pyproject.toml:version",
+]
