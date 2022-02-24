@@ -104,3 +104,5 @@ version_files = [
   "src/configpile/__init__.py:version",
   "pyproject.toml:version",
 ]
+update_changelog_on_bump = true
+annotated_tag = true
