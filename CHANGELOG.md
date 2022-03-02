@@ -1,3 +1,17 @@
+## v3.0.0 (2022-03-02)
+
+### Feat
+
+- **types**: added bool_ type
+
+### Refactor
+
+- **types**: changed names of default types to standard Python names, followed by underscore
+
+### BREAKING CHANGE
+
+- types.integer is now types.int_
+
 ## v2.1.0 (2022-03-02)
 
 ### Feat
