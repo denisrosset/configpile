@@ -303,7 +303,6 @@ class _SeparatedBy(ParamType[Sequence[W]]):
         return collect_seq(res)
 
 
-path = ParamType.from_function_that_raises(lambda s: pathlib.Path(s))
-integer = ParamType.from_function_that_raises(lambda s: int(s))
-word = ParamType.from_function_that_raises(lambda s: s.strip())
-boolean = ParamType.choices
+path: ParamType[pathlib.Path] = ParamType.from_function_that_raises(lambda s: pathlib.Path(s))
+int_: ParamType[int] = ParamType.from_function_that_raises(lambda s: int(s))
+word: ParamType[str] = ParamType.from_function_that_raises(lambda s: s.strip())
