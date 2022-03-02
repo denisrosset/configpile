@@ -1,3 +1,9 @@
+## v2.1.0 (2022-03-02)
+
+### Feat
+
+- **types**: add aliases for ParamType.choices
+
 ## v2.0.0 (2022-03-02)
 
 ### Refactor
