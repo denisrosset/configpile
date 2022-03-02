@@ -306,3 +306,8 @@ class _SeparatedBy(ParamType[Sequence[W]]):
 path: ParamType[pathlib.Path] = ParamType.from_function_that_raises(lambda s: pathlib.Path(s))
 int_: ParamType[int] = ParamType.from_function_that_raises(lambda s: int(s))
 word: ParamType[str] = ParamType.from_function_that_raises(lambda s: s.strip())
+bool_: ParamType[bool] = ParamType.choices(
+    {"true": True, "false": False},
+    force_case=ForceCase.LOWER,
+    aliases={"t": True, "f": False, "1": True, "0": False},
+)
