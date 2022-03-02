@@ -168,6 +168,7 @@ class ParamType(ABC, Generic[T]):
         mapping: Mapping[str, T],
         strip: bool = True,
         force_case: ForceCase = ForceCase.NO_CHANGE,
+        aliases: Mapping[str, T] = {},
     ) -> ParamType[T]:
         """
         Creates a parameter type whose strings correspond to keys in a dictionary
@@ -175,11 +176,13 @@ class ParamType(ABC, Generic[T]):
         Args:
             mapping: Dictionary mapping strings to values
             strip: Whether to strip whitespace before looking for keys
+            force_case: Whether to normalize the case of the user string
+            aliases: Additional mappings not shown in help
 
         Returns:
             Parameter type
         """
-        return _Choices(mapping, strip, force_case)
+        return _Choices(mapping, strip, force_case, aliases)
 
 
 @dataclass(frozen=True)
@@ -190,7 +193,8 @@ class _Choices(ParamType[T]):
 
     mapping: Mapping[str, T]
     strip: bool
-    force_case: ForceCase = ForceCase.NO_CHANGE
+    force_case: ForceCase
+    aliases: Mapping[str, T]
 
     def parse(self, arg: str) -> Result[T]:
         if self.strip:
@@ -203,8 +207,9 @@ class _Choices(ParamType[T]):
             pass
         else:
             assert_never(self.force_case)
-        if arg in self.mapping:
-            return self.mapping[arg]
+        all_mappings = {**self.mapping, **self.aliases}
+        if arg in all_mappings:
+            return all_mappings[arg]
         else:
             msg = f"Value {arg} not in choices {','.join(self.mapping.keys())}"
             return ParseErr(msg, arg, None)
@@ -301,3 +306,4 @@ class _SeparatedBy(ParamType[Sequence[W]]):
 path = ParamType.from_function_that_raises(lambda s: pathlib.Path(s))
 integer = ParamType.from_function_that_raises(lambda s: int(s))
 word = ParamType.from_function_that_raises(lambda s: s.strip())
+boolean = ParamType.choices
