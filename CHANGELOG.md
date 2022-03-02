@@ -1,3 +1,13 @@
+## v4.0.0 (2022-03-02)
+
+### Refactor
+
+- use static methods for dataclass construction
+
+### BREAKING CHANGE
+
+- Renamed collector.{keep_last, invalid, append} -> collector.Collector.{keep_last, invalid, append}; arg.{append, store} -> arg.Param.{append, store}
+
 ## v3.0.0 (2022-03-02)
 
 ### Feat
