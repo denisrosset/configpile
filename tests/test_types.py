@@ -7,12 +7,12 @@ from configpile.errors import Err
 
 
 def test_integer() -> None:
-    assert types.integer.parse("345") == 345
-    assert isinstance(types.integer.parse("qwe"), Err)
+    assert types.int_.parse("345") == 345
+    assert isinstance(types.int_.parse("qwe"), Err)
 
 
 def test_separated_by() -> None:
-    assert types.integer.separated_by(",").parse("3,4,56") == [3, 4, 56]
+    assert types.int_.separated_by(",").parse("3,4,56") == [3, 4, 56]
 
 
 def test_word() -> None:

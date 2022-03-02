@@ -253,7 +253,7 @@ class Config(abc.ABC):
     #:
     #: The paths are absolute or relative to the current working directory, and
     #: point to existing INI files containing configuration settings
-    ini_files: Annotated[Sequence[Path], arg.append(types.path.separated_by(","))]
+    ini_files: Annotated[Sequence[Path], Param.append(types.path.separated_by(","))]
 
     #: Names of sections to parse in configuration files, with unknown keys ignored
     ini_relaxed_sections_: ClassVar[Sequence[str]] = ["Common", "COMMON", "common"]

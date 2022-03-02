@@ -289,79 +289,79 @@ class Param(Arg, Generic[T]):
             **self.param_type.argparse_argument_kwargs(),
         }
 
+    @staticmethod
+    def store(
+        param_type: ParamType[T],
+        *,
+        default_value: Optional[str] = None,
+        positional: Positional = Positional.FORBIDDEN,
+        short_flag_name: Optional[str] = None,
+        long_flag_name: ArgName = AutoName.DERIVED,
+        config_key_name: ArgName = AutoName.DERIVED,
+        env_var_name: ArgName = AutoName.FORBIDDEN,
+    ) -> Param[T]:
+        """
+        Creates a parameter that stores the last provided value
 
-def store(
-    param_type: ParamType[T],
-    *,
-    default_value: Optional[str] = None,
-    positional: Positional = Positional.FORBIDDEN,
-    short_flag_name: Optional[str] = None,
-    long_flag_name: ArgName = AutoName.DERIVED,
-    config_key_name: ArgName = AutoName.DERIVED,
-    env_var_name: ArgName = AutoName.FORBIDDEN,
-) -> Param[T]:
-    """
-    Creates a parameter that stores the last provided value
+        If a default value is provided, the argument can be omitted. However,
+        if the default_value ``None`` is given (default), then
+        the parameter cannot be omitted.
 
-    If a default value is provided, the argument can be omitted. However,
-    if the default_value ``None`` is given (default), then
-    the parameter cannot be omitted.
+        Args:
+            param_type: Parser that transforms a string into a value
+            default_value: Default value
+            positional: Whether this parameter is present in positional arguments
+            short_flag_name: Short option name (optional)
+            long_flag_name: Long option name (auto. derived from fieldname by default)
+            config_key_name: Config key name (auto. derived from fieldname by default)
+            env_var_name: Environment variable name (forbidden by default)
 
-    Args:
-        param_type: Parser that transforms a string into a value
-        default_value: Default value
-        positional: Whether this parameter is present in positional arguments
-        short_flag_name: Short option name (optional)
-        long_flag_name: Long option name (auto. derived from fieldname by default)
-        config_key_name: Config key name (auto. derived from fieldname by default)
-        env_var_name: Environment variable name (forbidden by default)
+        Returns:
+            The constructed Param instance
+        """
 
-    Returns:
-        The constructed Param instance
-    """
+        return Param(
+            param_type=param_type,
+            collector=Collector.keep_last(),
+            default_value=default_value,
+            positional=positional,
+            short_flag_name=short_flag_name,
+            long_flag_name=long_flag_name,
+            config_key_name=config_key_name,
+            env_var_name=env_var_name,
+        )
 
-    return Param(
-        param_type=param_type,
-        collector=collector.keep_last(),
-        default_value=default_value,
-        positional=positional,
-        short_flag_name=short_flag_name,
-        long_flag_name=long_flag_name,
-        config_key_name=config_key_name,
-        env_var_name=env_var_name,
-    )
+    @staticmethod
+    def append(
+        param_type: ParamType[Sequence[W]],
+        *,
+        positional: Positional = Positional.FORBIDDEN,
+        short_flag_name: Optional[str] = None,
+        long_flag_name: ArgName = AutoName.DERIVED,
+        config_key_name: ArgName = AutoName.DERIVED,
+        env_var_name: ArgName = AutoName.FORBIDDEN,
+    ) -> Param[Sequence[W]]:
+        """
+        Creates an argument that stores the last provided value
 
+        Args:
+            param_type: Parser that transforms a string into a value
+            positional: Whether this argument is present in positional arguments
+            short_flag_name: Short option name (optional)
+            long_flag_name: Long option name (auto. derived from fieldname by default)
+            config_key_name: Config key name (auto. derived from fieldname by default)
+            env_var_name: Environment variable name (forbidden by default)
 
-def append(
-    param_type: ParamType[Sequence[W]],
-    *,
-    positional: Positional = Positional.FORBIDDEN,
-    short_flag_name: Optional[str] = None,
-    long_flag_name: ArgName = AutoName.DERIVED,
-    config_key_name: ArgName = AutoName.DERIVED,
-    env_var_name: ArgName = AutoName.FORBIDDEN,
-) -> Param[Sequence[W]]:
-    """
-    Creates an argument that stores the last provided value
-
-    Args:
-        param_type: Parser that transforms a string into a value
-        positional: Whether this argument is present in positional arguments
-        short_flag_name: Short option name (optional)
-        long_flag_name: Long option name (auto. derived from fieldname by default)
-        config_key_name: Config key name (auto. derived from fieldname by default)
-        env_var_name: Environment variable name (forbidden by default)
-
-    Returns:
-        The constructed Arg instance
-    """
-    return Param(
-        param_type=param_type,
-        collector=collector.append(),
-        default_value=None,
-        positional=positional,
-        short_flag_name=short_flag_name,
-        long_flag_name=long_flag_name,
-        config_key_name=config_key_name,
-        env_var_name=env_var_name,
-    )
+        Returns:
+            The constructed Arg instance
+        """
+        return Param(
+            param_type=param_type,
+            collector=Collector.append(),
+            default_value=None,
+            positional=positional,
+            short_flag_name=short_flag_name,
+            long_flag_name=long_flag_name,
+            config_key_name=config_key_name,
+            env_var_name=env_var_name,
+        )
