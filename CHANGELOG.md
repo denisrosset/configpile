@@ -1,3 +1,9 @@
+## v2.0.0 (2022-03-02)
+
+### Refactor
+
+- introduce new syntax based on typing.Annotated
+
 ## v1.0.0 (2022-02-24)
 
 ### Refactor
