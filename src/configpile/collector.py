@@ -67,27 +67,6 @@ class Collector(abc.ABC, Generic[T]):
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         pass
 
-    @staticmethod
-    def keep_last() -> Collector[T]:
-        """
-        Returns a collector that keeps the last value
-        """
-        return _KeepLast()
-
-    @staticmethod
-    def append() -> Collector[Sequence[W]]:
-        """
-        Returns a collector that appends sequences
-        """
-        return _Append()
-
-    @staticmethod
-    def invalid() -> Collector[NoReturn]:
-        """
-        Returns an invalid collector that always returns an error
-        """
-        return _Invalid()
-
 
 class _KeepLast(Collector[T]):
     def arg_required(self) -> bool:
@@ -128,3 +107,24 @@ class _Invalid(Collector[Any]):
         raise NotImplementedError(
             "This should have be replaced by a valid collector during construction"
         )
+
+
+def keep_last() -> Collector[T]:
+    """
+    Returns a collector that keeps the last value
+    """
+    return _KeepLast()
+
+
+def append() -> Collector[Sequence[W]]:
+    """
+    Returns a collector that appends sequences
+    """
+    return _Append()
+
+
+def invalid() -> Collector[NoReturn]:
+    """
+    Returns an invalid collector that always returns an error
+    """
+    return _Invalid()

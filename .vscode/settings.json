@@ -9,13 +9,16 @@
     "cSpell.words": [
         "RASSINE"
     ],
-    "python.terminal.launchArgs": [
-        "-m",
-        "IPython",
-        "--no-autoindent",
-        "--InteractiveShellApp.exec_lines",
-        "%load_ext autoreload",
-        "--InteractiveShellApp.exec_lines",
-        "%autoreload 2"
+    "python.testing.pytestArgs": [
+        "tests"
     ],
+    // "python.terminal.launchArgs": [
+    //     "-m",
+    //     "IPython",
+    //     "--no-autoindent",
+    //     "--InteractiveShellApp.exec_lines",
+    //     "%load_ext autoreload",
+    //     "--InteractiveShellApp.exec_lines",
+    //     "%autoreload 2"
+    // ],
 }

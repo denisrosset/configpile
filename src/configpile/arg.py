@@ -18,6 +18,7 @@ from typing import (
     cast,
 )
 
+from . import collector
 from .collector import Collector
 from .types import ParamType
 
@@ -40,8 +41,27 @@ class AutoName(Enum):
     #: Derives the argument name from the original Python identifier (default)
     DERIVED = 1
 
+    @staticmethod
+    def derive_long_flag_name(name: str) -> str:
+        if name.endswith("_command"):
+            name = name[:-8]
+        return "--" + name.replace("_", "-")
+
+    @staticmethod
+    def derive_env_var_name(name: str, prefix: Optional[str]) -> str:
+        if prefix is not None:
+            return prefix + "_" + name.upper()
+        else:
+            return name.upper()
+
+    @staticmethod
+    def derive_config_key_name(name: str) -> str:
+        return name.replace("_", "-")
+
 
 ArgName = Union[str, AutoName]
+
+A = TypeVar("A", bound="Arg")
 
 
 @dataclass(frozen=True)
@@ -72,7 +92,7 @@ class Arg(abc.ABC):
             res.append(self.long_flag_name)
         return res
 
-    def updated_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
+    def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
         """
         Returns updated values for this argument, used during :class:`.App` construction
 
@@ -84,13 +104,13 @@ class Arg(abc.ABC):
         Returns:
 
         """
-        res = {"name": name, "help": help}
+        res = {"help": help}
         if self.long_flag_name == AutoName.DERIVED:
-            res["long_flag_name"] = "--" + name.replace("_", "-")
+            res["long_flag_name"] = AutoName.derive_long_flag_name(name)
         return res
 
-    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Arg:
-        return dataclasses.replace(self, **self.updated_dict_(name, help, env_prefix))
+    def updated(self: A, name: str, help: str, env_prefix: Optional[str]) -> A:
+        return dataclasses.replace(self, **self.update_dict_(name, help, env_prefix))
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         """
@@ -103,7 +123,20 @@ class Arg(abc.ABC):
 
 
 @dataclass(frozen=True)
-class Expander(Arg):
+class Cmd(Arg):
+    # Base class for command arguments
+    pass
+
+
+@dataclass(frozen=True)
+class HelpCmd(Cmd):
+    """
+    Command-line argument that displays a help message and exits
+    """
+
+
+@dataclass(frozen=True)
+class Expander(Cmd):
     """
     Command-line argument that expands into a flag/value pair
     """
@@ -117,11 +150,8 @@ class Expander(Arg):
         """
         return (self.new_flag, self.new_value)
 
-    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Expander:
-        return dataclasses.replace(self, **self.updated_dict_(name, help, env_prefix))
-
     @staticmethod
-    def cmd(
+    def make(
         new_flag: str,
         new_value: str,
         *,
@@ -217,22 +247,12 @@ class Param(Arg, Generic[T]):
     #: (and an underscore).
     env_var_name: ArgName = AutoName.FORBIDDEN
 
-    def __call__(self, config: Config) -> T:
-        assert self.name is not None, "Needs a constructed App instance to read values from"
-        return cast(T, config.values[self.name])
-
-    def updated(self, name: str, help: str, env_prefix: Optional[str]) -> Param[T]:
-        return dataclasses.replace(self, **self.replacements(name, help, env_prefix))
-
-    def replacements(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
-        r = dict(super().updated_dict_(name, help, env_prefix))
+    def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
+        r = {"name": name, **super().update_dict_(name, help, env_prefix)}
         if self.config_key_name == AutoName.DERIVED:
-            r["config_key_name"] = name.replace("_", "-")
+            r["config_key_name"] = AutoName.derive_config_key_name(name)
         if self.env_var_name == AutoName.DERIVED and env_prefix is not None:
-            if env_prefix:
-                r["env_var_name"] = env_prefix + "_" + name.upper()
-            else:
-                r["env_var_name"] = name.upper()
+            r["env_var_name"] = AutoName.derive_env_var_name(name, env_prefix)
         return r
 
     def all_config_key_names(self) -> Sequence[str]:
@@ -269,79 +289,79 @@ class Param(Arg, Generic[T]):
             **self.param_type.argparse_argument_kwargs(),
         }
 
-    @staticmethod
-    def store(
-        param_type: ParamType[T],
-        *,
-        default_value: Optional[str] = None,
-        positional: Positional = Positional.FORBIDDEN,
-        short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoName.DERIVED,
-        config_key_name: ArgName = AutoName.DERIVED,
-        env_var_name: ArgName = AutoName.FORBIDDEN,
-    ) -> Param[T]:
-        """
-        Creates a parameter that stores the last provided value
 
-        If a default value is provided, the argument can be omitted. However,
-        if the default_value ``None`` is given (default), then
-        the parameter cannot be omitted.
+def store(
+    param_type: ParamType[T],
+    *,
+    default_value: Optional[str] = None,
+    positional: Positional = Positional.FORBIDDEN,
+    short_flag_name: Optional[str] = None,
+    long_flag_name: ArgName = AutoName.DERIVED,
+    config_key_name: ArgName = AutoName.DERIVED,
+    env_var_name: ArgName = AutoName.FORBIDDEN,
+) -> Param[T]:
+    """
+    Creates a parameter that stores the last provided value
 
-        Args:
-            param_type: Parser that transforms a string into a value
-            default_value: Default value
-            positional: Whether this parameter is present in positional arguments
-            short_flag_name: Short option name (optional)
-            long_flag_name: Long option name (auto. derived from fieldname by default)
-            config_key_name: Config key name (auto. derived from fieldname by default)
-            env_var_name: Environment variable name (forbidden by default)
+    If a default value is provided, the argument can be omitted. However,
+    if the default_value ``None`` is given (default), then
+    the parameter cannot be omitted.
 
-        Returns:
-            The constructed Param instance
-        """
+    Args:
+        param_type: Parser that transforms a string into a value
+        default_value: Default value
+        positional: Whether this parameter is present in positional arguments
+        short_flag_name: Short option name (optional)
+        long_flag_name: Long option name (auto. derived from fieldname by default)
+        config_key_name: Config key name (auto. derived from fieldname by default)
+        env_var_name: Environment variable name (forbidden by default)
 
-        return Param(
-            param_type=param_type,
-            collector=Collector.keep_last(),
-            default_value=default_value,
-            positional=positional,
-            short_flag_name=short_flag_name,
-            long_flag_name=long_flag_name,
-            config_key_name=config_key_name,
-            env_var_name=env_var_name,
-        )
+    Returns:
+        The constructed Param instance
+    """
 
-    @staticmethod
-    def append(
-        param_type: ParamType[Sequence[W]],
-        *,
-        positional: Positional = Positional.FORBIDDEN,
-        short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoName.DERIVED,
-        config_key_name: ArgName = AutoName.DERIVED,
-        env_var_name: ArgName = AutoName.FORBIDDEN,
-    ) -> Param[Sequence[W]]:
-        """
-        Creates an argument that stores the last provided value
+    return Param(
+        param_type=param_type,
+        collector=collector.keep_last(),
+        default_value=default_value,
+        positional=positional,
+        short_flag_name=short_flag_name,
+        long_flag_name=long_flag_name,
+        config_key_name=config_key_name,
+        env_var_name=env_var_name,
+    )
 
-        Args:
-            param_type: Parser that transforms a string into a value
-            positional: Whether this argument is present in positional arguments
-            short_flag_name: Short option name (optional)
-            long_flag_name: Long option name (auto. derived from fieldname by default)
-            config_key_name: Config key name (auto. derived from fieldname by default)
-            env_var_name: Environment variable name (forbidden by default)
 
-        Returns:
-            The constructed Arg instance
-        """
-        return Param(
-            param_type=param_type,
-            collector=Collector.append(),
-            default_value=None,
-            positional=positional,
-            short_flag_name=short_flag_name,
-            long_flag_name=long_flag_name,
-            config_key_name=config_key_name,
-            env_var_name=env_var_name,
-        )
+def append(
+    param_type: ParamType[Sequence[W]],
+    *,
+    positional: Positional = Positional.FORBIDDEN,
+    short_flag_name: Optional[str] = None,
+    long_flag_name: ArgName = AutoName.DERIVED,
+    config_key_name: ArgName = AutoName.DERIVED,
+    env_var_name: ArgName = AutoName.FORBIDDEN,
+) -> Param[Sequence[W]]:
+    """
+    Creates an argument that stores the last provided value
+
+    Args:
+        param_type: Parser that transforms a string into a value
+        positional: Whether this argument is present in positional arguments
+        short_flag_name: Short option name (optional)
+        long_flag_name: Long option name (auto. derived from fieldname by default)
+        config_key_name: Config key name (auto. derived from fieldname by default)
+        env_var_name: Environment variable name (forbidden by default)
+
+    Returns:
+        The constructed Arg instance
+    """
+    return Param(
+        param_type=param_type,
+        collector=collector.append(),
+        default_value=None,
+        positional=positional,
+        short_flag_name=short_flag_name,
+        long_flag_name=long_flag_name,
+        config_key_name=config_key_name,
+        env_var_name=env_var_name,
+    )

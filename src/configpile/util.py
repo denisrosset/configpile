@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from dataclasses import dataclass
-from typing import Callable, Dict, Generic, List, NoReturn, Optional
+from typing import Any, Callable, Dict, Generic, List, NoReturn, Optional
 from typing import OrderedDict as OrderedDictT
 from typing import Sequence, Tuple, Type, TypeVar, ValuesView, overload
 
@@ -79,3 +79,52 @@ def assert_never(value: NoReturn) -> NoReturn:
     See `<https://github.com/python/cpython/pull/30842>`_
     """
     assert False, f"Unhandled value: {value} ({type(value).__name__})"
+
+
+def filter_types(
+    t: Type[T], seq: Sequence[Any], min_el: int = 0, max_el: Optional[int] = None
+) -> Sequence[T]:
+    """
+    Searches for elements of a given type in a sequence
+
+
+    Args:
+        t: Type to search for
+        seq: Sequence to search in
+        min_el: Minimum number of elements to recover
+        max_el: Maximum number of elements to recover (optional)
+
+    Raises:
+        ValueError: if the number of recovered elements is not between ``min_el`` and ``max_el``
+
+    Returns:
+        A sequence of elements of the given type
+    """
+    filtered = [s for s in seq if isinstance(s, t)]
+    n = len(filtered)
+    if n < min_el:
+        raise ValueError(f"Minimum {min_el} elements of type {t} need to be present, {n} found")
+    if max_el and n > max_el:
+        raise ValueError(f"Minimum {max_el} elements of type {t} need to be present, {n} found")
+    return filtered
+
+
+def filter_types_single(t: Type[T], seq: Sequence[Any]) -> Optional[T]:
+    """
+    Searches for zero or one elements of a given type in a sequence
+
+    Args:
+        t: Type to search for
+        seq: Sequence to search in
+
+    Raises:
+        ValueError: if the number of recovered elements is not between ``min_el`` and ``max_el``
+
+    Returns:
+        A single element or None
+    """
+    res = filter_types(t, seq, min_el=0, max_el=1)
+    if res:
+        return res[0]
+    else:
+        return None
