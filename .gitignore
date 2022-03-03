@@ -79,3 +79,6 @@ dmypy.json
 
 # poetry // we are building a library, so we do not commit the poetry.lock file
 /poetry.lock
+
+# Visual Studio Code and extensions
+.history/

@@ -50,8 +50,6 @@ strict_equality = true
 strict_optional = true
 warn_redundant_casts = true
 warn_return_any = true
-warn_unused_configs = true
-warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
@@ -85,6 +83,7 @@ profile = "black"
 py_version = 38
 
 [tool.commitizen]
+annotated_tag = true
 name = "cz_conventional_commits"
 style = [
   ["qmark", "fg:#ff9d00 bold"],
@@ -99,10 +98,9 @@ style = [
   ["disabled", "fg:#858585 italic"],
 ]
 tag_format = "v$major.$minor.$patch$prerelease"
+update_changelog_on_bump = true
 version = "4.0.0"
 version_files = [
   "src/configpile/__init__.py:version",
   "pyproject.toml:version",
 ]
-update_changelog_on_bump = true
-annotated_tag = true

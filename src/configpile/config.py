@@ -148,18 +148,18 @@ class ConfigStructure(Generic[C]):
     env_params: Mapping[str, Param[Any]]
 
     @staticmethod
-    def from_config(cls: Type[C]) -> ConfigStructure[C]:
+    def from_config(config_type: Type[C]) -> ConfigStructure[C]:
 
         # fill program name from script invocation
-        prog = cls.prog_
+        prog = config_type.prog_
         if prog is None:
             prog = sys.argv[0]
         # fill description from class docstring
-        description: Optional[str] = cls.description_
+        description: Optional[str] = config_type.description_
         if description is None:
-            description = cls.__doc__
-        env_prefix = cls.env_prefix_
-        ini_sections: Sequence[IniSection] = cls.ini_sections_()
+            description = config_type.__doc__
+        env_prefix = config_type.env_prefix_
+        ini_sections: Sequence[IniSection] = config_type.ini_sections_()
 
         args: List[Arg] = []
         params: Dict[str, Param[Any]] = {}
@@ -171,16 +171,16 @@ class ConfigStructure(Generic[C]):
         ini_params: Dict[str, Param[Any]] = {}
         env_params: Dict[str, Param[Any]] = {}
 
-        docs: Mapping[str, Sequence[str]] = class_doc.extract_docs_from_cls_obj(cls)
+        docs: Mapping[str, Sequence[str]] = class_doc.extract_docs_from_cls_obj(config_type)
 
         def format_docstring(seq: Sequence[str]) -> str:
             return textwrap.dedent("\n".join(seq))
 
-        th = get_type_hints(cls, include_extras=True)
+        th = get_type_hints(config_type, include_extras=True)
         for name, typ in th.items():
             arg: Optional[Arg] = None
             if get_origin(typ) is ClassVar:
-                a = getattr(cls, name)
+                a = getattr(config_type, name)
                 if isinstance(a, Arg):
                     assert isinstance(a, Cmd), "Only commands (Cmd) can be class attributes"
                     arg = a
@@ -190,7 +190,7 @@ class ConfigStructure(Generic[C]):
                     arg = param
             if arg is not None:
                 help = format_docstring(docs.get(name, []))
-                arg = arg.updated(name, help, cls.env_prefix_)
+                arg = arg.updated(name, help, config_type.env_prefix_)
                 args.append(arg)
                 if name == "ini_files":
                     assert isinstance(arg, Param)
@@ -221,7 +221,7 @@ class ConfigStructure(Generic[C]):
         assert ini_files is not None
 
         return ConfigStructure(
-            cls,
+            config_type,
             prog=prog,
             description=description,
             env_prefix=env_prefix,

@@ -220,7 +220,7 @@ class Param(Arg, Generic[T]):
     """
 
     #: Argument type, parser from string to value
-    param_type: ParamType[T] = ParamType.invalid()
+    param_type: ParamType[T] = ParamType.invalid()  # type: ignore
 
     #: Argument collector
     collector: Collector[T] = Collector.invalid()  # type: ignore
@@ -357,7 +357,7 @@ class Param(Arg, Generic[T]):
         """
         return Param(
             param_type=param_type,
-            collector=Collector.append(),
+            collector=Collector.append(),  # type: ignore
             default_value=None,
             positional=positional,
             short_flag_name=short_flag_name,

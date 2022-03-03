@@ -28,6 +28,8 @@ from configpile.util import assert_never
 
 from .errors import ParseErr, Result, collect_seq
 
+I = TypeVar("I")  #: Item type, invariant
+
 T = TypeVar("T", covariant=True)  #: Item type
 
 W = TypeVar("W", covariant=True)  #: Wrapped item type
@@ -93,7 +95,7 @@ class ParamType(ABC, Generic[T]):
         return _SeparatedBy(self, sep, strip, remove_empty)
 
     @staticmethod
-    def from_parser(type_: Type[T], parser: parsy.Parser) -> ParamType[T]:
+    def from_parser(type_: Type[I], parser: parsy.Parser) -> ParamType[I]:
         """
         Creates a parameter type from a parsy parser
 
@@ -134,7 +136,7 @@ class ParamType(ABC, Generic[T]):
         return _ResultFunction(f)
 
     @staticmethod
-    def invalid() -> ParamType[NoReturn]:
+    def invalid() -> ParamType[T]:
         """
         Creates a parameter type that always return errors
         """
