@@ -61,7 +61,14 @@ class ClassDoc(Generic[T]):
         Returns:
             A ClassDoc instance
         """
-        return ClassDoc(docs=[extract_docs_from_cls_obj(c) for c in t.mro()])
+        docs: List[Mapping[str, Sequence[str]]] = []
+        for c in t.mro():
+            try:
+                docs.append(extract_docs_from_cls_obj(c))
+            except TypeError:
+                pass
+
+        return ClassDoc(docs)
 
 
 def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[K], V]]) -> Dict[K, V]:
