@@ -1,3 +1,13 @@
+## v4.1.0 (2022-03-03)
+
+### Feat
+
+- **config**: better formatting of usage/help when running from CLI
+
+### Fix
+
+- **make-Pylance-type-checker-happy**: Added exceptions and corrected types to avoid Pylance errors. Allows unused "type: ignore" in mypy config to make both tools happy
+
 ## v4.0.0 (2022-03-02)
 
 ### Refactor

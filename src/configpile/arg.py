@@ -279,9 +279,15 @@ class Param(Arg, Generic[T]):
         else:
             return []
 
+    def is_required(self) -> bool:
+        """
+        Returns whether the argument is required
+        """
+        return self.default_value is None and self.collector.arg_required()
+
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         res = super().argparse_argument_kwargs()
-        if self.default_value is None and self.collector.arg_required():
+        if self.is_required():
             res = {**res, "required": True}
         return {
             **res,
