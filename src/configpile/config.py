@@ -240,7 +240,7 @@ class ConfigStructure(Generic[C]):
         p = argparse.ArgumentParser(
             prog=self.prog,
             description=self.description,
-            formatter_class=argparse.RawDescriptionHelpFormatter,
+            formatter_class=argparse.RawTextHelpFormatter,
         )
         p._action_groups.pop()
         required = p.add_argument_group("required arguments")
