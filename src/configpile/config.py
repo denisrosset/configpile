@@ -31,7 +31,7 @@ from .arg import Arg, Cmd, Expander, Param, Positional
 from .collector import Instance
 from .errors import ArgErr, Err, ManyErr, Result, collect
 from .sources import CommandLine, EnvironmentVariables, IniSection, IniSectionSource, Source
-from .util import filter_types_single
+from .util import ClassDoc, filter_types_single
 
 C = TypeVar("C", bound="Config")
 
@@ -171,7 +171,7 @@ class ConfigStructure(Generic[C]):
         ini_params: Dict[str, Param[Any]] = {}
         env_params: Dict[str, Param[Any]] = {}
 
-        docs: Mapping[str, Sequence[str]] = class_doc.extract_docs_from_cls_obj(config_type)
+        docs: ClassDoc[C] = ClassDoc.make(config_type)
 
         def format_docstring(seq: Sequence[str]) -> str:
             return textwrap.dedent("\n".join(seq))
@@ -189,7 +189,11 @@ class ConfigStructure(Generic[C]):
                 if param is not None:
                     arg = param
             if arg is not None:
-                help = format_docstring(docs.get(name, []))
+                help_lines = docs[name]
+                if help_lines is None:
+                    help = ""
+                else:
+                    help = "\n".join(help_lines)
                 arg = arg.updated(name, help, config_type.env_prefix_)
                 args.append(arg)
                 if name == "ini_files":

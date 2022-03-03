@@ -1,8 +1,13 @@
+from __future__ import annotations
+
+import textwrap
 from collections import OrderedDict
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Generic, List, NoReturn, Optional
+from typing import Any, Callable, Dict, Generic, List, Mapping, NoReturn, Optional
 from typing import OrderedDict as OrderedDictT
 from typing import Sequence, Tuple, Type, TypeVar, ValuesView, overload
+
+from class_doc import extract_docs_from_cls_obj
 
 K = TypeVar("K")
 T = TypeVar("T")
@@ -10,6 +15,53 @@ U = TypeVar("U")
 V = TypeVar("V")
 W = TypeVar("W")
 E = TypeVar("E")  #: Error type
+
+
+@dataclass(frozen=True)
+class ClassDoc(Generic[T]):
+    """
+    Stores information about Sphinx autodoc-style documentation for a class
+
+    See `<https://pypi.org/project/class-doc/>`_
+    """
+
+    docs: Sequence[Mapping[str, Sequence[str]]]  #: Documentation for the class and parents
+
+    def raw(self, attribute_name: str) -> Optional[Sequence[str]]:
+        for d in self.docs:
+            if attribute_name in d:
+                return d[attribute_name]
+        return None
+
+    def __getitem__(self, attribute_name: str) -> Optional[Sequence[str]]:
+        """
+        Returns the documentation for a given attribute
+
+        This returns the documentation present in the first class in the Method Resolution Order.
+
+        Args:
+            attribute_name: Name of the attribute to query
+
+        Returns:
+            Documentation lines or None if not found
+        """
+        res = self.raw(attribute_name)
+        if res is None:
+            return None
+        return textwrap.dedent("\n".join(res)).split("\n")
+
+    @staticmethod
+    def make(t: Type[T]) -> ClassDoc[T]:
+        """
+        Retrieves the documentation for the attributes of a class
+
+        Args:
+            t: Class type to investigate
+
+        Returns:
+            A ClassDoc instance
+        """
+        return ClassDoc(docs=[extract_docs_from_cls_obj(c) for c in t.mro()])
 
 
 def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[K], V]]) -> Dict[K, V]:
