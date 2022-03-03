@@ -1,3 +1,9 @@
+## v4.1.1 (2022-03-03)
+
+### Fix
+
+- **config**: Fixed the formatter used in usage/help formatting, so that it preserves newlines
+
 ## v4.1.0 (2022-03-03)
 
 ### Feat
