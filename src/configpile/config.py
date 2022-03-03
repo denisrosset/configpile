@@ -237,9 +237,19 @@ class ConfigStructure(Generic[C]):
         )
 
     def get_argument_parser(self) -> argparse.ArgumentParser:
-        p = argparse.ArgumentParser(prog=self.prog, description=self.description)
+        p = argparse.ArgumentParser(
+            prog=self.prog,
+            description=self.description,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+        )
+        p._action_groups.pop()
+        required = p.add_argument_group("required arguments")
+        optional = p.add_argument_group("optional arguments")
         for param in self.params.values():
-            p.add_argument(*param.all_flags(), **param.argparse_argument_kwargs())
+            if param.is_required():
+                required.add_argument(*param.all_flags(), **param.argparse_argument_kwargs())
+            else:
+                optional.add_argument(*param.all_flags(), **param.argparse_argument_kwargs())
         return p
 
 
