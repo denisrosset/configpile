@@ -1,3 +1,9 @@
+## v4.1.3 (2022-03-03)
+
+### Fix
+
+- **util**: fix bug in attribute documentation lookup
+
 ## v4.1.2 (2022-03-03)
 
 ### Fix
