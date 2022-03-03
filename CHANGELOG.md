@@ -1,3 +1,9 @@
+## v4.1.2 (2022-03-03)
+
+### Fix
+
+- **config**: fix retrieval of argument documentation in parent classes
+
 ## v4.1.1 (2022-03-03)
 
 ### Fix

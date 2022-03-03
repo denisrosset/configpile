@@ -9,7 +9,7 @@ license = "MIT"
 name = "configpile"
 readme = "README.rst"
 repository = "https://github.com/denisrosset/configpile.git"
-version = "4.1.1"
+version = "4.1.2"
 
 [tool.poetry.dependencies]
 class-doc = "^0.2.6"
@@ -99,7 +99,7 @@ style = [
 ]
 tag_format = "v$major.$minor.$patch$prerelease"
 update_changelog_on_bump = true
-version = "4.1.1"
+version = "4.1.2"
 version_files = [
   "src/configpile/__init__.py:version",
   "pyproject.toml:version",
