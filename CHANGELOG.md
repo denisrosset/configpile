@@ -1,3 +1,9 @@
+## v4.2.0 (2022-03-04)
+
+### Feat
+
+- **config**: implement help command flag
+
 ## v4.1.3 (2022-03-03)
 
 ### Fix
