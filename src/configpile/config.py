@@ -211,7 +211,7 @@ class ConfigStructure(Generic[C]):
                     help = "\n".join(help_lines)
                 arg = arg.updated(name, help, config_type.env_prefix_)
                 args.append(arg)
-                if name == "ini_files":
+                if name == "config":
                     assert isinstance(arg, Param)
                     ini_files = arg
 
@@ -282,7 +282,7 @@ class Config(abc.ABC):
     #:
     #: The paths are absolute or relative to the current working directory, and
     #: point to existing INI files containing configuration settings
-    ini_files: Annotated[Sequence[Path], Param.append(types.path.separated_by(","))]
+    config: Annotated[Sequence[Path], Param.append(types.path.separated_by(","))]
 
     #: Names of sections to parse in configuration files, with unknown keys ignored
     ini_relaxed_sections_: ClassVar[Sequence[str]] = ["Common", "COMMON", "common"]
