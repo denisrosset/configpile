@@ -32,3 +32,19 @@ def test_construct() -> None:
 def test_cmd() -> None:
     res = MyApp.parse_command_line_(args=["-h"], env={})
     assert isinstance(res, HelpCmd)
+
+
+@dataclass(frozen=True)
+class A(Config):
+    a: Annotated[int, Param.store(types.int_, default_value="2")]
+
+
+@dataclass(frozen=True)
+class B(A):
+    b: Annotated[int, Param.store(types.int_, short_flag_name="-b")]
+
+
+def test_default_values() -> None:
+    res = B.parse_command_line_(args=["-b", "3"])
+    assert isinstance(res, B)
+    assert res.a == 2
