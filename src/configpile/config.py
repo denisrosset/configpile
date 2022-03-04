@@ -191,9 +191,6 @@ class ConfigStructure(Generic[C]):
 
         docs: ClassDoc[C] = ClassDoc.make(config_type)
 
-        def format_docstring(seq: Sequence[str]) -> str:
-            return textwrap.dedent("\n".join(seq))
-
         th = get_type_hints(config_type, include_extras=True)
         for name, typ in th.items():
             arg: Optional[Arg] = None
