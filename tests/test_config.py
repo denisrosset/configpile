@@ -7,11 +7,9 @@ from typing import ClassVar, Optional
 import pytest
 from typing_extensions import Annotated
 
-import configpile
 from configpile import types
 from configpile.arg import HelpCmd, Param
 from configpile.config import Config
-from configpile.errors import Err
 
 
 @dataclass(frozen=True)
@@ -41,10 +39,19 @@ class A(Config):
 
 @dataclass(frozen=True)
 class B(A):
+    ini_strict_sections_ = ["section"]
     b: Annotated[int, Param.store(types.int_, short_flag_name="-b")]
 
 
 def test_default_values() -> None:
-    res = B.parse_command_line_(args=["-b", "3"])
+    res = B.parse_command_line_(args=["-b", "3"], env={})
     assert isinstance(res, B)
     assert res.a == 2
+
+
+def test_config_files() -> None:
+    dir = Path.cwd() / "tests"  # configpile root directory
+    res = B.parse_command_line_(cwd=dir, args=["--config", "test.ini"], env={})
+    assert isinstance(res, B)
+    assert res.a == 4
+    assert res.b == 5
