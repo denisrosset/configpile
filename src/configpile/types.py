@@ -22,7 +22,8 @@ from typing import (
     cast,
 )
 
-import parsy
+if TYPE_CHECKING:
+    import parsy
 
 from configpile.util import assert_never
 
