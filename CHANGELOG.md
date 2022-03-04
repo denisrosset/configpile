@@ -1,3 +1,14 @@
+## v5.0.0 (2022-03-04)
+
+### Refactor
+
+- **config**: INI configuration file parameter is now named "config"
+- **config**: removed dead code
+
+### BREAKING CHANGE
+
+- Config.ini_files is renamed to Config.config
+
 ## v4.2.1 (2022-03-04)
 
 ### Fix
