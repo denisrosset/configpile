@@ -4,13 +4,12 @@ import abc
 import configparser
 from abc import abstractmethod
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
-from typing import Dict, Generic, Iterable, List, Literal, Mapping, Sequence, Tuple, TypeVar
+from typing import Dict, Iterable, List, Mapping, Sequence, Tuple, TypeVar
 
 from .arg import Param, Positional
 from .collector import Instance
-from .errors import ArgErr, Err, GenErr, ManyErr, Result, collect_seq
+from .errors import Err, GenErr, ManyErr, Result, collect_seq
 
 T = TypeVar("T")  #: Item type
 
@@ -94,6 +93,15 @@ class Source(abc.ABC):
         if isinstance(instances, Err):
             return instances
         return param.collector.collect(instances)
+
+
+class DefaultValue(Source):
+    def get_strings(self, param: Param[T]) -> Result[Sequence[str]]:
+        s = param.default_value
+        if s is None:
+            return []
+        else:
+            return [s]
 
 
 @dataclass(frozen=True)

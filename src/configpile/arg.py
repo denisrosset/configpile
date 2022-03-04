@@ -15,19 +15,19 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
-    cast,
 )
 
-from . import collector
 from .collector import Collector
+from .errors import Err, Result
 from .types import ParamType
+
+if TYPE_CHECKING:
+    from .config import Config
+    from .sources import Source
 
 T = TypeVar("T", covariant=True)  #: Item type
 
 W = TypeVar("W", covariant=True)  #: Wrapped item type
-
-if TYPE_CHECKING:
-    from .config import Config
 
 
 class AutoName(Enum):
@@ -200,6 +200,36 @@ class Positional(Enum):
         Returns whether a parameter is positional
         """
         return self != Positional.FORBIDDEN
+
+
+@dataclass(frozen=True)
+class Instance(Generic[T]):
+    """
+    Parameter instance
+    """
+
+    value: T  #: Value parsed from string
+    string: str  #: Parsed string
+    source: Source  #: Parameter source
+
+    @staticmethod
+    def parse(s: str, param_type: ParamType[T], source: Source) -> Result[Instance[T]]:
+        """
+        Parses a string using a parameter type and constructs a parameter instance
+
+        Args:
+            s: String to parse
+            param_type: Parameter type used as a parser
+            source: Source of the string
+
+        Returns:
+            A parameter instance or an error
+        """
+        res = param_type.parse(s)
+        if isinstance(res, Err):
+            return res
+        else:
+            return Instance(res, s, source)
 
 
 @dataclass(frozen=True)

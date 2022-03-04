@@ -29,7 +29,14 @@ from . import arg, types
 from .arg import Arg, Cmd, Expander, HelpCmd, Param, Positional
 from .collector import Instance
 from .errors import ArgErr, Err, ManyErr, Result, collect
-from .sources import CommandLine, EnvironmentVariables, IniSection, IniSectionSource, Source
+from .sources import (
+    CommandLine,
+    DefaultValue,
+    EnvironmentVariables,
+    IniSection,
+    IniSectionSource,
+    Source,
+)
 from .util import ClassDoc, filter_types_single
 
 C = TypeVar("C", bound="Config")
@@ -98,7 +105,8 @@ class ConfigProcessor(Generic[C]):
         ini_from_cl: Result[Sequence[Instance[Sequence[Path]]]] = cl[cs.ini_files]
         if isinstance(ini_from_cl, Err):
             return ini_from_cl
-        sources: List[Source] = [env]
+        default = DefaultValue()
+        sources: List[Source] = [default, env]
         ini_instances: Sequence[Path] = [
             ins for instances in [*ini_from_env, *ini_from_cl] for ins in instances.value
         ]
