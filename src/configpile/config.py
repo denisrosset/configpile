@@ -3,7 +3,6 @@ from __future__ import annotations
 import abc
 import argparse
 import os
-import shutil
 import sys
 import textwrap
 from dataclasses import dataclass
@@ -21,13 +20,13 @@ from typing import (
     Tuple,
     Type,
     TypeVar,
+    Union,
 )
 
-import class_doc
 from typing_extensions import Annotated, get_args, get_origin, get_type_hints
 
 from . import arg, types
-from .arg import Arg, Cmd, Expander, Param, Positional
+from .arg import Arg, Cmd, Expander, HelpCmd, Param, Positional
 from .collector import Instance
 from .errors import ArgErr, Err, ManyErr, Result, collect
 from .sources import CommandLine, EnvironmentVariables, IniSection, IniSectionSource, Source
@@ -57,7 +56,13 @@ class ConfigProcessor(Generic[C]):
         """
         exp_flags = {flag: cmd.inserts() for (flag, cmd) in self.cs.cl_expanders.items()}
         val_flags = frozenset(self.cs.cl_flag_params.keys())
-        return CommandLine.make(self.args, exp_flags, val_flags)
+        cmd_flags = frozenset(self.cs.cl_non_expander_cmds.keys())
+        return CommandLine.make(
+            args=self.args,
+            expanding_flags=exp_flags,
+            flags_followed_by_value=val_flags,
+            command_flags=cmd_flags,
+        )
 
     def environment_variables(self) -> Result[EnvironmentVariables]:
         """
@@ -68,7 +73,7 @@ class ConfigProcessor(Generic[C]):
         """
         return EnvironmentVariables(self.env)
 
-    def process(self) -> Result[C]:
+    def process(self) -> Result[Union[C, Cmd]]:
         """
         Runs the processing
 
@@ -82,6 +87,11 @@ class ConfigProcessor(Generic[C]):
         if isinstance(config_sources, Err):
             return config_sources
         cl, env = config_sources
+
+        for flag, cmd in cs.cl_non_expander_cmds.items():
+            if flag in cl.commands:
+                return cmd
+
         ini_from_env: Result[Sequence[Instance[Sequence[Path]]]] = env[cs.ini_files]
         if isinstance(ini_from_env, Err):
             return ini_from_env
@@ -302,9 +312,9 @@ class Config(abc.ABC):
         cwd: Path = Path.cwd(),
         args: Sequence[str] = sys.argv[1:],
         env: Mapping[str, str] = os.environ,
-    ) -> Result[C]:
+    ) -> Result[Union[C, Cmd]]:
         """
-        Parses multiple information sources, returns a configuration or an error
+        Parses multiple information sources, returns a configuration, a command or an error
 
         Default values are taken from the current working directory, the script command line
         arguments, and the current environment variables.
@@ -343,21 +353,17 @@ class Config(abc.ABC):
             A parsed configuration
         """
         res = cls.parse_command_line_(cwd, args, env)
+        if isinstance(res, cls):
+            return res
         if isinstance(res, Err):
-            try:
-                from rich.console import Console
-                from rich.markdown import Markdown
-
-                console = Console()
-                md = Markdown("\n".join(res.markdown()))
-                console.print(md)
-            except:
-                sz = shutil.get_terminal_size()
-                t = res.markdown()
-                print(textwrap.fill("\n".join(t), width=sz.columns))
+            res.pretty_print()
             cls.get_argument_parser_().print_help()
             sys.exit(1)
-        return res
+        assert isinstance(res, Cmd)  # exhaustiveness checking does not work here
+        # TODO: implement generic cmd mechanism
+        assert isinstance(res, HelpCmd), "Only supported command is HelpCmd"
+        cls.get_argument_parser_().print_help()
+        sys.exit(0)
 
     @classmethod
     def get_argument_parser_(cls: Type[C]) -> argparse.ArgumentParser:

@@ -26,4 +26,9 @@ class MyApp(Config):
 
 
 def test_construct() -> None:
-    app = MyApp.parse_command_line_(args=[], env={})
+    res = MyApp.parse_command_line_(args=[], env={})
+
+
+def test_cmd() -> None:
+    res = MyApp.parse_command_line_(args=["-h"], env={})
+    assert isinstance(res, HelpCmd)

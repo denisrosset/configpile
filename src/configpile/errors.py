@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import shutil
+import textwrap
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import (
@@ -21,16 +23,44 @@ if TYPE_CHECKING:
 
 class Err(ABC):
     """
-    Describes an error that occurred during argument parsing
+    Describes an error or list of errors that occurred during argument parsing
     """
 
     @abstractmethod
     def markdown(self) -> Sequence[str]:
+        """
+        Returns a Markdown-formatted summary of this error (or list of errors)
+        """
         pass
 
     @abstractmethod
     def errors(self) -> Sequence[Err]:
+        """
+        Returns a sequence of all contained errors
+
+        If this is not a collection of errors :class:`.ManyErr`, returns a sequence with
+        a single item, this instance itself.
+
+        Returns:
+            A sequence of errors
+        """
         pass
+
+    def pretty_print(self) -> None:
+        """
+        Pretty prints
+        """
+        try:
+            from rich.console import Console
+            from rich.markdown import Markdown
+
+            console = Console()
+            md = Markdown("\n".join(self.markdown()))
+            console.print(md)
+        except:
+            sz = shutil.get_terminal_size()
+            t = self.markdown()
+            print(textwrap.fill("\n".join(t), width=sz.columns))
 
 
 class SingleErr(Err):
