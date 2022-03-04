@@ -1,3 +1,9 @@
+## v4.2.1 (2022-03-04)
+
+### Fix
+
+- do not ignore default parameter values anymore
+
 ## v4.2.0 (2022-03-04)
 
 ### Feat
