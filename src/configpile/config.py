@@ -147,6 +147,9 @@ class ConfigStructure(Generic[C]):
     #: All parameters indexed by destination field
     params: Mapping[str, Param[Any]]
 
+    #: All commands
+    commands: Sequence[Cmd]
+
     #: Command-line commands that are not expanders
     cl_non_expander_cmds: Mapping[str, Cmd]
 
@@ -181,6 +184,7 @@ class ConfigStructure(Generic[C]):
 
         args: List[Arg] = []
         params: Dict[str, Param[Any]] = {}
+        commands: List[Cmd] = []
         cl_non_expander_cmds: Dict[str, Cmd] = {}
         cl_expanders: Dict[str, Expander] = {}
         cl_flag_params: Dict[str, Param[Any]] = {}
@@ -229,6 +233,7 @@ class ConfigStructure(Generic[C]):
                 for name in arg.all_env_var_names():
                     env_params[name] = arg
             elif isinstance(arg, Cmd):
+                commands.append(arg)
                 for flag in arg.all_flags():
                     if isinstance(arg, Expander):
                         cl_expanders[flag] = arg
@@ -247,6 +252,7 @@ class ConfigStructure(Generic[C]):
             ini_files=ini_files,
             ini_sections=ini_sections,
             params=params,
+            commands=commands,
             cl_non_expander_cmds=cl_non_expander_cmds,
             cl_expanders=cl_expanders,
             cl_flag_params=cl_flag_params,
@@ -260,8 +266,10 @@ class ConfigStructure(Generic[C]):
             prog=self.prog,
             description=self.description,
             formatter_class=argparse.RawTextHelpFormatter,
+            add_help=False,
         )
         p._action_groups.pop()
+        commands = p.add_argument_group("commands")
         required = p.add_argument_group("required arguments")
         optional = p.add_argument_group("optional arguments")
         for param in self.params.values():
@@ -269,6 +277,10 @@ class ConfigStructure(Generic[C]):
                 required.add_argument(*param.all_flags(), **param.argparse_argument_kwargs())
             else:
                 optional.add_argument(*param.all_flags(), **param.argparse_argument_kwargs())
+        print(self.cl_expanders.values())
+        print(self.cl_non_expander_cmds.values())
+        for cmd in [*self.commands]:
+            commands.add_argument(*cmd.all_flags(), action="help")
         return p
 
 
@@ -283,6 +295,9 @@ class Config(abc.ABC):
     #: The paths are absolute or relative to the current working directory, and
     #: point to existing INI files containing configuration settings
     config: Annotated[Sequence[Path], Param.append(types.path.separated_by(","))]
+
+    #: Display usage information and exits
+    help: ClassVar[HelpCmd] = HelpCmd(short_flag_name="-h", long_flag_name="--help")
 
     #: Names of sections to parse in configuration files, with unknown keys ignored
     ini_relaxed_sections_: ClassVar[Sequence[str]] = ["Common", "COMMON", "common"]
