@@ -1,3 +1,9 @@
+## v5.0.1 (2022-03-09)
+
+### Fix
+
+- **config**: enumerate commands in usage information
+
 ## v5.0.0 (2022-03-04)
 
 ### Refactor
