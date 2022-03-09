@@ -20,6 +20,9 @@
         "**/build": true,
         "**/dist": true,
     },
+    "esbonio.server.enabled": false,
+    "esbonio.sphinx.buildDir": "/home/denis/w/configpile/docs/build",
+    "esbonio.sphinx.confDir": "/home/denis/w/configpile/docs/source",
     // "python.terminal.launchArgs": [
     //     "-m",
     //     "IPython",
