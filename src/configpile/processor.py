@@ -109,7 +109,7 @@ class CLParam(CLHandler, Generic[T]):
         """
         A method called on the successful parse of a value
 
-        Can be overidden. By default does nothing.
+        Can be overridden. By default does nothing.
 
         Args:
             value: Parsed value

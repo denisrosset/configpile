@@ -7,6 +7,7 @@
     "restructuredtext.updateOnTextChanged": "true",
     "restructuredtext.updateDelay": 300,
     "cSpell.words": [
+        "configpile",
         "positionals",
         "RASSINE"
     ],
