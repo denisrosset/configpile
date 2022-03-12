@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 
 from configpile.util import assert_never
 
-from .errors import ParseErr, Result, collect_seq
+from .errors import Err, Result, collect_seq
 
 I = TypeVar("I")  #: Item type, invariant
 
@@ -215,7 +215,7 @@ class _Choices(ParamType[T]):
             return all_mappings[arg]
         else:
             msg = f"Value {arg} not in choices {','.join(self.mapping.keys())}"
-            return ParseErr(msg, arg, None)
+            return Err.make(msg)
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         return {"choices": self.mapping.keys(), "type": str}
@@ -236,7 +236,7 @@ class _FunctionThatRaises(ParamType[T]):
             assert f is not None
             return f(arg)
         except Exception as err:
-            return ParseErr(str(err), arg, None)
+            return Err.make(f"Error '{err}' in '{arg}'")
 
 
 @dataclass  # not frozen because mypy bug, please be responsible
@@ -264,7 +264,12 @@ class _Parsy(ParamType[T]):
         if res.status:
             return cast(T, res.value)
         else:
-            return ParseErr(res.expected, arg, res.furthest)
+            if res.furthest is not None:
+                return Err.make(
+                    f"Parse error '{res.expected}' in '{arg}' at position '{res.furthest}'"
+                )
+            else:
+                return Err.make(f"Parse error '{res.expected}' in '{arg}'")
 
 
 @dataclass(frozen=True)

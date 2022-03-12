@@ -3,48 +3,14 @@ from __future__ import annotations
 import abc
 from dataclasses import dataclass
 from enum import Enum
-from operator import truediv
-from typing import TYPE_CHECKING, Any, Generic, List, Mapping, NoReturn, Sequence, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, List, Mapping, NoReturn, Sequence, Tuple, TypeVar
 
-from .errors import GenErr, Result, map_result
+from .errors import Err, Err1, Result
 from .types import ParamType
 
 T = TypeVar("T")  #: Item type
 
 W = TypeVar("W")  #: Wrapped item type
-
-if TYPE_CHECKING:
-    from .sources import Source
-
-
-@dataclass(frozen=True)
-class Instance(Generic[T]):
-    """
-    Parameter instance
-    """
-
-    value: T  #: Value parsed from string
-    string: str  #: Parsed string
-    source: Source  #: Parameter source
-
-    @staticmethod
-    def parse(s: str, param_type: ParamType[T], source: Source) -> Result[Instance[T]]:
-        """
-        Parses a string using a parameter type and constructs a parameter instance
-
-        Args:
-            s: String to parse
-            param_type: Parameter type used as a parser
-            source: Source of the string
-
-        Returns:
-            A parameter instance or an error
-        """
-
-        def res_to_instance(v: T) -> Instance[T]:
-            return Instance(v, s, source)
-
-        return map_result(res_to_instance, param_type.parse(s))
 
 
 class Collector(abc.ABC, Generic[T]):
@@ -60,11 +26,23 @@ class Collector(abc.ABC, Generic[T]):
         pass
 
     @abc.abstractmethod
-    def collect(self, seq: Sequence[Instance[T]]) -> Result[T]:
+    def collect(self, seq: Sequence[T]) -> Result[T]:
+        """
+        Collects a sequence of values into a result
+
+        Args:
+            seq: Sequence of parsed values
+
+        Returns:
+            Either the consolidated value or an error
+        """
         pass
 
     @abc.abstractmethod
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
+        """
+        Returns the arguments using in documentation (piggy backing on argparse)
+        """
         pass
 
     @staticmethod
@@ -93,11 +71,11 @@ class _KeepLast(Collector[T]):
     def arg_required(self) -> bool:
         return True
 
-    def collect(self, seq: Sequence[Instance[T]]) -> Result[T]:
+    def collect(self, seq: Sequence[T]) -> Result[T]:
         if not seq:  # no instances provided
-            return GenErr("Argument is required")
+            return Err.make("Argument is required")
         else:  # instances are provided
-            return seq[-1].value
+            return seq[-1]
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         return {"action": "store"}
@@ -107,10 +85,10 @@ class _Append(Collector[Sequence[W]]):
     def arg_required(self) -> bool:
         return False
 
-    def collect(self, seq: Sequence[Instance[Sequence[W]]]) -> Result[Sequence[W]]:
+    def collect(self, seq: Sequence[Sequence[W]]) -> Result[Sequence[W]]:
         res: List[W] = []
         for i in seq:
-            res.extend(i.value)
+            res.extend(i)
         return res
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
@@ -121,8 +99,8 @@ class _Invalid(Collector[Any]):
     def arg_required(self) -> bool:
         raise NotImplementedError
 
-    def collect(self, seq: Sequence[Instance[T]]) -> Result[T]:
-        return GenErr("Invalid collector")
+    def collect(self, seq: Sequence[T]) -> Result[T]:
+        return Err.make("Invalid collector")
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         raise NotImplementedError(

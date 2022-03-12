@@ -26,12 +26,12 @@ rich = ["rich"]
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
 commitizen = "^2.21.2"
-mypy = "^0.931"
+isort = "^5.10.1"
+mypy = "0.940"
 pytest = "^7.0.1"
 pytest-black = "^0.3.12"
 pytest-cov = "^3.0.0"
 pytest-mypy-plugins = "^1.9.3"
-isort = "^5.10.1"
 
 [tool.mypy]
 check_untyped_defs = true

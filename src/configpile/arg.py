@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-import abc
 import dataclasses
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Any,
+    Dict,
     Generic,
     List,
     Mapping,
@@ -17,17 +19,18 @@ from typing import (
     Union,
 )
 
+from typing_extensions import TypeGuard
+
 from .collector import Collector
 from .errors import Err, Result
-from .types import ParamType
-
-if TYPE_CHECKING:
-    from .config import Config
-    from .sources import Source
+from .types import ParamType, path
 
 T = TypeVar("T", covariant=True)  #: Item type
 
 W = TypeVar("W", covariant=True)  #: Wrapped item type
+
+if TYPE_CHECKING:
+    from .processor import ProcessorFactory
 
 
 class AutoName(Enum):
@@ -43,12 +46,36 @@ class AutoName(Enum):
 
     @staticmethod
     def derive_long_flag_name(name: str) -> str:
+        """
+        Returns a long flag name
+
+        Changes the snake_case to kebab-case and adds a ``--`` prefix
+
+        Args:
+            name: Python identifier used to derive the flag
+
+        Returns:
+            A long flag name
+        """
         if name.endswith("_command"):
             name = name[:-8]
         return "--" + name.replace("_", "-")
 
     @staticmethod
     def derive_env_var_name(name: str, prefix: Optional[str]) -> str:
+        """
+        Returns a environment variable name derived from a Python identifier
+
+        Keeps snake_case but transforms into upper case, and optionally adds a prefix,
+        separated by an underscore.
+
+        Args:
+            name: Python identifier used to derive the flag
+            prefix: Optional prefix
+
+        Returns:
+            An environment variable name
+        """
         if prefix is not None:
             return prefix + "_" + name.upper()
         else:
@@ -56,6 +83,17 @@ class AutoName(Enum):
 
     @staticmethod
     def derive_config_key_name(name: str) -> str:
+        """
+        Derives a INI key name
+
+        It matches the Python identifier, with snake_case replaced by kebab-case.
+
+        Args:
+            name: Python identifier used to derive the key name
+
+        Returns:
+            INI file key name
+        """
         return name.replace("_", "-")
 
 
@@ -64,21 +102,24 @@ ArgName = Union[str, AutoName]
 A = TypeVar("A", bound="Arg")
 
 
-@dataclass(frozen=True)
-class Arg(abc.ABC):
+# TODO: solve this bug
+
+
+@dataclass(frozen=True)  # type: ignore
+class Arg(ABC):
     """
     Base class for all kinds of arguments
     """
 
-    help: Optional[str] = None  #: Help for the argument
+    help: Optional[str]  #: Help for the argument
 
     #: Short option name, used in command line parsing, prefixed by a single hyphen
-    short_flag_name: Optional[str] = None
+    short_flag_name: Optional[str]
 
     #: Long option name used in command line argument parsing
     #:
     #: It is lowercase, prefixed with ``--`` and words are separated by hyphens
-    long_flag_name: ArgName = AutoName.DERIVED
+    long_flag_name: ArgName
 
     def all_flags(self) -> Sequence[str]:
         """
@@ -110,8 +151,31 @@ class Arg(abc.ABC):
         return res
 
     def updated(self: A, name: str, help: str, env_prefix: Optional[str]) -> A:
+        """
+        Returns a copy of this argument with some data updated from its declaration context
+
+        Args:
+            self:
+            name: Identifier name
+            help: Help string (derived from autodoc syntax)
+            env_prefix: Environment prefix
+
+        Returns:
+            Updated argument
+        """
         return dataclasses.replace(self, **self.update_dict_(name, help, env_prefix))
 
+    @abstractmethod
+    def update_processor(self, pf: ProcessorFactory) -> None:
+        """
+        Updates a config processor with the processing required by this argument
+
+        Args:
+            pf: Processor factory
+        """
+        pass
+
+    @abstractmethod
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         """
         Returns the keyword arguments for use with argparse.ArgumentParser.add_argument
@@ -119,30 +183,17 @@ class Arg(abc.ABC):
         Returns:
             Keyword arguments mapping
         """
-        return {"help": self.help}
+        pass
 
 
 @dataclass(frozen=True)
-class Cmd(Arg):
-    # Base class for command arguments
-    pass
-
-
-@dataclass(frozen=True)
-class HelpCmd(Cmd):
-    """
-    Command-line argument that displays a help message and exits
-    """
-
-
-@dataclass(frozen=True)
-class Expander(Cmd):
+class Expander(Arg):
     """
     Command-line argument that expands into a flag/value pair
     """
 
-    new_flag: str = ""  #: Inserted flag in the command line
-    new_value: str = ""  #: Inserted value in the command line
+    new_flag: str  #: Inserted flag in the command line
+    new_value: str  #: Inserted value in the command line
 
     def inserts(self) -> Tuple[str, str]:
         """
@@ -150,11 +201,19 @@ class Expander(Cmd):
         """
         return (self.new_flag, self.new_value)
 
+    def update_processor(self, pf: ProcessorFactory) -> None:
+        from .processor import CLInserter
+
+        for flag in self.all_flags():
+            pf.cl_flag_handlers[flag] = CLInserter([self.new_flag, self.new_value])
+        pf.ap_commands.add_argument(*self.all_flags(), **self.argparse_argument_kwargs())
+
     @staticmethod
     def make(
         new_flag: str,
         new_value: str,
         *,
+        help: Optional[str] = None,
         short_flag_name: Optional[str],
         long_flag_name: ArgName = AutoName.DERIVED,
     ) -> Expander:
@@ -166,10 +225,14 @@ class Expander(Cmd):
         Args:
             new_flag: Inserted flag, including the hyphen prefix
             new_value: String value to insert following the flag
+
+        Keyword Args:
+            help: Help description (autodoc/docstring is used otherwise)
             short_flag_name: Short flag name of this command flag
             long_flag_name: Long flag name of this command flag
         """
         res = Expander(
+            help=help,
             new_flag=new_flag,
             new_value=new_value,
             short_flag_name=short_flag_name,
@@ -177,6 +240,9 @@ class Expander(Cmd):
         )
         assert res.all_flags(), "Provide at least one of short_flag_name or long_flag_name"
         return res
+
+    def argparse_argument_kwargs(self) -> Mapping[str, Any]:
+        return {"help": self.help}
 
 
 class Positional(Enum):
@@ -203,36 +269,6 @@ class Positional(Enum):
 
 
 @dataclass(frozen=True)
-class Instance(Generic[T]):
-    """
-    Parameter instance
-    """
-
-    value: T  #: Value parsed from string
-    string: str  #: Parsed string
-    source: Source  #: Parameter source
-
-    @staticmethod
-    def parse(s: str, param_type: ParamType[T], source: Source) -> Result[Instance[T]]:
-        """
-        Parses a string using a parameter type and constructs a parameter instance
-
-        Args:
-            s: String to parse
-            param_type: Parameter type used as a parser
-            source: Source of the string
-
-        Returns:
-            A parameter instance or an error
-        """
-        res = param_type.parse(s)
-        if isinstance(res, Err):
-            return res
-        else:
-            return Instance(res, s, source)
-
-
-@dataclass(frozen=True)
 class Param(Arg, Generic[T]):
     """
     Describes an argument holding a value of a given type
@@ -250,21 +286,23 @@ class Param(Arg, Generic[T]):
     """
 
     #: Argument type, parser from string to value
-    param_type: ParamType[T] = ParamType.invalid()  # type: ignore
+    param_type: ParamType[T]  # type: ignore
+
+    is_config: bool  #: Whether this represent a list of config files
 
     #: Argument collector
-    collector: Collector[T] = Collector.invalid()  # type: ignore
+    collector: Collector[T]  # type: ignore
 
-    default_value: Optional[str] = None  #: Default value inserted as instance
+    default_value: Optional[str]  #: Default value inserted as instance
 
-    name: Optional[str] = None  #: Python identifier representing the argument
+    name: Optional[str]  #: Python identifier representing the argument
 
-    positional: Positional = Positional.FORBIDDEN
+    positional: Positional
 
     #: Configuration key name used in INI files
     #:
     #: It is lowercase, and words are separated by hyphens.
-    config_key_name: ArgName = AutoName.DERIVED
+    config_key_name: ArgName
 
     #: Environment variable name
     #:
@@ -275,7 +313,7 @@ class Param(Arg, Generic[T]):
     #:
     #: If a non-empty prefix is given, the name is prefixed with it
     #: (and an underscore).
-    env_var_name: ArgName = AutoName.FORBIDDEN
+    env_var_name: ArgName
 
     def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
         r = {"name": name, **super().update_dict_(name, help, env_prefix)}
@@ -316,7 +354,7 @@ class Param(Arg, Generic[T]):
         return self.default_value is None and self.collector.arg_required()
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
-        res = super().argparse_argument_kwargs()
+        res: Dict[str, Any] = {"help": self.help}
         if self.is_required():
             res = {**res, "required": True}
         return {
@@ -325,10 +363,36 @@ class Param(Arg, Generic[T]):
             **self.param_type.argparse_argument_kwargs(),
         }
 
+    def update_processor(self, pf: ProcessorFactory) -> None:
+        from .processor import CLConfigParam, CLParam, KVConfigParam, KVParam
+
+        assert self.name is not None
+        pf.params_by_name[self.name] = self
+        if self.positional != Positional.FORBIDDEN:
+            pf.cl_positionals.append(self)
+        for flag in self.all_flags():
+            if self.is_config:
+                pf.cl_flag_handlers[flag] = CLConfigParam(self)
+            else:
+                pf.cl_flag_handlers[flag] = CLParam(self)
+
+        for key in self.all_config_key_names():
+            pf.ini_handlers[key] = KVParam(self)
+        for name in self.all_env_var_names():
+            if self.is_config:
+                pf.env_handlers[name] = KVConfigParam(self)
+            else:
+                pf.env_handlers[name] = KVParam(self)
+        if self.is_required():
+            pf.ap_required.add_argument(*self.all_flags(), **self.argparse_argument_kwargs())
+        else:
+            pf.ap_optional.add_argument(*self.all_flags(), **self.argparse_argument_kwargs())
+
     @staticmethod
     def store(
         param_type: ParamType[T],
         *,
+        help: Optional[str] = None,
         default_value: Optional[str] = None,
         positional: Positional = Positional.FORBIDDEN,
         short_flag_name: Optional[str] = None,
@@ -345,6 +409,9 @@ class Param(Arg, Generic[T]):
 
         Args:
             param_type: Parser that transforms a string into a value
+
+        Keyword Args:
+            help: Help description (autodoc/docstring is used otherwise)
             default_value: Default value
             positional: Whether this parameter is present in positional arguments
             short_flag_name: Short option name (optional)
@@ -357,6 +424,8 @@ class Param(Arg, Generic[T]):
         """
 
         return Param(
+            name=None,
+            help=help,
             param_type=param_type,
             collector=Collector.keep_last(),
             default_value=default_value,
@@ -365,6 +434,41 @@ class Param(Arg, Generic[T]):
             long_flag_name=long_flag_name,
             config_key_name=config_key_name,
             env_var_name=env_var_name,
+            is_config=False,
+        )
+
+    @staticmethod
+    def config(
+        *,
+        help: Optional[str] = None,
+        short_flag_name: Optional[str] = None,
+        long_flag_name: ArgName = AutoName.DERIVED,
+        env_var_name: ArgName = AutoName.FORBIDDEN,
+    ) -> Param[Sequence[Path]]:
+        """
+        Creates a parameter that parses configuration files and stores their names
+
+        Keyword Args:
+            help: Help description (autodoc/docstring is used otherwise)
+            short_flag_name: Short option name (optional)
+            long_flag_name: Long option name (auto. derived from fieldname by default)
+            env_var_name: Environment variable name (forbidden by default)
+
+        Returns:
+            A configuration files parameter
+        """
+        return Param(
+            name=None,
+            help=help,
+            param_type=path.separated_by(",", strip=True, remove_empty=True),
+            collector=Collector.append(),  # type: ignore
+            positional=Positional.FORBIDDEN,
+            short_flag_name=short_flag_name,
+            long_flag_name=long_flag_name,
+            config_key_name=AutoName.FORBIDDEN,
+            env_var_name=env_var_name,
+            is_config=True,
+            default_value=None,
         )
 
     @staticmethod
@@ -382,6 +486,9 @@ class Param(Arg, Generic[T]):
 
         Args:
             param_type: Parser that transforms a string into a value
+
+        Keyword Args:
+            help: Help description (autodoc/docstring is used otherwise)
             positional: Whether this argument is present in positional arguments
             short_flag_name: Short option name (optional)
             long_flag_name: Long option name (auto. derived from fieldname by default)
@@ -392,6 +499,7 @@ class Param(Arg, Generic[T]):
             The constructed Arg instance
         """
         return Param(
+            name=None,
             param_type=param_type,
             collector=Collector.append(),  # type: ignore
             default_value=None,
@@ -400,4 +508,5 @@ class Param(Arg, Generic[T]):
             long_flag_name=long_flag_name,
             config_key_name=config_key_name,
             env_var_name=env_var_name,
+            is_config=False,
         )

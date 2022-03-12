@@ -4,21 +4,7 @@ import shutil
 import textwrap
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    List,
-    Optional,
-    Sequence,
-    Tuple,
-    TypeVar,
-    Union,
-    overload,
-)
-
-if TYPE_CHECKING:
-    from .arg import Param
+from typing import Any, Callable, List, Optional, Sequence, Tuple, TypeVar, Union, overload
 
 
 class Err(ABC):
@@ -48,7 +34,7 @@ class Err(ABC):
 
     def pretty_print(self) -> None:
         """
-        Pretty prints
+        Pretty prints an error on the console
         """
         try:
             from rich.console import Console
@@ -62,36 +48,64 @@ class Err(ABC):
             t = self.markdown()
             print(textwrap.fill("\n".join(t), width=sz.columns))
 
+    @staticmethod
+    def collect(*errs: Err) -> Err:
+        """
+        Collect a non-empty sequence of errors into a single error
 
-class SingleErr(Err):
-    def errors(self) -> Sequence[Err]:
-        return [self]
+        Raises:
+            ValueError: If no error is provided
+
+        Returns:
+            A consolidated error
+        """
+        assert errs, "At least one parameter must be provided"
+        res = Err.collect_optional(*errs)
+        if res is None:
+            raise ValueError("Result cannot be None if at least one error is provided")
+        return res
+
+    @staticmethod
+    def collect_optional(*errs: Err) -> Optional[Err]:
+        """
+        Collect a possibly empty sequence of errors into an optional single error
+
+        Returns:
+            An error or None
+        """
+
+        lst: List[Err] = []
+        for e in errs:
+            lst.extend(e.errors())
+        if not lst:
+            return None
+        elif len(lst) == 1:
+            return lst[0]
+        else:
+            return ManyErr(lst)
+
+    @staticmethod
+    def make(msg: str) -> Err:
+        """
+        Creates a single error
+
+        Args:
+            msg: Error message
+
+        Returns:
+            An error
+        """
+        return Err1(msg)
 
 
-@dataclass
-class GenErr(SingleErr):
-    msg: str
-
-    def markdown(self) -> Sequence[str]:
-        return [self.msg]
-
-
-@dataclass
-class ArgErr(SingleErr):
-    arg: Param[Any]
-    err: Err
-
-    def markdown(self) -> Sequence[str]:
-        return [f"Error while processing argument {self.arg.name}:", "", *self.err.markdown()]
-
-
-@dataclass
+@dataclass(frozen=True)
 class ManyErr(Err):
 
     errs: Sequence[Err]
 
     def __post_init__(self) -> None:
         assert len(self.errs) > 0, "A ManyErr should contain at least one error"
+        assert all([not isinstance(e, ManyErr) for e in self.errs])
 
     def markdown(self) -> Sequence[str]:
         lines: List[str] = []
@@ -114,16 +128,18 @@ class ManyErr(Err):
 
 
 @dataclass(frozen=True)
-class ParseErr(SingleErr):
-    msg: str
-    string: str  #: String value that could not be parsed
-    index: Optional[int]  #: Position of the parse error, if known
+class Err1(Err):
+    """
+    Describes a single error
+    """
+
+    msg: str  #: Error message
+
+    def errors(self) -> Sequence[Err]:
+        return [self]
 
     def markdown(self) -> Sequence[str]:
-        parse_msg = f"Parse error in `{self.string}`"
-        if self.index is not None:
-            parse_msg += f" at index {self.index}"
-        return [self.msg, "", parse_msg]
+        return [self.msg]
 
 
 #: Ok value in our custom result type
