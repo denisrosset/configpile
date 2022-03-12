@@ -311,9 +311,17 @@ class _SeparatedBy(ParamType[Sequence[W]]):
         return collect_seq(res)
 
 
+#: Parses a path
 path: ParamType[pathlib.Path] = ParamType.from_function_that_raises(lambda s: pathlib.Path(s))
+
+#: Parses an integer
 int_: ParamType[int] = ParamType.from_function_that_raises(lambda s: int(s))
+
+#: Parses a word, stripping whitespace on the left and right
 word: ParamType[str] = ParamType.from_function_that_raises(lambda s: s.strip())
+
+#: Float parameter type
+float_: ParamType[float] = ParamType.from_function_that_raises(lambda s: float(s))
 bool_: ParamType[bool] = ParamType.choices(
     {"true": True, "false": False},
     force_case=ForceCase.LOWER,
