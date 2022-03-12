@@ -1,3 +1,13 @@
+## v6.0.0 (2022-03-12)
+
+### Refactor
+
+- major refactoring of the processing back-end
+
+### BREAKING CHANGE
+
+- There are breaking changes but they are too numerous to describe.
+
 ## v5.0.1 (2022-03-09)
 
 ### Fix
