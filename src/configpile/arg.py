@@ -383,10 +383,12 @@ class Param(Arg, Generic[T]):
                 pf.env_handlers[name] = KVConfigParam(self)
             else:
                 pf.env_handlers[name] = KVParam(self)
+
+        flags = self.all_flags()
         if self.is_required():
-            pf.ap_required.add_argument(*self.all_flags(), **self.argparse_argument_kwargs())
+            pf.ap_required.add_argument(*self.all_flags(), dest=self.name, **self.argparse_argument_kwargs())
         else:
-            pf.ap_optional.add_argument(*self.all_flags(), **self.argparse_argument_kwargs())
+            pf.ap_optional.add_argument(*self.all_flags(), dest=self.name, **self.argparse_argument_kwargs())
 
     @staticmethod
     def store(
