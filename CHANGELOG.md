@@ -1,3 +1,14 @@
+## v7.0.0 (2022-03-15)
+
+### Feat
+
+- **errors**: renamed collect_optional->collect, added collect_optional that collects a seq of Optional[Err]
+- **config**: add post-construction config validation with error reporting
+
+### BREAKING CHANGE
+
+- Renamed collect_optional->collect, collect->collect_non_empty
+
 ## v6.1.0 (2022-03-15)
 
 ### Feat
