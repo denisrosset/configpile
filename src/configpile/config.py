@@ -42,10 +42,6 @@ class Config(ABC):
     ini_strict_sections_: ClassVar[Sequence[str]] = []
 
     @classmethod
-    def version_(cls) -> Optional[str]:
-        return None
-
-    @classmethod
     def ini_sections_(cls) -> Sequence[IniSection]:
         """
         Returns a sequence of INI file sections to parse
@@ -63,7 +59,36 @@ class Config(ABC):
     env_prefix_: ClassVar[Optional[str]] = None  #: Prefix for environment variables
 
     @classmethod
+    def version_(cls) -> Optional[str]:
+        """
+        Returns the version number of this script
+
+        Designed to be overridden by a subclass
+
+        Returns:
+            Version
+        """
+        return None
+
+    def validate_(self) -> Optional[Err]:
+        """
+        Method that performs post-construction validation
+
+        It is similar to __post_init__ but returns, when there is an error, a configpile error
+        object. By default, it checks nothing.
+
+        Designed to be overridden by a subclass
+
+        Returns:
+            Error detected, if any, or None
+        """
+        return None
+
+    @classmethod
     def processor_(cls: Type[C]) -> Processor[C]:
+        """
+        Returns a processor for this configuration
+        """
         return Processor.make(cls)
 
     @classmethod
@@ -88,7 +113,15 @@ class Config(ABC):
             A parsed configuration or an error
         """
         processor = cls.processor_()
-        return processor.process(cwd, args, env)
+        res: Result[Union[C, SpecialAction]] = processor.process(cwd, args, env)
+        if isinstance(res, Err) or isinstance(res, SpecialAction):
+            return res
+        else:
+            err = res.validate_()
+            if err is not None:
+                return err
+            else:
+                return res
 
     @classmethod
     def from_command_line_(
