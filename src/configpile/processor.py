@@ -385,7 +385,7 @@ class IniProcessor:
         except IOError as e:
             errors.append(Err.make(f"IO Error in {ini_path}"))
         if errors:
-            return Err.collect_optional(*errors)
+            return Err.collect(*errors)
         else:
             return None
 
@@ -570,7 +570,7 @@ class Processor(Generic[C]):
             err = self.ini_processor.process(cwd / p, state)
             if err is not None:
                 errors.append(err)  # TODO: add context
-        return Err.collect_optional(*errors)
+        return Err.collect(*errors)
 
     def process(
         self,
@@ -615,7 +615,7 @@ class Processor(Generic[C]):
             return state.special_action
 
         if errors:
-            return Err.collect(*errors)
+            return Err.collect_non_empty(*errors)
         collected: Dict[str, Any] = {}
         for name, param in self.params_by_name.items():
             instances = state.instances[name]
@@ -625,5 +625,5 @@ class Processor(Generic[C]):
             else:
                 collected[name] = res
         if errors:
-            return Err.collect(*errors)
+            return Err.collect_non_empty(*errors)
         return self.config_type(**collected)
