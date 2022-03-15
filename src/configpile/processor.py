@@ -552,11 +552,12 @@ class Processor(Generic[C]):
             params_by_name=pf.params_by_name,
         )
 
-    def process_config(self, state: State) -> Optional[Err]:
+    def process_config(self, cwd: Path, state: State) -> Optional[Err]:
         """
         Processes configuration files if such processing was requested by a handler
 
         Args:
+            cwd: Working directory, base path for relative paths of config files
             state: Mutable state to update
 
         Returns:
@@ -566,7 +567,7 @@ class Processor(Generic[C]):
         state.config_files_to_process = []
         errors: List[Err] = []
         for p in paths:
-            err = self.ini_processor.process(p, state)
+            err = self.ini_processor.process(cwd / p, state)
             if err is not None:
                 errors.append(err)  # TODO: add context
         return Err.collect_optional(*errors)
@@ -597,7 +598,7 @@ class Processor(Generic[C]):
                 err = handler.handle(value, state)
                 if err is not None:
                     errors.append(err)  # TODO: add context
-            err = self.process_config(state)
+            err = self.process_config(cwd, state)
             if err is not None:
                 errors.append(err)
         # process command line arguments
@@ -606,7 +607,7 @@ class Processor(Generic[C]):
             rest_args, err = self.cl_handler.handle(rest_args, state)
             if err is not None:
                 errors.append(err)
-            err = self.process_config(state)
+            err = self.process_config(cwd, state)
             if err is not None:
                 errors.append(err)
 
