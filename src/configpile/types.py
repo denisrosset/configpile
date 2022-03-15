@@ -33,6 +33,10 @@ I = TypeVar("I")  #: Item type, invariant
 
 T = TypeVar("T", covariant=True)  #: Item type
 
+U = TypeVar("U", covariant=True)  #: Another item type
+
+V = TypeVar("V", covariant=True)  #: Another item type
+
 W = TypeVar("W", covariant=True)  #: Wrapped item type
 
 
@@ -47,7 +51,7 @@ class ForceCase(Enum):
 
 
 class ParamType(ABC, Generic[T]):
-    """Describes a parameter type"""
+    """Describes a parameter type, which parses a string into a parameter value"""
 
     @abstractmethod
     def parse(self, arg: str) -> Result[T]:
@@ -66,6 +70,28 @@ class ParamType(ABC, Generic[T]):
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         return {}
+
+    def map(self, f: Callable[[T], W]) -> ParamType[W]:
+        """
+        Maps successful results of the parser through the given function
+
+        Args:
+            f: Function to map the result through
+
+        Returns:
+            Updated parameter type
+        """
+        return _Mapped(self, f)
+
+    def as_sequence_of_one(self) -> ParamType[Sequence[T]]:
+        """
+        Returns a parameter type, that returns a sequence of a single value on success
+
+        Returns:
+            Updated parameter type
+        """
+        f: Callable[[I], Sequence[I]] = lambda t: [t]
+        return self.map(f)
 
     def empty_means_none(self, strip: bool = True) -> ParamType[Optional[T]]:
         """
@@ -288,6 +314,23 @@ class _EmptyMeansNone(ParamType[Optional[W]]):
             return None
         else:
             return self.wrapped.parse(value)
+
+
+@dataclass(frozen=True)
+class _Mapped(ParamType[V], Generic[U, V]):
+    """
+    Wraps an existing parser and applies a function to its successful result
+    """
+
+    wrapped: ParamType[U]  #: Wrapped parser
+    f: Optional[Callable[[U], V]]  #: Mapping function, made optional as a hack
+
+    def parse(self, arg: str) -> Result[V]:
+        assert self.f is not None
+        res: Result[U] = self.wrapped.parse(arg)
+        if isinstance(res, Err):
+            return res
+        return self.f(res)
 
 
 @dataclass(frozen=True)
