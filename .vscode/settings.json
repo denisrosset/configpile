@@ -8,8 +8,8 @@
     "restructuredtext.updateDelay": 300,
     "cSpell.words": [
         "configpile",
+        "parsy",
         "positionals",
-        "RASSINE"
     ],
     "python.testing.pytestArgs": [
         "tests"
