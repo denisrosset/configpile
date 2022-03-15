@@ -1,3 +1,9 @@
+## v7.0.2 (2022-03-16)
+
+### Fix
+
+- **config**: let argparse handle positional arguments for help display
+
 ## v7.0.1 (2022-03-15)
 
 ### Fix
