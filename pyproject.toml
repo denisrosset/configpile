@@ -34,6 +34,14 @@ pytest-cov = "^3.0.0"
 pytest-mypy-plugins = "^1.9.3"
 
 [tool.mypy]
+python_version = "3.8"
+
+files = [
+  "src/configpile",
+  "tests",
+]
+mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
+
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_incomplete_defs = true
@@ -41,14 +49,7 @@ disallow_subclassing_any = true
 disallow_untyped_calls = true
 disallow_untyped_decorators = true
 disallow_untyped_defs = true
-files = [
-  "src/configpile",
-  "tests",
-]
-mypy_path = "$MYPY_CONFIG_FILE_DIR/src"
 no_implicit_optional = true
-no_implicit_reexport = true
-python_version = "3.8"
 show_column_numbers = true
 show_error_codes = true
 show_error_context = true
