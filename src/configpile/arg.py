@@ -105,7 +105,7 @@ A = TypeVar("A", bound="Arg")
 # TODO: solve this bug
 
 
-@dataclass(frozen=True)  # type: ignore
+@dataclass(frozen=True)  # type: ignore[misc]
 class Arg(ABC):
     """
     Base class for all kinds of arguments
