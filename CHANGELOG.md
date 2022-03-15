@@ -1,3 +1,16 @@
+## v6.1.0 (2022-03-15)
+
+### Feat
+
+- **types**: add ParamType.map/as_sequence_of_one
+- add reexport of common identifiers
+- **types**: added float parameter type
+
+### Fix
+
+- **processor**: make config file paths relative
+- **arg**: correct bug in ParamType.append
+
 ## v6.0.0 (2022-03-12)
 
 ### Refactor
