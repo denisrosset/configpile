@@ -2,14 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import ClassVar, Optional, Sequence
+from typing import Sequence
 
-import pytest
 from typing_extensions import Annotated
 
-from configpile import types
-from configpile.arg import Param
-from configpile.config import Config
+from configpile import Config, Param, types
 from configpile.processor import SpecialAction
 
 

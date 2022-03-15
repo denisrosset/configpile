@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-import pytest
-
-from configpile import types
-from configpile.errors import Err
+from configpile import Err, types
 
 
 def test_integer() -> None:
