@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from ast import With
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -16,13 +17,13 @@ class WithPositional(Config):
 
     a: Annotated[int, Param.store(types.int_)]  #: Super doc message
 
-    strs: Annotated[
+    strings: Annotated[
         Sequence[str],
         Param.append(types.word.as_sequence_of_one(), positional=Positional.ONE_OR_MORE),
     ]
 
 
 def test_positional() -> None:
-    res = WithPositional.parse_command_line_(args=["--a", "2", "beautiful", "life"], env={})
+    res = WithPositional.from_command_line_(args=["--a", "2", "beautiful", "life"], env={})
     assert res.a == 2
-    assert res.strs == ["beautiful", "life"]
+    assert res.strings == ["beautiful", "life"]
