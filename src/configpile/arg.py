@@ -475,6 +475,7 @@ class Param(Arg, Generic[T]):
     def append(
         param_type: ParamType[Sequence[W]],
         *,
+        help: Optional[str] = None,
         positional: Positional = Positional.FORBIDDEN,
         short_flag_name: Optional[str] = None,
         long_flag_name: ArgName = AutoName.DERIVED,
@@ -500,6 +501,7 @@ class Param(Arg, Generic[T]):
         """
         return Param(
             name=None,
+            help=help,
             param_type=param_type,
             collector=Collector.append(),  # type: ignore
             default_value=None,
