@@ -49,7 +49,18 @@ class Err(ABC):
             print(textwrap.fill("\n".join(t), width=sz.columns))
 
     @staticmethod
-    def collect(*errs: Err) -> Err:
+    def collect_optional(*optional_errs: Optional[Err]) -> Optional[Err]:
+        """
+        Collects a possibly empty sequence of optional errors into a single error
+
+        Returns:
+            A consolidated error or None
+        """
+        errs: Sequence[Err] = [e for e in optional_errs if e is not None]
+        return Err.collect(*errs)
+
+    @staticmethod
+    def collect_non_empty(*errs: Err) -> Err:
         """
         Collect a non-empty sequence of errors into a single error
 
@@ -60,13 +71,13 @@ class Err(ABC):
             A consolidated error
         """
         assert errs, "At least one parameter must be provided"
-        res = Err.collect_optional(*errs)
+        res = Err.collect(*errs)
         if res is None:
             raise ValueError("Result cannot be None if at least one error is provided")
         return res
 
     @staticmethod
-    def collect_optional(*errs: Err) -> Optional[Err]:
+    def collect(*errs: Err) -> Optional[Err]:
         """
         Collect a possibly empty sequence of errors into an optional single error
 
