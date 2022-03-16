@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     Dict,
     Generic,
     List,
@@ -22,7 +23,7 @@ from typing import (
 from typing_extensions import TypeGuard
 
 from .collector import Collector
-from .errors import Err, Result
+from .errors import Err
 from .types import ParamType, path
 
 T = TypeVar("T", covariant=True)  #: Item type
@@ -30,6 +31,7 @@ T = TypeVar("T", covariant=True)  #: Item type
 W = TypeVar("W", covariant=True)  #: Wrapped item type
 
 if TYPE_CHECKING:
+    from .config import Config
     from .processor import ProcessorFactory
 
 
@@ -100,7 +102,7 @@ class AutoName(Enum):
 ArgName = Union[str, AutoName]
 
 A = TypeVar("A", bound="Arg")
-
+C = TypeVar("C", bound="Config")
 
 # TODO: solve this bug
 
@@ -166,7 +168,7 @@ class Arg(ABC):
         return dataclasses.replace(self, **self.update_dict_(name, help, env_prefix))
 
     @abstractmethod
-    def update_processor(self, pf: ProcessorFactory) -> None:
+    def update_processor(self, pf: ProcessorFactory[C]) -> None:
         """
         Updates a config processor with the processing required by this argument
 
@@ -201,7 +203,7 @@ class Expander(Arg):
         """
         return (self.new_flag, self.new_value)
 
-    def update_processor(self, pf: ProcessorFactory) -> None:
+    def update_processor(self, pf: ProcessorFactory[C]) -> None:
         from .processor import CLInserter
 
         for flag in self.all_flags():
@@ -314,6 +316,8 @@ class Param(Arg, Generic[T]):
     #: (and an underscore).
     env_var_name: ArgName
 
+    validator: Optional[Callable[[T], Optional[Err]]]
+
     def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
         r = {"name": name, **super().update_dict_(name, help, env_prefix)}
         if self.config_key_name == AutoName.DERIVED:
@@ -362,7 +366,7 @@ class Param(Arg, Generic[T]):
             **self.param_type.argparse_argument_kwargs(),
         }
 
-    def update_processor(self, pf: ProcessorFactory) -> None:
+    def update_processor(self, pf: ProcessorFactory[C]) -> None:
         from .processor import CLConfigParam, CLParam, KVConfigParam, KVParam
 
         assert self.name is not None
@@ -404,6 +408,7 @@ class Param(Arg, Generic[T]):
         long_flag_name: ArgName = AutoName.DERIVED,
         config_key_name: ArgName = AutoName.DERIVED,
         env_var_name: ArgName = AutoName.FORBIDDEN,
+        validator: Optional[Callable[[T], Optional[Err]]] = None,
     ) -> Param[T]:
         """
         Creates a parameter that stores the last provided value
@@ -440,6 +445,7 @@ class Param(Arg, Generic[T]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
+            validator=validator,
         )
 
     @staticmethod
@@ -449,6 +455,7 @@ class Param(Arg, Generic[T]):
         short_flag_name: Optional[str] = None,
         long_flag_name: ArgName = AutoName.DERIVED,
         env_var_name: ArgName = AutoName.FORBIDDEN,
+        validator: Optional[Callable[[Sequence[Path]], Optional[Err]]] = None,
     ) -> Param[Sequence[Path]]:
         """
         Creates a parameter that parses configuration files and stores their names
@@ -474,6 +481,7 @@ class Param(Arg, Generic[T]):
             env_var_name=env_var_name,
             is_config=True,
             default_value=None,
+            validator=validator,
         )
 
     @staticmethod
@@ -486,6 +494,7 @@ class Param(Arg, Generic[T]):
         long_flag_name: ArgName = AutoName.DERIVED,
         config_key_name: ArgName = AutoName.DERIVED,
         env_var_name: ArgName = AutoName.FORBIDDEN,
+        validator: Optional[Callable[[Sequence[W]], Optional[Err]]] = None,
     ) -> Param[Sequence[W]]:
         """
         Creates an argument that stores the last provided value
@@ -516,4 +525,5 @@ class Param(Arg, Generic[T]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
+            validator=validator,
         )

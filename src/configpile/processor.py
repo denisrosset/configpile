@@ -2,12 +2,8 @@ from __future__ import annotations
 
 import argparse
 import configparser
-import copy
-import inspect
-import os
 import sys
 from abc import ABC, abstractmethod
-from ast import arg
 from configparser import ConfigParser
 from dataclasses import dataclass
 from enum import Enum
@@ -33,8 +29,7 @@ from typing import (
 from typing_extensions import Annotated, get_args, get_origin, get_type_hints
 
 from .arg import Arg, Expander, Param, Positional
-from .errors import Err, Result, in_context
-from .types import ParamType
+from .errors import Err, Result, in_context, is_err, is_value
 from .util import ClassDoc, filter_types_single
 
 if TYPE_CHECKING:
@@ -218,7 +213,6 @@ class CLStdHandler(CLHandler):
         if handler is not None:
             next_args, err = handler.handle(args[1:], state)
             err = in_context(err, flag=flag)
-            # TODO: add context
             return next_args, err
         else:
             return self.fallback.handle(args, state)
@@ -580,7 +574,7 @@ class Processor(Generic[C]):
         for p in paths:
             err = self.ini_processor.process(cwd / p, state)
             if err is not None:
-                errors.append(err.in_context(ini_file=p))  # TODO: add context
+                errors.append(err.in_context(ini_file=p))
         return Err.collect(*errors)
 
     def process(
@@ -608,7 +602,7 @@ class Processor(Generic[C]):
             if handler is not None:
                 err = handler.handle(value, state)
                 if err is not None:
-                    errors.append(err.in_context(environment_variable=key))  # TODO: add context
+                    errors.append(err.in_context(environment_variable=key))
             err = self.process_config(cwd, state)
             if err is not None:
                 errors.append(err.in_context(environment_variable=key))
@@ -631,10 +625,15 @@ class Processor(Generic[C]):
         for name, param in self.params_by_name.items():
             instances = state.instances[name]
             res = param.collector.collect(instances)
-            if isinstance(res, Err):
+            if is_value(res) and param.validator is not None:
+                res1 = param.validator(res)
+                if res1 is not None:
+                    res = res1
+            if is_err(res):
                 errors.append(res.in_context(param=name))
             else:
                 collected[name] = res
+
         if errors:
             return Err.collect_non_empty(*errors)
         c: C = self.config_type(**collected)
