@@ -1,3 +1,9 @@
+## v7.2.0 (2022-03-16)
+
+### Feat
+
+- reexport configpile.Result
+
 ## v7.1.3 (2022-03-16)
 
 ### Fix
