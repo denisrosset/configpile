@@ -624,7 +624,7 @@ class Processor(Generic[C]):
             instances = state.instances[name]
             res = param.collector.collect(instances)
             if isinstance(res, Err):
-                errors.append(res)
+                errors.append(res.in_context(param=name))
             else:
                 collected[name] = res
         if errors:
