@@ -32,6 +32,16 @@ class Err(ABC):
         """
         pass
 
+    @abstractmethod
+    def in_context(self, **contexts: Any) -> Err:
+        """
+        Adds to this error information about the context in which it occurred
+
+        Returns:
+            Updated error
+        """
+        pass
+
     def pretty_print(self) -> None:
         """
         Pretty prints an error on the console
@@ -96,7 +106,7 @@ class Err(ABC):
             return ManyErr(lst)
 
     @staticmethod
-    def make(msg: str) -> Err:
+    def make(msg: str, **contexts: Any) -> Err:
         """
         Creates a single error
 
@@ -106,7 +116,7 @@ class Err(ABC):
         Returns:
             An error
         """
-        return Err1(msg)
+        return Err1(msg, [*contexts.items()])
 
 
 @dataclass(frozen=True)
@@ -137,6 +147,9 @@ class ManyErr(Err):
     def errors(self) -> Sequence[Err]:
         return self.errs
 
+    def in_context(self, **contexts: Any) -> Err:
+        return ManyErr([e.in_context(**contexts) for e in self.errs])
+
 
 @dataclass(frozen=True)
 class Err1(Err):
@@ -145,12 +158,17 @@ class Err1(Err):
     """
 
     msg: str  #: Error message
+    contexts: Sequence[Tuple[str, Any]]  #: Contexts in which the error appears, from old to new
 
     def errors(self) -> Sequence[Err]:
         return [self]
 
     def markdown(self) -> Sequence[str]:
-        return [self.msg]
+        c = [f"In {name}: {value}" for (name, value) in self.contexts]
+        return [*c, self.msg]
+
+    def in_context(self, **contexts: Any) -> Err:
+        return Err1(self.msg, [*self.contexts, *contexts.items()])
 
 
 #: Ok value in our custom result type
@@ -162,6 +180,32 @@ W = TypeVar("W")
 
 
 Result = Union[T, Err]
+
+
+@overload
+def in_context(result: Optional[Err], **contexts: Any) -> Optional[Err]:
+    pass
+
+
+@overload
+def in_context(result: Result[T], **contexts: Any) -> Result[T]:
+    pass
+
+
+def in_context(result: Union[T, Err, None], **contexts: Any) -> Union[T, Err, None]:
+    """
+    Adds context to an error contained in a result type when possible
+
+    Args:
+        result: Result to enrich, if it contains an error
+
+    Returns:
+        Updated result
+    """
+    if isinstance(result, Err):
+        return result.in_context(**contexts)
+    else:
+        return result
 
 
 def collect_seq(seq: Sequence[Result[T]]) -> Result[Sequence[T]]:

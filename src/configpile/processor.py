@@ -31,7 +31,7 @@ from typing import (
 from typing_extensions import Annotated, get_args, get_origin, get_type_hints
 
 from .arg import Arg, Expander, Param, Positional
-from .errors import Err, Err1, Result
+from .errors import Err, Result, in_context
 from .types import ParamType
 from .util import ClassDoc, filter_types_single
 
@@ -215,6 +215,7 @@ class CLStdHandler(CLHandler):
         handler = self.flags.get(flag)
         if handler is not None:
             next_args, err = handler.handle(args[1:], state)
+            err = in_context(err, flag=flag)
             # TODO: add context
             return next_args, err
         else:
@@ -362,9 +363,9 @@ class IniProcessor:
         """
         errors: List[Err] = []
         if not ini_path.exists():
-            return Err1(f"Config file {ini_path} does not exist")
+            return Err.make(f"Config file {ini_path} does not exist")
         if not ini_path.is_file():
-            return Err1(f"Path {ini_path} is not a file")
+            return Err.make(f"Path {ini_path} is not a file")
         parser = ConfigParser()
         try:
             with open(ini_path, "r") as file:
@@ -376,14 +377,16 @@ class IniProcessor:
                             if key in self.kv_handlers:
                                 res = self.kv_handlers[key].handle(value, state)
                                 if isinstance(res, Err):
-                                    errors.append(res)
+                                    err = res
                             else:
                                 if self.section_strict[section_name]:
-                                    errors.append(Err.make(f"Unknown key {key}"))
+                                    err = Err.make(f"Unknown key {key}")
+                            if err is not None:
+                                errors.append(err.in_context(ini_section=section_name))
         except configparser.Error as e:
-            errors.append(Err.make(f"Parse error in {ini_path}"))
+            errors.append(Err.make(f"Parse error"))
         except IOError as e:
-            errors.append(Err.make(f"IO Error in {ini_path}"))
+            errors.append(Err.make(f"IO Error"))
         if errors:
             return Err.collect(*errors)
         else:
@@ -569,7 +572,7 @@ class Processor(Generic[C]):
         for p in paths:
             err = self.ini_processor.process(cwd / p, state)
             if err is not None:
-                errors.append(err)  # TODO: add context
+                errors.append(err.in_context(ini_file=p))  # TODO: add context
         return Err.collect(*errors)
 
     def process(
@@ -597,10 +600,10 @@ class Processor(Generic[C]):
             if handler is not None:
                 err = handler.handle(value, state)
                 if err is not None:
-                    errors.append(err)  # TODO: add context
+                    errors.append(err.in_context(environment_variable=key))  # TODO: add context
             err = self.process_config(cwd, state)
             if err is not None:
-                errors.append(err)
+                errors.append(err.in_context(environment_variable=key))
         # process command line arguments
         rest_args: Sequence[str] = args
         while rest_args:
