@@ -1,3 +1,9 @@
+## v7.1.1 (2022-03-16)
+
+### Fix
+
+- **processor**: add context in collector errors too
+
 ## v7.1.0 (2022-03-16)
 
 ### Feat
