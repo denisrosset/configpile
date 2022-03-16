@@ -1,3 +1,9 @@
+## v7.5.0 (2022-03-16)
+
+### Feat
+
+- add parameter validation
+
 ## v7.4.0 (2022-03-16)
 
 ### Feat
