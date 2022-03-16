@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import os
 import sys
 import textwrap
@@ -8,12 +9,28 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from multiprocessing.sharedctypes import Value
 from pathlib import Path
-from typing import ClassVar, Mapping, Optional, Sequence, Type, TypeVar, Union
+from typing import (
+    Any,
+    Callable,
+    ClassVar,
+    Generic,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Type,
+    TypeVar,
+    Union,
+    get_args,
+)
+
+from typing_extensions import Annotated, get_origin, get_type_hints
 
 from .errors import Err, Result
 from .processor import Processor, SpecialAction
 
 C = TypeVar("C", bound="Config")
+from functools import partial, update_wrapper
 
 
 @dataclass(frozen=True)
@@ -24,6 +41,13 @@ class IniSection:
 
     name: str  #: Section name
     strict: bool  #: Whether all the keys must correspond to parsed arguments
+
+
+class _ValidatorToken:
+    pass
+
+
+Validator = Annotated[Optional[Err], _ValidatorToken]
 
 
 @dataclass(frozen=True)
@@ -59,6 +83,26 @@ class Config(ABC):
     env_prefix_: ClassVar[Optional[str]] = None  #: Prefix for environment variables
 
     @classmethod
+    def validators_(cls: Type[C]) -> Sequence[Callable[[C], Optional[Err]]]:
+        """
+        Returns all validators present in the given subclass of this class
+
+        Validators are methods that take no arguments (except self) and return an optional error.
+        They are annotated with the _ValidatorToken type, which has the alias Validator.
+
+        Returns:
+            A sequence of all validators
+        """
+        res: List[Callable[[C], Optional[Err]]] = []
+        for name, meth in inspect.getmembers(cls, inspect.isroutine):
+            m = getattr(cls, name)
+            th = get_type_hints(m, include_extras=True)
+            rt = th.get("return")
+            if rt is not None and get_origin(rt) is Annotated and _ValidatorToken in get_args(rt):
+                res.append(getattr(cls, name))
+        return res
+
+    @classmethod
     def version_(cls) -> Optional[str]:
         """
         Returns the version number of this script
@@ -67,20 +111,6 @@ class Config(ABC):
 
         Returns:
             Version
-        """
-        return None
-
-    def validate_(self) -> Optional[Err]:
-        """
-        Method that performs post-construction validation
-
-        It is similar to __post_init__ but returns, when there is an error, a configpile error
-        object. By default, it checks nothing.
-
-        Designed to be overridden by a subclass
-
-        Returns:
-            Error detected, if any, or None
         """
         return None
 
@@ -113,15 +143,7 @@ class Config(ABC):
             A parsed configuration or an error
         """
         processor = cls.processor_()
-        res: Result[Union[C, SpecialAction]] = processor.process(cwd, args, env)
-        if isinstance(res, Err) or isinstance(res, SpecialAction):
-            return res
-        else:
-            err = res.validate_()
-            if err is not None:
-                return err
-            else:
-                return res
+        return processor.process(cwd, args, env)
 
     @classmethod
     def from_command_line_(

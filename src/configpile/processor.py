@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import configparser
 import copy
+import inspect
 import os
 import sys
 from abc import ABC, abstractmethod
@@ -14,6 +15,7 @@ from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     ClassVar,
     Dict,
     Generic,
@@ -394,7 +396,7 @@ class IniProcessor:
 
 
 @dataclass
-class ProcessorFactory:
+class ProcessorFactory(Generic[C]):
     """
     Describes a processor in construction
 
@@ -423,16 +425,18 @@ class ProcessorFactory:
     ini_section_strict: Dict[str, bool]
 
     #: List of handlers for key/value pairs present in INI files
-    ini_handlers: Dict[str, KVHandler]  # = {}
+    ini_handlers: Dict[str, KVHandler]
 
     #: List of command line flag handlers
-    cl_flag_handlers: Dict[str, CLHandler]  # = {}\
+    cl_flag_handlers: Dict[str, CLHandler]
 
     #: List of positional arguments
-    cl_positionals: List[Param[Any]]  # = []
+    cl_positionals: List[Param[Any]]
+
+    validators: List[Callable[[C], Optional[Err]]]
 
     @staticmethod
-    def make(config_type: Type[C]) -> ProcessorFactory:
+    def make(config_type: Type[C]) -> ProcessorFactory[C]:
         """
         Constructs an empty processor factory
 
@@ -470,6 +474,7 @@ class ProcessorFactory:
             ini_handlers={},
             cl_flag_handlers={},
             cl_positionals=[],
+            validators=[*config_type.validators_()],
         )
 
 
@@ -496,6 +501,8 @@ class Processor(Generic[C]):
 
     #: Dictionnary of parameters by field name
     params_by_name: Mapping[str, Param[Any]]
+
+    validators: Sequence[Callable[[C], Optional[Err]]]
 
     @staticmethod
     def process_fields(config_type: Type[C]) -> Sequence[Arg]:
@@ -553,6 +560,7 @@ class Processor(Generic[C]):
             ini_processor=IniProcessor(pf.ini_section_strict, pf.ini_handlers),
             cl_handler=CLStdHandler(pf.cl_flag_handlers, CLPos(pf.cl_positionals)),
             params_by_name=pf.params_by_name,
+            validators=pf.validators,
         )
 
     def process_config(self, cwd: Path, state: State) -> Optional[Err]:
@@ -629,4 +637,9 @@ class Processor(Generic[C]):
                 collected[name] = res
         if errors:
             return Err.collect_non_empty(*errors)
-        return self.config_type(**collected)
+        c: C = self.config_type(**collected)
+        validation_error: Optional[Err] = Err.collect_optional(*[f(c) for f in self.validators])
+        if validation_error is not None:
+            return validation_error
+        else:
+            return c
