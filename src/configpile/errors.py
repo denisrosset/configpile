@@ -4,7 +4,9 @@ import shutil
 import textwrap
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Callable, List, Optional, Sequence, Tuple, TypeVar, Union, overload
+from typing import Any, Callable, List, Optional, Sequence, Tuple, Type, TypeVar, Union, overload
+
+from typing_extensions import TypeGuard
 
 
 class Err(ABC):
@@ -178,8 +180,56 @@ U = TypeVar("U")
 V = TypeVar("V")
 W = TypeVar("W")
 
-
+#: Generic result type
+#:
+#: Note that the generic type T cannot be Err or a subclass of Err
 Result = Union[T, Err]
+
+
+def is_err(r: Result[T]) -> TypeGuard[Err]:
+    """
+    Checks whether a result is an error
+
+    Args:
+        r: Result to check
+
+    Returns:
+        True if and only if the given result is an error
+    """
+    return isinstance(r, Err)
+
+
+def is_value(r: Result[T]) -> TypeGuard[T]:
+    """
+    Checks whether a result is a value
+
+    Args:
+        r: Result to check
+
+    Returns:
+        True if and only if the given result is a value
+    """
+    return not isinstance(r, Err)
+
+
+def wrap_exceptions(f: Callable[[], T], *keep: Type[Exception]) -> Result[T]:
+    """
+    Executes the given function, and wraps thrown exceptions into an error result
+
+    Args:
+        f: Function to execute
+
+    Returns:
+        Function return value or error
+    """
+    try:
+        res: Result[T] = f()
+    except Exception as e:
+        if (not keep) or any([isinstance(e, t) for t in keep]):
+            res = Err.make("Exception thrown", exception=e)
+        else:
+            raise
+    return res
 
 
 @overload
