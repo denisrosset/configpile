@@ -1,3 +1,9 @@
+## v7.1.0 (2022-03-16)
+
+### Feat
+
+- **errors**: add context in error reporting
+
 ## v7.0.2 (2022-03-16)
 
 ### Fix
