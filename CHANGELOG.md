@@ -1,3 +1,9 @@
+## v7.3.0 (2022-03-16)
+
+### Feat
+
+- **errors**: add errors.{wrap_exceptions, is_value, is_err)
+
 ## v7.2.0 (2022-03-16)
 
 ### Feat
