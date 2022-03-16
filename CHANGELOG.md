@@ -1,3 +1,9 @@
+## v7.1.3 (2022-03-16)
+
+### Fix
+
+- **arg**: fix support for Expander flag commands
+
 ## v7.1.2 (2022-03-16)
 
 ### Fix

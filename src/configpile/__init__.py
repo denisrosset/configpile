@@ -1,4 +1,4 @@
-__version__ = "7.1.2"
+__version__ = "7.1.3"
 
 from .arg import AutoName, Expander, Param, Positional
 from .config import Config
