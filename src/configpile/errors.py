@@ -164,7 +164,7 @@ class Err1(Err):
         return [self]
 
     def markdown(self) -> Sequence[str]:
-        c = [f"In {name}: {value}" for (name, value) in self.contexts]
+        c = [line for (name, value) in self.contexts for line in [f"In {name}: {value}", ""]]
         return [*c, self.msg]
 
     def in_context(self, **contexts: Any) -> Err:
