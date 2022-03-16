@@ -214,7 +214,7 @@ class Expander(Arg):
         new_value: str,
         *,
         help: Optional[str] = None,
-        short_flag_name: Optional[str],
+        short_flag_name: Optional[str] = None,
         long_flag_name: ArgName = AutoName.DERIVED,
     ) -> Expander:
         """
@@ -238,7 +238,6 @@ class Expander(Arg):
             short_flag_name=short_flag_name,
             long_flag_name=long_flag_name,
         )
-        assert res.all_flags(), "Provide at least one of short_flag_name or long_flag_name"
         return res
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
@@ -386,9 +385,13 @@ class Param(Arg, Generic[T]):
 
         flags = self.all_flags()
         if self.is_required():
-            pf.ap_required.add_argument(*self.all_flags(), dest=self.name, **self.argparse_argument_kwargs())
+            pf.ap_required.add_argument(
+                *self.all_flags(), dest=self.name, **self.argparse_argument_kwargs()
+            )
         else:
-            pf.ap_optional.add_argument(*self.all_flags(), dest=self.name, **self.argparse_argument_kwargs())
+            pf.ap_optional.add_argument(
+                *self.all_flags(), dest=self.name, **self.argparse_argument_kwargs()
+            )
 
     @staticmethod
     def store(
