@@ -1,3 +1,9 @@
+## v7.1.2 (2022-03-16)
+
+### Fix
+
+- **errors**: separate context lines in error printing
+
 ## v7.1.1 (2022-03-16)
 
 ### Fix
