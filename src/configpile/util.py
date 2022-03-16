@@ -5,7 +5,7 @@ from collections import OrderedDict
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Generic, List, Mapping, NoReturn, Optional
 from typing import OrderedDict as OrderedDictT
-from typing import Sequence, Tuple, Type, TypeVar, ValuesView, overload
+from typing import Sequence, Tuple, Type, TypeVar
 
 from class_doc import extract_docs_from_cls_obj
 
