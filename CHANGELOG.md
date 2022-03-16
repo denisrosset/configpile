@@ -1,3 +1,9 @@
+## v7.4.0 (2022-03-16)
+
+### Feat
+
+- **config**: add support for validator methods
+
 ## v7.3.0 (2022-03-16)
 
 ### Feat
