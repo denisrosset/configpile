@@ -38,7 +38,7 @@ class WithClassValidation(Config):
         return None
 
 
-def test_validation() -> None:
+def test_class_validation() -> None:
     assert len(WithClassValidation.validators_()) == 1
     res = WithClassValidation.parse_command_line_(args=["--a", "2"], env={})
     assert is_value(res)
@@ -46,7 +46,7 @@ def test_validation() -> None:
     assert is_err(res1)
 
 
-def test_validation() -> None:
+def test_param_validation() -> None:
     res = WithParamValidation.parse_command_line_(args=["--a", "2"], env={})
     assert is_value(res)
     res1 = WithParamValidation.parse_command_line_(args=["--a", "-2"], env={})
