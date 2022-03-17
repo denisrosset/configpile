@@ -1,3 +1,9 @@
+## v7.6.1 (2022-03-17)
+
+### Fix
+
+- explicitly reexport identifiers to make type checkers happy
+
 ## v7.6.0 (2022-03-17)
 
 ### Feat
