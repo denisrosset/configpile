@@ -120,6 +120,23 @@ class Err(ABC):
         """
         return Err1(msg, [*contexts.items()])
 
+    @staticmethod
+    def check(predicate: bool, msg: str, **contexts: Any) -> Optional[Err]:
+        """
+        Returns an error if the given predicate is false, otherwise returns None.
+
+        Args:
+            predicate: Predicate to check
+            msg: Error message
+
+        Returns:
+            An error or None
+        """
+        if predicate:
+            return None
+        else:
+            return Err.make(msg, **contexts)
+
 
 @dataclass(frozen=True)
 class ManyErr(Err):

@@ -17,3 +17,8 @@ def test_wrap_exceptions() -> None:
     assert is_err(wrap_exceptions(fails, ValueError, NotImplementedError))
     assert is_err(wrap_exceptions(fails, NotImplementedError))
     assert is_value(wrap_exceptions(works))
+
+
+def test_err_check() -> None:
+    assert Err.check(False, "This failed") is not None
+    assert Err.check(True, "This cannot fail") is None
