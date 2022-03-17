@@ -1,3 +1,9 @@
+## v7.5.1 (2022-03-17)
+
+### Fix
+
+- add py.typed file in the configpile package
+
 ## v7.5.0 (2022-03-16)
 
 ### Feat
