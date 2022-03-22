@@ -1,3 +1,16 @@
+"""
+Module defining utility functions
+
+.. rubric:: Types
+
+.. py:data:: _Key
+
+.. py:data:: _Value
+
+.. py:data:: _Class
+
+.. py:data:: _Type
+"""
 from __future__ import annotations
 
 import textwrap
@@ -9,16 +22,14 @@ from typing import Sequence, Tuple, Type, TypeVar
 
 from class_doc import extract_docs_from_cls_obj
 
-K = TypeVar("K")
-T = TypeVar("T")
-U = TypeVar("U")
-V = TypeVar("V")
-W = TypeVar("W")
-E = TypeVar("E")  #: Error type
+_Key = TypeVar("_Key")
+_Value = TypeVar("_Value")
+_Class = TypeVar("_Class")
+_Type = TypeVar("_Type")
 
 
 @dataclass(frozen=True)
-class ClassDoc(Generic[T]):
+class ClassDoc(Generic[_Class]):
     """
     Stores information about Sphinx autodoc-style documentation for a class
 
@@ -28,6 +39,15 @@ class ClassDoc(Generic[T]):
     docs: Sequence[Mapping[str, Sequence[str]]]  #: Documentation for the class and parents
 
     def raw(self, attribute_name: str) -> Optional[Sequence[str]]:
+        """
+        Returns the raw documentation string for the given attribute
+
+        This walks through the base classes in the Method Resolution Order and returns the
+        first string encountered.
+
+        Args:
+            attribute_name: Attribute name
+        """
         for d in self.docs:
             if attribute_name in d:
                 return d[attribute_name]
@@ -51,7 +71,7 @@ class ClassDoc(Generic[T]):
         return textwrap.dedent("\n".join(res)).split("\n")
 
     @staticmethod
-    def make(t: Type[T]) -> ClassDoc[T]:
+    def make(t: Type[_Class]) -> ClassDoc[_Class]:
         """
         Retrieves the documentation for the attributes of a class
 
@@ -71,7 +91,7 @@ class ClassDoc(Generic[T]):
         return ClassDoc(docs)
 
 
-def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[K], V]]) -> Dict[K, V]:
+def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[_Key], _Value]]) -> Dict[_Key, _Value]:
     """
     Constructs a dict from a list of items where a value can have multiple keys
 
@@ -84,21 +104,23 @@ def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[K], V]]) -> Dict[K, V
     return {k: v for (kk, v) in pairs for k in kk}
 
 
-def filter_ordered_dict_by_value_type(w: Type[W], od: OrderedDictT[K, V]) -> OrderedDictT[K, W]:
+def filter_ordered_dict_by_value_type(
+    w: Type[_Type], od: OrderedDictT[_Key, _Value]
+) -> OrderedDictT[_Key, _Type]:
     """
     Filters values of an ordered dictionary that correspond to a given type
 
     Returns:
         A new dictionary
     """
-    pairs: Sequence[Tuple[K, W]] = [(k, v) for (k, v) in od.items() if isinstance(v, w)]
+    pairs: Sequence[Tuple[_Key, _Type]] = [(k, v) for (k, v) in od.items() if isinstance(v, w)]
     return OrderedDict(pairs)
 
 
 def filter_ordered_dict(
-    f: Callable[[K, V], bool],
-    od: OrderedDictT[K, V],
-) -> OrderedDictT[K, V]:
+    f: Callable[[_Key, _Value], bool],
+    od: OrderedDictT[_Key, _Value],
+) -> OrderedDictT[_Key, _Value]:
     """
     Filters items of an ordered dictionary based on a predicate
 
@@ -113,8 +135,8 @@ def filter_ordered_dict(
 
 
 def filter_sequence_by_value_type(
-    w: Type[W], seq: Sequence[V], predicate: Optional[Callable[[W], bool]]
-) -> Sequence[W]:
+    w: Type[_Type], seq: Sequence[_Value], predicate: Optional[Callable[[_Type], bool]]
+) -> Sequence[_Type]:
     """
     Filter values using their type and an optional predicate
 
@@ -141,8 +163,8 @@ def assert_never(value: NoReturn) -> NoReturn:
 
 
 def filter_types(
-    t: Type[T], seq: Sequence[Any], min_el: int = 0, max_el: Optional[int] = None
-) -> Sequence[T]:
+    t: Type[_Class], seq: Sequence[Any], min_el: int = 0, max_el: Optional[int] = None
+) -> Sequence[_Class]:
     """
     Searches for elements of a given type in a sequence
 
@@ -168,7 +190,7 @@ def filter_types(
     return filtered
 
 
-def filter_types_single(t: Type[T], seq: Sequence[Any]) -> Optional[T]:
+def filter_types_single(t: Type[_Class], seq: Sequence[Any]) -> Optional[_Class]:
     """
     Searches for zero or one elements of a given type in a sequence
 

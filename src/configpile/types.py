@@ -1,3 +1,33 @@
+"""
+Argument value parsing
+
+This module is mostly self-contained, and provides ways to construct :class:`.ParamType` instances
+which parse string arguments into values.
+
+During the configuration building, the parsed values are collected by a 
+:class:`configpile.collector.Collector` instance.
+
+.. rubric:: Types
+
+This module uses the following types.
+
+.. py:data:: _Value
+
+    Value being parsed by a :class:`.ParamType`
+
+.. py:data:: _Parameter
+
+    Type received by a mapping function
+
+.. py:data:: _ReturnType
+
+    Type returned by a mapping function
+
+.. py:data:: _Item
+
+    Item in a sequence
+"""
+
 from __future__ import annotations
 
 import pathlib
@@ -15,6 +45,7 @@ from typing import (
     Mapping,
     NoReturn,
     Optional,
+    Protocol,
     Sequence,
     Type,
     TypeVar,
@@ -25,19 +56,21 @@ from typing import (
 if TYPE_CHECKING:
     import parsy
 
-from configpile.util import assert_never
+from . import userr
+from .userr import Err, Res, collect_seq
+from .util import assert_never
 
-from .errors import Err, Result, collect_seq
+# those types are documented in the module docstring
 
-I = TypeVar("I")  #: Item type, invariant
+_I = TypeVar("_I")  # type used only internally
 
-T = TypeVar("T", covariant=True)  #: Item type
+_Value = TypeVar("_Value")
 
-U = TypeVar("U", covariant=True)  #: Another item type
+_Item = TypeVar("_Item")
 
-V = TypeVar("V", covariant=True)  #: Another item type
+_Parameter = TypeVar("_Parameter")
 
-W = TypeVar("W", covariant=True)  #: Wrapped item type
+_ReturnType = TypeVar("_ReturnType")
 
 
 class ForceCase(Enum):
@@ -50,16 +83,24 @@ class ForceCase(Enum):
     LOWER = 2  #: Change to lowercase
 
 
-class ParamType(ABC, Generic[T]):
+class ParamType(ABC, Generic[_Value]):
     """Describes a parameter type, which parses a string into a parameter value"""
 
     @abstractmethod
-    def parse(self, arg: str) -> Result[T]:
+    def parse(self, arg: str) -> Res[_Value]:
         """
         Parses a string into a result
 
         This method reports parsing errors using a result type instead of raising
         exceptions.
+
+        Example:
+            >>> user_input = "invalid"
+            >>> float_.parse(user_input)
+            Err1("Error 'could not convert string to float: 'invalid'' in 'invalid'")
+            >>> user_input = 2.0
+            >>> float_.parse(user_input)
+            2.0
 
         Args:
             arg: String value to parse
@@ -69,9 +110,14 @@ class ParamType(ABC, Generic[T]):
         """
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
+        """
+        Returns, if any, the keyword arguments that should be provided to :mod:`argparse`
+
+        The arguments will be added to :meth:`argparse.ArgumentParser.add_argument`
+        """
         return {}
 
-    def map(self, f: Callable[[T], W]) -> ParamType[W]:
+    def map(self, f: Callable[[_Value], _Item]) -> ParamType[_Item]:
         """
         Maps successful results of the parser through the given function
 
@@ -83,17 +129,17 @@ class ParamType(ABC, Generic[T]):
         """
         return _Mapped(self, f)
 
-    def as_sequence_of_one(self) -> ParamType[Sequence[T]]:
+    def as_sequence_of_one(self) -> ParamType[Sequence[_Value]]:
         """
         Returns a parameter type, that returns a sequence of a single value on success
 
         Returns:
             Updated parameter type
         """
-        f: Callable[[I], Sequence[I]] = lambda t: [t]
+        f: Callable[[_I], Sequence[_I]] = lambda t: [t]
         return self.map(f)
 
-    def empty_means_none(self, strip: bool = True) -> ParamType[Optional[T]]:
+    def empty_means_none(self, strip: bool = True) -> ParamType[Optional[_Value]]:
         """
         Returns a new parameter type where the empty string means None
 
@@ -107,7 +153,7 @@ class ParamType(ABC, Generic[T]):
 
     def separated_by(
         self, sep: str, strip: bool = True, remove_empty: bool = True
-    ) -> ParamType[Sequence[T]]:
+    ) -> ParamType[Sequence[_Value]]:
         """
         Returns a new parameter type that parses values separated by a string
 
@@ -121,8 +167,32 @@ class ParamType(ABC, Generic[T]):
         """
         return _SeparatedBy(self, sep, strip, remove_empty)
 
+    def validated(
+        self, predicate: Callable[[_Value], bool], msg: Union[str, Callable[[str, _Value], str]]
+    ) -> _Validated[_Value]:
+        """
+        Returns a parameter type that verifies a predicate after successful parse
+
+        Args:
+            predicate: Predicate to check
+            msg: Either a string, or a function that constructs a string from the parsed string
+                 and the result
+
+        Returns:
+            A new parameter type
+        """
+        if isinstance(msg, str):
+            c: str = msg
+            return _Validated(self, predicate, lambda a, t: c)
+        else:
+            return _Validated(
+                self,
+                predicate,
+                msg,
+            )
+
     @staticmethod
-    def from_parser(type_: Type[I], parser: parsy.Parser) -> ParamType[I]:
+    def from_parser(type_: Type[_Value], parser: parsy.Parser) -> ParamType[_Value]:
         """
         Creates a parameter type from a parsy parser
 
@@ -136,7 +206,7 @@ class ParamType(ABC, Generic[T]):
         return _Parsy(parser)
 
     @staticmethod
-    def from_function_that_raises(f: Callable[[str], T]) -> ParamType[T]:
+    def from_function_that_raises(f: Callable[[str], _Value]) -> ParamType[_Value]:
         """
         Creates a parameter type from a function that raises exceptions on parse errors
 
@@ -149,7 +219,7 @@ class ParamType(ABC, Generic[T]):
         return _FunctionThatRaises(f)
 
     @staticmethod
-    def from_result_function(f: Callable[[str], Result[T]]) -> ParamType[T]:
+    def from_result_function(f: Callable[[str], Res[_Value]]) -> ParamType[_Value]:
         """
         Creates a parameter type from a function that returns a value or an error
 
@@ -163,7 +233,7 @@ class ParamType(ABC, Generic[T]):
         return _ResultFunction(f)
 
     @staticmethod
-    def invalid() -> ParamType[T]:
+    def invalid() -> ParamType[_Value]:
         """
         Creates a parameter type that always return errors
         """
@@ -194,11 +264,11 @@ class ParamType(ABC, Generic[T]):
 
     @staticmethod
     def choices(
-        mapping: Mapping[str, T],
+        mapping: Mapping[str, _Value],
         strip: bool = True,
         force_case: ForceCase = ForceCase.NO_CHANGE,
-        aliases: Mapping[str, T] = {},
-    ) -> ParamType[T]:
+        aliases: Mapping[str, _Value] = {},
+    ) -> ParamType[_Value]:
         """
         Creates a parameter type whose strings correspond to keys in a dictionary
 
@@ -215,17 +285,17 @@ class ParamType(ABC, Generic[T]):
 
 
 @dataclass(frozen=True)
-class _Choices(ParamType[T]):
+class _Choices(ParamType[_Value]):
     """
     Describes a multiple choice parameter type
     """
 
-    mapping: Mapping[str, T]
+    mapping: Mapping[str, _Value]
     strip: bool
     force_case: ForceCase
-    aliases: Mapping[str, T]
+    aliases: Mapping[str, _Value]
 
-    def parse(self, arg: str) -> Result[T]:
+    def parse(self, arg: str) -> Res[_Value]:
         if self.strip:
             arg = arg.strip()
         if self.force_case is ForceCase.LOWER:
@@ -248,15 +318,15 @@ class _Choices(ParamType[T]):
 
 
 @dataclass  # not frozen because mypy bug, please be responsible
-class _FunctionThatRaises(ParamType[T]):
+class _FunctionThatRaises(ParamType[_Value]):
     """
     Wraps a function that may raise exceptions
     """
 
     # the optional is to make mypy happy
-    fun: Callable[[str], T]  #: Callable function that may raise
+    fun: Callable[[str], _Value]  #: Callable function that may raise
 
-    def parse(self, arg: str) -> Result[T]:
+    def parse(self, arg: str) -> Res[_Value]:
         try:
             f = self.fun
             assert f is not None
@@ -266,29 +336,29 @@ class _FunctionThatRaises(ParamType[T]):
 
 
 @dataclass  # not frozen because mypy bug, please be responsible
-class _ResultFunction(ParamType[T]):
+class _ResultFunction(ParamType[_Value]):
     """
     Wraps a function that returns a result
     """
 
-    fun: Callable[[str], Result[T]]
+    fun: Callable[[str], Res[_Value]]
 
-    def parse(self, arg: str) -> Result[T]:
+    def parse(self, arg: str) -> Res[_Value]:
         return self.fun(arg)
 
 
 @dataclass(frozen=True)
-class _Parsy(ParamType[T]):
+class _Parsy(ParamType[_Value]):
     """
     Wraps a parser from the parsy library
     """
 
     parser: parsy.Parser
 
-    def parse(self, arg: str) -> Result[T]:
+    def parse(self, arg: str) -> Res[_Value]:
         res = (self.parser << parsy.eof)(arg, 0)  # Inspired by Parser.parse
         if res.status:
-            return cast(T, res.value)
+            return cast(_Value, res.value)
         else:
             if res.furthest is not None:
                 return Err.make(
@@ -299,15 +369,15 @@ class _Parsy(ParamType[T]):
 
 
 @dataclass(frozen=True)
-class _EmptyMeansNone(ParamType[Optional[W]]):
+class _EmptyMeansNone(ParamType[Optional[_Item]]):
     """
     Wraps an existing parameter type so that "empty means none"
     """
 
-    wrapped: ParamType[W]  #: Wrapped ParamType called if value is not empty
+    wrapped: ParamType[_Item]  #: Wrapped ParamType called if value is not empty
     strip: bool  #:  Whether to strip whitespace before testing for empty
 
-    def parse(self, value: str) -> Result[Optional[W]]:
+    def parse(self, value: str) -> Res[Optional[_Item]]:
         if self.strip:
             value = value.strip()
         if not value:
@@ -317,41 +387,62 @@ class _EmptyMeansNone(ParamType[Optional[W]]):
 
 
 @dataclass(frozen=True)
-class _Mapped(ParamType[V], Generic[U, V]):
+class _Mapped(ParamType[_ReturnType], Generic[_Parameter, _ReturnType]):
     """
     Wraps an existing parser and applies a function to its successful result
     """
 
-    wrapped: ParamType[U]  #: Wrapped parser
-    f: Optional[Callable[[U], V]]  #: Mapping function, made optional as a hack
+    wrapped: ParamType[_Parameter]  #: Wrapped parser
+    f: Optional[Callable[[_Parameter], _ReturnType]]  #: Mapping function, made optional as a hack
 
-    def parse(self, arg: str) -> Result[V]:
+    def parse(self, arg: str) -> Res[_ReturnType]:
         assert self.f is not None
-        res: Result[U] = self.wrapped.parse(arg)
+        res: Res[_Parameter] = self.wrapped.parse(arg)
         if isinstance(res, Err):
             return res
         return self.f(res)
 
 
 @dataclass(frozen=True)
-class _SeparatedBy(ParamType[Sequence[W]]):
+class _SeparatedBy(ParamType[Sequence[_Item]]):
     """
     Parses values separated by a given separator
     """
 
-    item: ParamType[W]  #: ParamType of individual items
+    item: ParamType[_Item]  #: ParamType of individual items
     sep: str  #: Item separator
     strip: bool  #: Whether to strip whitespace around separated strings
     remove_empty: bool  #: Whether to prune empty strings
 
-    def parse(self, arg: str) -> Result[Sequence[W]]:
+    def parse(self, arg: str) -> Res[Sequence[_Item]]:
         items: Iterable[str] = arg.split(self.sep)
         if self.strip:
             items = map(lambda s: s.strip(), items)
         if self.remove_empty:
             items = filter(None, items)
-        res: Sequence[Result[W]] = [self.item.parse(s) for s in items]
+        res: Sequence[Res[_Item]] = [self.item.parse(s) for s in items]
+
         return collect_seq(res)
+
+
+@dataclass  # TODO: (frozen=True) when mypy sorts out dataclasses with Callable fields
+class _Validated(ParamType[_Value]):
+    """
+    Parses a value and validates it
+    """
+
+    wrapped: ParamType[_Value]
+    predicate: Callable[[_Value], bool]
+    msg: Callable[[str, _Value], str]
+
+    def parse(self, arg: str) -> Res[_Value]:
+        res = self.wrapped.parse(arg)
+        if isinstance(res, Err):
+            return res
+        p = self.predicate
+        if p(res):
+            return res
+        return Err.make(self.msg(arg, res))
 
 
 #: Parses a path

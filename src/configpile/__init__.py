@@ -2,17 +2,18 @@ __version__ = "7.6.1"
 
 from .arg import AutoName, Expander, Param, Positional
 from .config import Config, Validator
-from .errors import Err, Result
 from .types import ParamType
+from .userr import Err, Res
 
 __all__ = [
     "AutoName",
-    "Expander",
-    "Param",
-    "Positional",
     "Config",
-    "Validator",
     "Err",
-    "Result",
+    "Expander",
+    "Res",
+    "Param",
     "ParamType",
+    "Positional",
+    "Validator",
+    "types",
 ]

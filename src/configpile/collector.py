@@ -1,16 +1,40 @@
+"""
+Value consolidation
+
+This module defines :class:`.Collector`, which is a class that collects a sequence of parsed values
+into a single value.
+
+For example, one may want that the last value for a given parameter overwrites the previous values
+(:meth:`.Collector.keep_last`), or that all values are returned in a sequence
+(:meth:`.Collector.append`).
+
+.. rubric:: Types
+
+This module uses the following types.
+
+.. py:data:: _Value
+
+    Type of the values to collect
+
+.. py:data:: _Item
+
+    Item in a sequence
+
+"""
+
 from __future__ import annotations
 
 import abc
 from typing import Any, Generic, List, Mapping, NoReturn, Sequence, TypeVar
 
-from .errors import Err, Result
+from .userr import Err, Res
 
-T = TypeVar("T")  #: Item type
+_Value = TypeVar("_Value")
 
-W = TypeVar("W")  #: Wrapped item type
+_Item = TypeVar("_Item")
 
 
-class Collector(abc.ABC, Generic[T]):
+class Collector(abc.ABC, Generic[_Value]):
     """
     Collects argument instances and computes the final value
     """
@@ -23,7 +47,7 @@ class Collector(abc.ABC, Generic[T]):
         pass
 
     @abc.abstractmethod
-    def collect(self, seq: Sequence[T]) -> Result[T]:
+    def collect(self, seq: Sequence[_Value]) -> Res[_Value]:
         """
         Collects a sequence of values into a result
 
@@ -43,14 +67,14 @@ class Collector(abc.ABC, Generic[T]):
         pass
 
     @staticmethod
-    def keep_last() -> Collector[T]:
+    def keep_last() -> Collector[_Value]:
         """
         Returns a collector that keeps the last value
         """
         return _KeepLast()
 
     @staticmethod
-    def append() -> Collector[Sequence[W]]:
+    def append() -> Collector[Sequence[_Item]]:
         """
         Returns a collector that appends sequences
         """
@@ -64,11 +88,11 @@ class Collector(abc.ABC, Generic[T]):
         return _Invalid()
 
 
-class _KeepLast(Collector[T]):
+class _KeepLast(Collector[_Value]):
     def arg_required(self) -> bool:
         return True
 
-    def collect(self, seq: Sequence[T]) -> Result[T]:
+    def collect(self, seq: Sequence[_Value]) -> Res[_Value]:
         if not seq:  # no instances provided
             return Err.make("Argument is required")
         else:  # instances are provided
@@ -78,12 +102,12 @@ class _KeepLast(Collector[T]):
         return {"action": "store"}
 
 
-class _Append(Collector[Sequence[W]]):
+class _Append(Collector[Sequence[_Item]]):
     def arg_required(self) -> bool:
         return False
 
-    def collect(self, seq: Sequence[Sequence[W]]) -> Result[Sequence[W]]:
-        res: List[W] = []
+    def collect(self, seq: Sequence[Sequence[_Item]]) -> Res[Sequence[_Item]]:
+        res: List[_Item] = []
         for i in seq:
             res.extend(i)
         return res
@@ -96,7 +120,7 @@ class _Invalid(Collector[Any]):
     def arg_required(self) -> bool:
         raise NotImplementedError
 
-    def collect(self, seq: Sequence[T]) -> Result[T]:
+    def collect(self, seq: Sequence[_Value]) -> Res[_Value]:
         return Err.make("Invalid collector")
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:

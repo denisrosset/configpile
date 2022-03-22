@@ -7,7 +7,6 @@ from typing import Optional, Sequence
 from typing_extensions import Annotated
 
 from configpile import Config, Err, Param, Positional, Validator, config, types
-from configpile.errors import is_err, is_value
 
 
 @dataclass(frozen=True)
@@ -41,13 +40,13 @@ class WithClassValidation(Config):
 def test_class_validation() -> None:
     assert len(WithClassValidation.validators_()) == 1
     res = WithClassValidation.parse_command_line_(args=["--a", "2"], env={})
-    assert is_value(res)
+    assert not isinstance(res, Err)
     res1 = WithClassValidation.parse_command_line_(args=["--a", "-2"], env={})
-    assert is_err(res1)
+    assert isinstance(res1, Err)
 
 
 def test_param_validation() -> None:
     res = WithParamValidation.parse_command_line_(args=["--a", "2"], env={})
-    assert is_value(res)
+    assert not isinstance(res, Err)
     res1 = WithParamValidation.parse_command_line_(args=["--a", "-2"], env={})
-    assert is_err(res1)
+    assert isinstance(res1, Err)

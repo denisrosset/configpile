@@ -19,19 +19,34 @@ typing-extensions = "^4.1.1"
 parsy = {version = "^1.4.0", optional = true}
 rich = {version = "^11.2.0", optional = true}
 
+myst-nb = {version = "^0.13.2", optional = true}
+sphinx = {version = "4.3.2", optional = true}
+sphinx-argparse = {version = "^0.3.1", optional = true}
+sphinx-autodoc-typehints = {version = "^1.17.0", optional = true}
+sphinx-book-theme = {version = "^0.2.0", optional = true}
+
 [tool.poetry.extras]
-parsy = ["pasry"]
+docs = [
+  "myst-nb",
+  "sphinx",
+  "sphinx-argparse",
+  "sphinx-autodoc-typehints",
+  "sphinx-book-theme",
+]
+parsy = ["parsy"]
 rich = ["rich"]
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
 commitizen = "^2.21.2"
+doc8 = "^0.10.1"
+esbonio = "^0.10.0"
 isort = "^5.10.1"
-mypy = "0.940"
+mypy = "0.941"
 pytest = "^7.0.1"
-pytest-black = "^0.3.12"
 pytest-cov = "^3.0.0"
 pytest-mypy-plugins = "^1.9.3"
+rstcheck = "^3.3.1"
 
 [tool.mypy]
 python_version = "3.8"
@@ -69,15 +84,17 @@ module = 'class_doc'
 
 [tool.pytest.ini_options]
 addopts = [
-  "--black",
   "--tb=short",
+  "--doctest-modules",
 ]
 
 # removed coverage as it interferes with debugging
 # "--cov=result",  # "--cov=tests",  # "--cov-report=term",
 # "--cov-report=xml",
+doctest_optionflags = ['NORMALIZE_WHITESPACE', 'IGNORE_EXCEPTION_DETAIL', 'ELLIPSIS']
 
 testpaths = [
+  "src/configpile",
   "tests",
 ]
 

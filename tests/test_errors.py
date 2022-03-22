@@ -1,22 +1,23 @@
 import pytest
 
-from configpile.errors import Err, is_err, is_value, wrap_exceptions
+from configpile.userr import Err, wrap
 
 
 def test_wrap_exceptions() -> None:
-    def fails() -> int:
-        raise NotImplementedError
+    @wrap(NotImplementedError)
+    def test(i: int) -> int:
+        if i == 1:
+            raise NotImplementedError
+        elif i == 2:
+            raise ValueError
+        else:
+            return i
 
-    def works() -> int:
-        return 0
+    with pytest.raises(ValueError):
+        res = test(2)
 
-    with pytest.raises(NotImplementedError):
-        res = wrap_exceptions(fails, ValueError)
-
-    assert is_err(wrap_exceptions(fails))
-    assert is_err(wrap_exceptions(fails, ValueError, NotImplementedError))
-    assert is_err(wrap_exceptions(fails, NotImplementedError))
-    assert is_value(wrap_exceptions(works))
+    assert isinstance(test(1), Err)
+    assert not isinstance(test(0), Err)
 
 
 def test_err_check() -> None:

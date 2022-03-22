@@ -1,3 +1,27 @@
+"""
+Arguments processing
+
+This module contains the internal machinery that processes environment variables, configuration
+files and command-line parameters.
+
+As of March 22, 2022, configpile is still pretty much influenced by :mod:`argparse`, and the
+machinery below supports a subset of :mod:`argparse` functionality. Later on, we may cut ties
+with :mod:`argparse`, add our own help/usage message writing, our own Sphinx extension and
+encourage extending those processing classes. 
+
+.. rubric:: Types
+
+This module uses the following types.
+
+.. py:data:: _Value
+
+    Value being parsed by a :class:`.ParamType`
+
+.. py:data:: _Config
+
+    Type of the configuration dataclass to construct
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -29,15 +53,15 @@ from typing import (
 from typing_extensions import Annotated, get_args, get_origin, get_type_hints
 
 from .arg import Arg, Expander, Param, Positional
-from .errors import Err, Result, in_context, is_err, is_value
+from .userr import Err, Res, in_context
 from .util import ClassDoc, filter_types_single
 
 if TYPE_CHECKING:
     from .config import Config
 
-C = TypeVar("C", bound="Config")
+_Config = TypeVar("_Config", bound="Config")
 
-T = TypeVar("T")  #: Item type
+_Value = TypeVar("_Value")
 
 
 class CLHandler(ABC):
@@ -66,7 +90,7 @@ class CLSpecialAction(CLHandler):
     A handler that sets the special action
     """
 
-    special_action: SpecialAction
+    special_action: SpecialAction  #: Special action to set
 
     def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
         if state.special_action is not None:
@@ -84,6 +108,7 @@ class CLInserter(CLHandler):
     Handler that expands a flag into a sequence of args inserted into the command line to be parsed
     """
 
+    #: Arguments inserted in the command-line
     inserted_args: Sequence[str]
 
     def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
@@ -92,7 +117,7 @@ class CLInserter(CLHandler):
 
 
 @dataclass(frozen=True)
-class CLParam(CLHandler, Generic[T]):
+class CLParam(CLHandler, Generic[_Value]):
     """
     Parameter handler
 
@@ -100,9 +125,10 @@ class CLParam(CLHandler, Generic[T]):
     corresponding sequence of instances
     """
 
-    param: Param[T]
+    #: Parameter to handle
+    param: Param[_Value]
 
-    def action(self, value: T, state: State) -> Optional[Err]:
+    def action(self, value: _Value, state: State) -> Optional[Err]:
         """
         A method called on the successful parse of a value
 
@@ -121,14 +147,17 @@ class CLParam(CLHandler, Generic[T]):
         if args:
             res = self.param.param_type.parse(args[0])
             if isinstance(res, Err):
-                return (args[1:], res)
+                return (args[1:], res.in_context(param=self.param.name))
             else:
                 assert self.param.name is not None, "Names are assigned after initialization"
-                err = self.action(res, state)
+                err = in_context(self.action(res, state), param=self.param.name)
                 state.instances[self.param.name] = [*state.instances[self.param.name], res]
                 return (args[1:], err)
         else:
-            return (args, Err.make("Expected value, but no argument present"))
+            return (
+                args,
+                Err.make("Expected value, but no argument present", param=self.param.name),
+            )
 
 
 @dataclass(frozen=True)
@@ -184,7 +213,7 @@ class CLPos(CLHandler):
         assert p.name is not None
         res = p.param_type.parse(args[0])
         if isinstance(res, Err):
-            return (args[1:], res)
+            return (args[1:], in_context(res, param=p.name))
         else:
             state.append(p.name, res)
             if p.positional == Positional.ONCE:
@@ -241,10 +270,15 @@ class KVHandler(ABC):
 
 
 @dataclass(frozen=True)
-class KVParam(KVHandler, Generic[T]):
-    param: Param[T]
+class KVParam(KVHandler, Generic[_Value]):
+    """
+    Handler for the value following a key corresponding to a parameter
+    """
 
-    def action(self, value: T, state: State) -> Optional[Err]:
+    #: Parameter to handle
+    param: Param[_Value]
+
+    def action(self, value: _Value, state: State) -> Optional[Err]:
         """
         A method called on the successful parse of a value
 
@@ -267,11 +301,15 @@ class KVParam(KVHandler, Generic[T]):
             assert self.param.name is not None
             err = self.action(res, state)
             state.instances[self.param.name] = [*state.instances[self.param.name], res]
-            return err
+            return in_context(err, param=self.param.name)
 
 
 @dataclass(frozen=True)
 class KVConfigParam(KVParam[Sequence[Path]]):
+    """
+    Handler for the configuration file value following a key corresponding to a parameter
+    """
+
     def action(self, value: Sequence[Path], state: State) -> Optional[Err]:
         state.config_files_to_process.extend(value)
         return None
@@ -390,7 +428,7 @@ class IniProcessor:
 
 
 @dataclass
-class ProcessorFactory(Generic[C]):
+class ProcessorFactory(Generic[_Config]):
     """
     Describes a processor in construction
 
@@ -427,10 +465,10 @@ class ProcessorFactory(Generic[C]):
     #: List of positional arguments
     cl_positionals: List[Param[Any]]
 
-    validators: List[Callable[[C], Optional[Err]]]
+    validators: List[Callable[[_Config], Optional[Err]]]
 
     @staticmethod
-    def make(config_type: Type[C]) -> ProcessorFactory[C]:
+    def make(config_type: Type[_Config]) -> ProcessorFactory[_Config]:
         """
         Constructs an empty processor factory
 
@@ -473,13 +511,13 @@ class ProcessorFactory(Generic[C]):
 
 
 @dataclass(frozen=True)
-class Processor(Generic[C]):
+class Processor(Generic[_Config]):
     """
     Configuration processor
     """
 
     #: Configuration to parse
-    config_type: Type[C]
+    config_type: Type[_Config]
 
     #: Completed argument parser, used only for documentation purposes (CLI and Sphinx)
     argument_parser: argparse.ArgumentParser
@@ -496,10 +534,10 @@ class Processor(Generic[C]):
     #: Dictionnary of parameters by field name
     params_by_name: Mapping[str, Param[Any]]
 
-    validators: Sequence[Callable[[C], Optional[Err]]]
+    validators: Sequence[Callable[[_Config], Optional[Err]]]
 
     @staticmethod
-    def process_fields(config_type: Type[C]) -> Sequence[Arg]:
+    def process_fields(config_type: Type[_Config]) -> Sequence[Arg]:
         """
         Returns a sequence of the arguments present in a configuration, with updated data
 
@@ -510,7 +548,7 @@ class Processor(Generic[C]):
             Sequence of arguments
         """
         args: List[Arg] = []
-        docs: ClassDoc[C] = ClassDoc.make(config_type)
+        docs: ClassDoc[_Config] = ClassDoc.make(config_type)
         th = get_type_hints(config_type, include_extras=True)
         for name, typ in th.items():
             arg: Optional[Arg] = None
@@ -535,8 +573,8 @@ class Processor(Generic[C]):
 
     @staticmethod
     def make(
-        config_type: Type[C],
-    ) -> Processor[C]:
+        config_type: Type[_Config],
+    ) -> Processor[_Config]:
         """
         Creates the processor corresponding to a configuration
         """
@@ -582,7 +620,7 @@ class Processor(Generic[C]):
         cwd: Path,
         args: Sequence[str],
         env: Mapping[str, str],
-    ) -> Result[Union[C, SpecialAction]]:
+    ) -> Res[Union[_Config, SpecialAction]]:
         """
         Processes command-line arguments, configuration files and environment variables
 
@@ -620,24 +658,24 @@ class Processor(Generic[C]):
             return state.special_action
 
         if errors:
-            return Err.collect_non_empty(*errors)
+            return Err.collect1(*errors)
         collected: Dict[str, Any] = {}
         for name, param in self.params_by_name.items():
             instances = state.instances[name]
             res = param.collector.collect(instances)
-            if is_value(res) and param.validator is not None:
+            if not isinstance(res, Err) and param.validator is not None:
                 res1 = param.validator(res)
                 if res1 is not None:
                     res = res1
-            if is_err(res):
+            if isinstance(res, Err):
                 errors.append(res.in_context(param=name))
             else:
                 collected[name] = res
 
         if errors:
-            return Err.collect_non_empty(*errors)
-        c: C = self.config_type(**collected)
-        validation_error: Optional[Err] = Err.collect_optional(*[f(c) for f in self.validators])
+            return Err.collect1(*errors)
+        c: _Config = self.config_type(**collected)
+        validation_error: Optional[Err] = Err.collect(*[f(c) for f in self.validators])
         if validation_error is not None:
             return validation_error
         else:

@@ -1,3 +1,31 @@
+"""
+Configuration definition
+
+This module defines the :class:`.Config` base class, from which all configuration derive.
+
+.. rubric:: Types
+
+This module uses the following types.
+
+.. py:data:: _Config
+
+    Configuration dataclass type being constructed
+
+.. py:data:: Validator
+
+    When used as a return type, marks that a method of :class:`.Config` is a validator.
+
+    A validator is a method that is called right after a :class:`.Config` instance is constructed;
+    the errors returned by all validators are collected, if any is present, the construction of the
+    configuration by :meth:`.Config.from_command_line_` is aborted.
+
+    Disregarding the annotation, which has no impact on type-checking, this is a type alias
+    for :data:`~typing.Optional` [ :class:`~configpile.userr.Err` ]
+
+    Validator = :data:`~typing_extensions.Annotated` [ :data:`~typing.Optional` [ :class:`~configpile.userr.Err` ], _ValidatorToken]
+
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -22,10 +50,12 @@ from typing import (
 
 from typing_extensions import Annotated, get_origin, get_type_hints
 
-from .errors import Err, Result
+from . import types
+from .arg import Param
 from .processor import Processor, SpecialAction
+from .userr import Err, Res
 
-C = TypeVar("C", bound="Config")
+_Config = TypeVar("_Config", bound="Config")
 
 
 @dataclass(frozen=True)
@@ -42,6 +72,7 @@ class _ValidatorToken:
     pass
 
 
+#: Validator type
 Validator = Annotated[Optional[Err], _ValidatorToken]
 
 
@@ -49,10 +80,18 @@ Validator = Annotated[Optional[Err], _ValidatorToken]
 class Config(ABC):
     """
     Base class for dataclasses holding configuration data
-    """
 
-    # #: Display usage information and exits
-    # help: ClassVar[HelpCmd] = HelpCmd(short_flag_name="-h", long_flag_name="--help")
+    Example:
+        .. code-block:: python
+
+            @dataclass(frozen=True)
+            class Adder(Config):
+                x: Annotated[int, Param.store(types.int_)]
+                y: Annotated[int, Param.store(types.int_, default_value="0")]
+
+            res = Adder.from_command_line_(args=['x','2', 'y','3'], env={})
+            res.x + res.y
+    """
 
     #: Names of sections to parse in configuration files, with unknown keys ignored
     ini_relaxed_sections_: ClassVar[Sequence[str]] = ["Common", "COMMON", "common"]
@@ -78,7 +117,7 @@ class Config(ABC):
     env_prefix_: ClassVar[Optional[str]] = None  #: Prefix for environment variables
 
     @classmethod
-    def validators_(cls: Type[C]) -> Sequence[Callable[[C], Optional[Err]]]:
+    def validators_(cls: Type[_Config]) -> Sequence[Callable[[_Config], Optional[Err]]]:
         """
         Returns all validators present in the given subclass of this class
 
@@ -88,7 +127,7 @@ class Config(ABC):
         Returns:
             A sequence of all validators
         """
-        res: List[Callable[[C], Optional[Err]]] = []
+        res: List[Callable[[_Config], Optional[Err]]] = []
         for name, meth in inspect.getmembers(cls, inspect.isroutine):
             m = getattr(cls, name)
             th = get_type_hints(m, include_extras=True)
@@ -110,7 +149,7 @@ class Config(ABC):
         return None
 
     @classmethod
-    def processor_(cls: Type[C]) -> Processor[C]:
+    def processor_(cls: Type[_Config]) -> Processor[_Config]:
         """
         Returns a processor for this configuration
         """
@@ -118,11 +157,11 @@ class Config(ABC):
 
     @classmethod
     def parse_command_line_(
-        cls: Type[C],
-        cwd: Path = Path.cwd(),
-        args: Sequence[str] = sys.argv[1:],
-        env: Mapping[str, str] = os.environ,
-    ) -> Result[Union[C, SpecialAction]]:
+        cls: Type[_Config],
+        cwd: Optional[Path] = None,
+        args: Optional[Sequence[str]] = None,
+        env: Optional[Mapping[str, str]] = None,
+    ) -> Res[Union[_Config, SpecialAction]]:
         """
         Parses multiple information sources, returns a configuration, a command or an error
 
@@ -137,16 +176,22 @@ class Config(ABC):
         Returns:
             A parsed configuration or an error
         """
+        if cwd is None:
+            cwd = Path.cwd()
+        if args is None:
+            args = sys.argv[1:]
+        if env is None:
+            env = os.environ
         processor = cls.processor_()
         return processor.process(cwd, args, env)
 
     @classmethod
     def from_command_line_(
-        cls: Type[C],
-        cwd: Path = Path.cwd(),
-        args: Sequence[str] = sys.argv[1:],
-        env: Mapping[str, str] = os.environ,
-    ) -> C:
+        cls: Type[_Config],
+        cwd: Optional[Path] = None,
+        args: Optional[Sequence[str]] = None,
+        env: Optional[Mapping[str, str]] = None,
+    ) -> _Config:
         """
         Parses multiple information sources into a configuration and display help on error
 
@@ -161,13 +206,21 @@ class Config(ABC):
         Returns:
             A parsed configuration
         """
+        if cwd is None:
+            cwd = Path.cwd()
+        if args is None:
+            args = sys.argv[1:]
+        if env is None:
+            env = os.environ
         res = cls.parse_command_line_(cwd, args, env)
 
         if isinstance(res, cls):
             return res
 
         if isinstance(res, Err):
+            print("Encountered errors:")
             res.pretty_print()
+            print(" ")
             cls.get_argument_parser_().print_help()
             sys.exit(1)
 
@@ -185,7 +238,7 @@ class Config(ABC):
             raise NotImplementedError(f"Unknown special action {res}")
 
     @classmethod
-    def get_argument_parser_(cls: Type[C]) -> argparse.ArgumentParser:
+    def get_argument_parser_(cls: Type[_Config]) -> argparse.ArgumentParser:
         """
         Returns an :class:`argparse.ArgumentParser` for documentation purposes
         """

@@ -1,3 +1,55 @@
+"""
+Argument definition
+
+This module enables the definitions of various kinds of configuration arguments.
+
+- Parameters (:class:`.Param`) correspond to values that will be present in the configuration. 
+  Each invocation of a parameter has a user-provided string attached, which is parsed by a 
+  :class:`~configpile.types.ParamType`. Those invocations can come from environment variables
+  (:attr:`.Param.env_var_name`), configuration files (:attr:`.Param.config_key_name`),
+  command-line flags (:attr:`.Arg.short_flag_name`, :attr:`.Arg.long_flag_name`), or finally
+  as positional command-line parameters (:attr:`.Param.positional`).
+
+- Configuration file inclusion using special parameters :meth:`.Param.config`
+
+- Expanders (:class:`.Expander`) can only be present as command-line flags; their action is
+  to insert a key/value pair in the command-line. This enables, for example, flags that set
+  a boolean parameter to `True` or `False`. 
+
+.. rubric:: Types
+
+This module uses the following types. 
+
+.. py:data:: ArgName
+
+    Name used for an argument invocation; can be::abbreviation:
+    
+    - :attr:`.AutoName.FORBIDDEN`, in which case the argument cannot be invoked in that context
+
+    - :attr:`.AutoName.DERIVED`, in which case the name is derived from the field name in the
+      :class:`~configpile.config.Config` subclass.
+
+    - a user provided string
+
+.. py:data:: _Config
+
+    Configuration dataclass type being constructed
+
+.. py:data:: _Arg
+
+    Precise argument type, used mostly internally.
+
+    See `<https://en.wikipedia.org/wiki/Bounded_quantification>`_
+
+.. py:data:: _Value
+
+    Type of the parameter value
+
+.. py:data:: _Item
+
+    Item in a sequence
+"""
+
 from __future__ import annotations
 
 import dataclasses
@@ -23,12 +75,14 @@ from typing import (
 from typing_extensions import TypeGuard
 
 from .collector import Collector
-from .errors import Err
 from .types import ParamType, path
+from .userr import Err
 
-T = TypeVar("T", covariant=True)  #: Item type
+# documented in the module docstring
 
-W = TypeVar("W", covariant=True)  #: Wrapped item type
+_Value = TypeVar("_Value", covariant=True)
+
+_Item = TypeVar("_Item", covariant=True)
 
 if TYPE_CHECKING:
     from .config import Config
@@ -99,10 +153,12 @@ class AutoName(Enum):
         return name.replace("_", "-")
 
 
+# those types are documented in the module docstring
+
 ArgName = Union[str, AutoName]
 
-A = TypeVar("A", bound="Arg")
-C = TypeVar("C", bound="Config")
+_Arg = TypeVar("_Arg", bound="Arg")
+_Config = TypeVar("_Config", bound="Config")
 
 # TODO: solve this bug
 
@@ -113,14 +169,17 @@ class Arg(ABC):
     Base class for all kinds of arguments
     """
 
-    help: Optional[str]  #: Help for the argument
+    #: Help for the argument
+    help: Optional[str]
 
     #: Short option name, used in command line parsing, prefixed by a single hyphen
     short_flag_name: Optional[str]
 
     #: Long option name used in command line argument parsing
     #:
-    #: It is lowercase, prefixed with ``--`` and words are separated by hyphens
+    #: It is in general lowercase, prefixed with ``--`` and words are separated by hyphens.,
+    #:
+    #: If set to
     long_flag_name: ArgName
 
     def all_flags(self) -> Sequence[str]:
@@ -152,7 +211,7 @@ class Arg(ABC):
             res["long_flag_name"] = AutoName.derive_long_flag_name(name)
         return res
 
-    def updated(self: A, name: str, help: str, env_prefix: Optional[str]) -> A:
+    def updated(self: _Arg, name: str, help: str, env_prefix: Optional[str]) -> _Arg:
         """
         Returns a copy of this argument with some data updated from its declaration context
 
@@ -168,7 +227,7 @@ class Arg(ABC):
         return dataclasses.replace(self, **self.update_dict_(name, help, env_prefix))
 
     @abstractmethod
-    def update_processor(self, pf: ProcessorFactory[C]) -> None:
+    def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
         """
         Updates a config processor with the processing required by this argument
 
@@ -195,6 +254,7 @@ class Expander(Arg):
     """
 
     new_flag: str  #: Inserted flag in the command line
+
     new_value: str  #: Inserted value in the command line
 
     def inserts(self) -> Tuple[str, str]:
@@ -203,7 +263,7 @@ class Expander(Arg):
         """
         return (self.new_flag, self.new_value)
 
-    def update_processor(self, pf: ProcessorFactory[C]) -> None:
+    def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
         from .processor import CLInserter
 
         for flag in self.all_flags():
@@ -270,34 +330,41 @@ class Positional(Enum):
 
 
 @dataclass(frozen=True)
-class Param(Arg, Generic[T]):
+class Param(Arg, Generic[_Value]):
     """
     Describes an argument holding a value of a given type
 
-    .. note::
-        Instances of :class:`.Param` have two "states":
+    You'll want to construct parameters using the static methods available:
 
-        * Initially, instances of :class:`.Param` are assigned to class attributes of
-        subclasses of :class:`.app.App`. In that state, :attr:`.Param.name` is not set,
-        and the other ``XXX_name`` attributes contain either a custom name provided by the user, or
-        instructions about the derivation of the corresponding name.
+    - :meth:`~.Param.store` to create a parameter that keeps the last value provided
 
-        * When an instance of :class:`.App` is constructed, the :attr:`.name` attribute and the
-          ``XXX_name`` attributes of the instance are updated.
+    - :meth:`~.Param.append` to create a parameter that collects all the provided value into
+      a sequence. Note that the parsed value must already be a sequence; for that, use the
+      method :meth:`~configpile.types.ParamType.as_sequence_of_one` on the
+      :class:`~configpile.types.ParamType` instance.
+
+    For the two constructions above, you can construct positional parameters by setting the
+    :attr:`.Param.positional` field.
+
+    - :meth:`~.Param.config` returns a parameter that parses configuration files.
     """
 
     #: Argument type, parser from string to value
-    param_type: ParamType[T]  # type: ignore
+    param_type: ParamType[_Value]  # type: ignore
 
     is_config: bool  #: Whether this represent a list of config files
 
     #: Argument collector
-    collector: Collector[T]  # type: ignore
+    collector: Collector[_Value]  # type: ignore
 
     default_value: Optional[str]  #: Default value inserted as instance
 
+    #: Python field identifier for this parameter in :class:`~configpile.config.Config`
     name: Optional[str]  #: Python identifier representing the argument
 
+    #: Whether this parameter can appear as a positional parameter and how
+    #:
+    #: A positional parameter is a paramater that appears without a preceding flag
     positional: Positional
 
     #: Configuration key name used in INI files
@@ -316,7 +383,7 @@ class Param(Arg, Generic[T]):
     #: (and an underscore).
     env_var_name: ArgName
 
-    validator: Optional[Callable[[T], Optional[Err]]]
+    validator: Optional[Callable[[_Value], Optional[Err]]]
 
     def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
         r = {"name": name, **super().update_dict_(name, help, env_prefix)}
@@ -366,7 +433,7 @@ class Param(Arg, Generic[T]):
             **self.param_type.argparse_argument_kwargs(),
         }
 
-    def update_processor(self, pf: ProcessorFactory[C]) -> None:
+    def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
         from .processor import CLConfigParam, CLParam, KVConfigParam, KVParam
 
         assert self.name is not None
@@ -399,7 +466,7 @@ class Param(Arg, Generic[T]):
 
     @staticmethod
     def store(
-        param_type: ParamType[T],
+        param_type: ParamType[_Value],
         *,
         help: Optional[str] = None,
         default_value: Optional[str] = None,
@@ -408,8 +475,8 @@ class Param(Arg, Generic[T]):
         long_flag_name: ArgName = AutoName.DERIVED,
         config_key_name: ArgName = AutoName.DERIVED,
         env_var_name: ArgName = AutoName.FORBIDDEN,
-        validator: Optional[Callable[[T], Optional[Err]]] = None,
-    ) -> Param[T]:
+        validator: Optional[Callable[[_Value], Optional[Err]]] = None,
+    ) -> Param[_Value]:
         """
         Creates a parameter that stores the last provided value
 
@@ -486,7 +553,7 @@ class Param(Arg, Generic[T]):
 
     @staticmethod
     def append(
-        param_type: ParamType[Sequence[W]],
+        param_type: ParamType[Sequence[_Item]],
         *,
         help: Optional[str] = None,
         positional: Positional = Positional.FORBIDDEN,
@@ -494,8 +561,8 @@ class Param(Arg, Generic[T]):
         long_flag_name: ArgName = AutoName.DERIVED,
         config_key_name: ArgName = AutoName.DERIVED,
         env_var_name: ArgName = AutoName.FORBIDDEN,
-        validator: Optional[Callable[[Sequence[W]], Optional[Err]]] = None,
-    ) -> Param[Sequence[W]]:
+        validator: Optional[Callable[[Sequence[_Item]], Optional[Err]]] = None,
+    ) -> Param[Sequence[_Item]]:
         """
         Creates an argument that stores the last provided value
 
