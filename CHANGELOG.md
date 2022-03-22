@@ -1,3 +1,13 @@
+## v8.0.0b0 (2022-03-22)
+
+### Fix
+
+- **docs**: remove the requirements.txt file as everything is handled by Poetry
+
+### Refactor
+
+- major refactoring
+
 ## v7.6.1 (2022-03-17)
 
 ### Fix
