@@ -1,0 +1,771 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Err1 &#8212; configpile</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ManyErr" href="configpile.userr.ManyErr.html" />
+    <link rel="prev" title="Err" href="configpile.userr.Err.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">configpile</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  General information
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Home page
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  API
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../api.html">
+   configpile
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.arg.html">
+     arg
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Arg.html">
+       Arg
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.AutoName.html">
+       AutoName
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Expander.html">
+       Expander
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Param.html">
+       Param
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Positional.html">
+       Positional
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.collector.html">
+     collector
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.collector.Collector.html">
+       Collector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.config.html">
+     config
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.config.Config.html">
+       Config
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.config.IniSection.html">
+       IniSection
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.processor.html">
+     processor
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLConfigParam.html">
+       CLConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLHandler.html">
+       CLHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLInserter.html">
+       CLInserter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLParam.html">
+       CLParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLPos.html">
+       CLPos
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLSpecialAction.html">
+       CLSpecialAction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLStdHandler.html">
+       CLStdHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.IniProcessor.html">
+       IniProcessor
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.KVConfigParam.html">
+       KVConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.KVHandler.html">
+       KVHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.KVParam.html">
+       KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.Processor.html">
+       Processor
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.ProcessorFactory.html">
+       ProcessorFactory
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.SpecialAction.html">
+       SpecialAction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.State.html">
+       State
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.types.html">
+     types
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.path.html">
+       path
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.int_.html">
+       int_
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.word.html">
+       word
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.float_.html">
+       float_
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.ParamType.html">
+       ParamType
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="configpile.userr.html">
+     userr
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.collect.html">
+       collect
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.collect_seq.html">
+       collect_seq
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flatMap.html">
+       flatMap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.in_context.html">
+       in_context
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.map.html">
+       map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.wrap.html">
+       wrap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.Err.html">
+       Err
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Err1
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.ManyErr.html">
+       ManyErr
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.util.html">
+     util
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.assert_never.html">
+       assert_never
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.dict_from_multiple_keys.html">
+       dict_from_multiple_keys
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_ordered_dict.html">
+       filter_ordered_dict
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_ordered_dict_by_value_type.html">
+       filter_ordered_dict_by_value_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_sequence_by_value_type.html">
+       filter_sequence_by_value_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_types.html">
+       filter_types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_types_single.html">
+       filter_types_single
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.ClassDoc.html">
+       ClassDoc
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Err1</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="section" id="err1">
+<h1>Err1<a class="headerlink" href="#err1" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="configpile.userr.Err1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Err1</span></span><a class="reference internal" href="../_modules/configpile/userr.html#Err1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.userr.Err1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.userr.Err</span></code></a></p>
+<p>Describes a single error</p>
+<p>This error stores a sequence of contexts, which are key/value pairs describing in which
+context the error occurred. Contexts are used for explaining to the user where the error
+occurred. They shouldn’t be used, in principle, to wrap additional information about the error.</p>
+<p class="rubric">Attributes</p>
+<p><em>Note: attributes inherited from parent classes are not shown here, if any</em></p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.userr.Err1.msg" title="configpile.userr.Err1.msg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">msg</span></code></a></p></td>
+<td><p>Error message</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.userr.Err1.contexts" title="configpile.userr.Err1.contexts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contexts</span></code></a></p></td>
+<td><p>Contexts in which the error appears, from old to new</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.userr.Err1.check" title="configpile.userr.Err1.check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check</span></code></a></p></td>
+<td><p>Returns an error if the given predicate is false, otherwise returns None.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.userr.Err1.collect" title="configpile.userr.Err1.collect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collect</span></code></a></p></td>
+<td><p>Collect a possibly empty sequence of (optional) errors into an optional single error</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.userr.Err1.collect1" title="configpile.userr.Err1.collect1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collect1</span></code></a></p></td>
+<td><p>Collect a non-empty sequence of errors into a single error</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.userr.Err1.errors" title="configpile.userr.Err1.errors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">errors</span></code></a></p></td>
+<td><p>Returns a sequence of all contained errors</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.userr.Err1.in_context" title="configpile.userr.Err1.in_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_context</span></code></a></p></td>
+<td><p>Adds to this error information about the context in which it occurred</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.userr.Err1.make" title="configpile.userr.Err1.make"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make</span></code></a></p></td>
+<td><p>Creates a single error</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.userr.Err1.markdown" title="configpile.userr.Err1.markdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">markdown</span></code></a></p></td>
+<td><p>Returns a Markdown-formatted summary of this error (or list of errors)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.userr.Err1.pretty_print" title="configpile.userr.Err1.pretty_print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pretty_print</span></code></a></p></td>
+<td><p>Pretty prints an error on the console</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">List of members of Err1</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.userr.Err1.msg">
+<span class="sig-name descname"><span class="pre">msg</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></em><a class="headerlink" href="#configpile.userr.Err1.msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error message</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.userr.Err1.contexts">
+<span class="sig-name descname"><span class="pre">contexts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.userr.Err1.contexts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contexts in which the error appears, from old to new</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.errors">
+<span class="sig-name descname"><span class="pre">errors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/userr.html#Err1.errors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.userr.Err1.errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sequence of all contained errors</p>
+<p>If this is not a collection of errors <a class="reference internal" href="configpile.userr.ManyErr.html#configpile.userr.ManyErr" title="configpile.userr.ManyErr"><code class="xref py py-class docutils literal notranslate"><span class="pre">ManyErr</span></code></a>, returns a sequence with
+a single item, this instance itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference internal" href="#configpile.userr.Err1" title="configpile.userr.Err1"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err1</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.markdown">
+<span class="sig-name descname"><span class="pre">markdown</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_contexts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/userr.html#Err1.markdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.userr.Err1.markdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Markdown-formatted summary of this error (or list of errors)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.in_context">
+<span class="sig-name descname"><span class="pre">in_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">contexts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/userr.html#Err1.in_context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.userr.Err1.in_context" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds to this error information about the context in which it occurred</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>contexts</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – Contexts (given as key/value pairs) to append to the context list</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.userr.Err1" title="configpile.userr.Err1"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err1</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Updated error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contexts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.userr.Err1.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.check">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">contexts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.userr.Err1.check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an error if the given predicate is false, otherwise returns None.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;a &lt; 0&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">b</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b &lt; 0&quot;</span><span class="p">))</span>
+<span class="go">Err1(&#39;a &lt; 0&#39;)</span>
+</pre></div>
+</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predicate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Predicate to check</p></li>
+<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Error message</p></li>
+<li><p><strong>contexts</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – Contexts (given as key/value pairs) to append to the context list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="#configpile.userr.Err1" title="configpile.userr.Err1"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err1</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An error or <cite>None</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.collect">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">errs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.userr.Err1.collect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect a possibly empty sequence of (optional) errors into an optional single error</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>errs</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]) – (Optional) errors</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An error or <cite>None</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.collect1">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_error</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">additional_errors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.userr.Err1.collect1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collect a non-empty sequence of errors into a single error</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>We can also collect errors coming from a list using the following syntax</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;err 1&#39;</span><span class="p">),</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;err 2&#39;</span><span class="p">),</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;err 3&#39;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="o">.</span><span class="n">collect1</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span>
+<span class="go">ManyErr(errs=...)</span>
+</pre></div>
+</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first_error</strong> (<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>) – First error to collect</p></li>
+<li><p><strong>additional_errors</strong> (<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>) – Errors to collect into a single error, at least one must be provided</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If no error is provided</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A consolidated error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.make">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">contexts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.userr.Err1.make" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single error</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;test error&quot;</span><span class="p">)</span>
+<span class="go">Err1(&#39;test error&#39;)</span>
+</pre></div>
+</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Error message</p></li>
+<li><p><strong>contexts</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – Contexts (given as key/value pairs) to append to the context list</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.userr.Err1" title="configpile.userr.Err1"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err1</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.userr.Err1.pretty_print">
+<span class="sig-name descname"><span class="pre">pretty_print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configpile.userr.Err1.pretty_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty prints an error on the console</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="configpile.userr.Err.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Err</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="configpile.userr.ManyErr.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ManyErr</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2022, Denis Rosset.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

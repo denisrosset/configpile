@@ -1,0 +1,758 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Config &#8212; configpile</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=84ace793992934648b4de8eed757e5a2" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="IniSection" href="configpile.config.IniSection.html" />
+    <link rel="prev" title="config" href="configpile.config.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<div class="col-12 col-md-3 bd-sidebar site-navigation " id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">configpile</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  General information
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../index.html">
+   Home page
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  API
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../api.html">
+   configpile
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.arg.html">
+     arg
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Arg.html">
+       Arg
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.AutoName.html">
+       AutoName
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Expander.html">
+       Expander
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Param.html">
+       Param
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.arg.Positional.html">
+       Positional
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.collector.html">
+     collector
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.collector.Collector.html">
+       Collector
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="configpile.config.html">
+     config
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Config
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.config.IniSection.html">
+       IniSection
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.processor.html">
+     processor
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLConfigParam.html">
+       CLConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLHandler.html">
+       CLHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLInserter.html">
+       CLInserter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLParam.html">
+       CLParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLPos.html">
+       CLPos
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLSpecialAction.html">
+       CLSpecialAction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.CLStdHandler.html">
+       CLStdHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.IniProcessor.html">
+       IniProcessor
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.KVConfigParam.html">
+       KVConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.KVHandler.html">
+       KVHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.KVParam.html">
+       KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.Processor.html">
+       Processor
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.ProcessorFactory.html">
+       ProcessorFactory
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.SpecialAction.html">
+       SpecialAction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.processor.State.html">
+       State
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.types.html">
+     types
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.path.html">
+       path
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.int_.html">
+       int_
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.word.html">
+       word
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.float_.html">
+       float_
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.types.ParamType.html">
+       ParamType
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.userr.html">
+     userr
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.collect.html">
+       collect
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.collect_seq.html">
+       collect_seq
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flatMap.html">
+       flatMap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.in_context.html">
+       in_context
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.map.html">
+       map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.wrap.html">
+       wrap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.Err.html">
+       Err
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.Err1.html">
+       Err1
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.ManyErr.html">
+       ManyErr
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.util.html">
+     util
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.assert_never.html">
+       assert_never
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.dict_from_multiple_keys.html">
+       dict_from_multiple_keys
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_ordered_dict.html">
+       filter_ordered_dict
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_ordered_dict_by_value_type.html">
+       filter_ordered_dict_by_value_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_sequence_by_value_type.html">
+       filter_sequence_by_value_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_types.html">
+       filter_types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_types_single.html">
+       filter_types_single
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.ClassDoc.html">
+       ClassDoc
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<!-- This is an invisible pixel that we watch to see if we've scrolled. -->
+<div class="sbt-scroll-pixel-helper"></div>
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            <div class="topbar-left">
+                
+                <label class="nav-toggle-button" for="__navigation">
+                    <div class="visually-hidden">Toggle navigation</div>
+                    <i class="fas fa-bars"></i>
+                </label>
+                
+            </div>
+            
+            <!-- Source interaction buttons -->
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Config</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="section" id="config">
+<h1>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="configpile.config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="../_modules/configpile/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base class for dataclasses holding configuration data</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Adder</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">int_</span><span class="p">)]</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">int_</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">Adder</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="n">env</span><span class="o">=</span><span class="p">{})</span>
+<span class="n">res</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<p class="rubric">Attributes</p>
+<p><em>Note: attributes inherited from parent classes are not shown here, if any</em></p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.description_" title="configpile.config.Config.description_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">description_</span></code></a></p></td>
+<td><p>Text to display before the argument help</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.env_prefix_" title="configpile.config.Config.env_prefix_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env_prefix_</span></code></a></p></td>
+<td><p>Prefix for environment variables</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.ini_relaxed_sections_" title="configpile.config.Config.ini_relaxed_sections_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ini_relaxed_sections_</span></code></a></p></td>
+<td><p>Names of sections to parse in configuration files, with unknown keys ignored</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.ini_strict_sections_" title="configpile.config.Config.ini_strict_sections_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ini_strict_sections_</span></code></a></p></td>
+<td><p>Names of additional sections to parse in configuration files, unknown keys error</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.prog_" title="configpile.config.Config.prog_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prog_</span></code></a></p></td>
+<td><p>Program name</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_command_line_</span></code></a></p></td>
+<td><p>Parses multiple information sources into a configuration and display help on error</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.get_argument_parser_" title="configpile.config.Config.get_argument_parser_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_argument_parser_</span></code></a></p></td>
+<td><p>Returns an <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> for documentation purposes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.ini_sections_" title="configpile.config.Config.ini_sections_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ini_sections_</span></code></a></p></td>
+<td><p>Returns a sequence of INI file sections to parse</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.parse_command_line_" title="configpile.config.Config.parse_command_line_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_command_line_</span></code></a></p></td>
+<td><p>Parses multiple information sources, returns a configuration, a command or an error</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.processor_" title="configpile.config.Config.processor_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processor_</span></code></a></p></td>
+<td><p>Returns a processor for this configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.validators_" title="configpile.config.Config.validators_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validators_</span></code></a></p></td>
+<td><p>Returns all validators present in the given subclass of this class</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.version_" title="configpile.config.Config.version_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version_</span></code></a></p></td>
+<td><p>Returns the version number of this script</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">List of members of Config</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.config.Config.ini_relaxed_sections_">
+<span class="sig-name descname"><span class="pre">ini_relaxed_sections_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Common',</span> <span class="pre">'COMMON',</span> <span class="pre">'common']</span></em><a class="headerlink" href="#configpile.config.Config.ini_relaxed_sections_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names of sections to parse in configuration files, with unknown keys ignored</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.config.Config.ini_strict_sections_">
+<span class="sig-name descname"><span class="pre">ini_strict_sections_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#configpile.config.Config.ini_strict_sections_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names of additional sections to parse in configuration files, unknown keys error</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.ini_sections_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ini_sections_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.ini_sections_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.ini_sections_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sequence of INI file sections to parse</p>
+<p>By default, this parses first the relaxed sections and then the strict ones.</p>
+<p>This method can be overridden.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference internal" href="configpile.config.IniSection.html#configpile.config.IniSection" title="configpile.config.IniSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">IniSection</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.config.Config.prog_">
+<span class="sig-name descname"><span class="pre">prog_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configpile.config.Config.prog_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Program name</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.config.Config.description_">
+<span class="sig-name descname"><span class="pre">description_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configpile.config.Config.description_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text to display before the argument help</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.config.Config.env_prefix_">
+<span class="sig-name descname"><span class="pre">env_prefix_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configpile.config.Config.env_prefix_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefix for environment variables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.validators_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validators_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.validators_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.validators_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all validators present in the given subclass of this class</p>
+<p>Validators are methods that take no arguments (except self) and return an optional error.
+They are annotated with the _ValidatorToken type, which has the alias Validator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]]]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A sequence of all validators</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.version_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.version_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.version_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the version number of this script</p>
+<p>Designed to be overridden by a subclass</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Version</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.processor_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">processor_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.processor_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.processor_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a processor for this configuration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="configpile.processor.Processor.html#configpile.processor.Processor" title="configpile.processor.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.parse_command_line_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_command_line_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.parse_command_line_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.parse_command_line_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses multiple information sources, returns a configuration, a command or an error</p>
+<p>Default values are taken from the current working directory, the script command line
+arguments, and the current environment variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwd</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>]) – Directory used as a base for the configuration file relative paths</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Command line arguments</p></li>
+<li><p><strong>env</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Environment variables</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.processor.SpecialAction.html#configpile.processor.SpecialAction" title="configpile.processor.SpecialAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecialAction</span></code></a>, <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A parsed configuration or an error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.from_command_line_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_command_line_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.from_command_line_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.from_command_line_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses multiple information sources into a configuration and display help on error</p>
+<p>Default values are taken from the current working directory, the script command line
+arguments, and the current environment variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cwd</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>]) – Directory used as a base for the configuration file relative paths</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Command line arguments</p></li>
+<li><p><strong>env</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]) – Environment variables</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A parsed configuration</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.get_argument_parser_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_argument_parser_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.get_argument_parser_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.get_argument_parser_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> for documentation purposes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configpile.config.Config.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="configpile.config.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">config</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="configpile.config.IniSection.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">IniSection</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2022, Denis Rosset.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
