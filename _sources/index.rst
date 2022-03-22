@@ -36,6 +36,7 @@ We generate Sphinx documentation from it using a simple Sphinx directive.
 .. argparse::
    :module: calculator
    :func: parser
+   :prog: calculator
 
 .. toctree::
     :hidden:
