@@ -1,19 +1,20 @@
 {
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "restructuredtext.languageServer.disabled": true,
-    "restructuredtext.builtDocumentationPath": "${workspaceFolder}/docs/build/html",
-    "restructuredtext.confPath": "${workspaceFolder}/docs/source",
-    "restructuredtext.updateOnTextChanged": "true",
-    "restructuredtext.updateDelay": 300,
     "cSpell.words": [
+        "autosummary",
         "configpile",
+        "dataclass",
+        "dataclasses",
         "isroutine",
+        "mathjax",
+        "maxdepth",
         "parsy",
-        "positionals"
-    ],
-    "python.testing.pytestArgs": [
-        "tests"
+        "positionals",
+        "pyparsing",
+        "Rosset",
+        "toctree",
+        "userr"
     ],
     "files.exclude": {
         ".venv/": true,
@@ -22,17 +23,14 @@
         "**/.pytest_cache": true,
         "**/build": true,
         "**/dist": true,
+        "docs/source/_autosummary": true
     },
-    "esbonio.server.enabled": false,
-    "esbonio.sphinx.buildDir": "/home/denis/w/configpile/docs/build",
+    "esbonio.server.enabled": true,
+    "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build/html",
     "esbonio.sphinx.confDir": "/home/denis/w/configpile/docs/source",
-    // "python.terminal.launchArgs": [
-    //     "-m",
-    //     "IPython",
-    //     "--no-autoindent",
-    //     "--InteractiveShellApp.exec_lines",
-    //     "%load_ext autoreload",
-    //     "--InteractiveShellApp.exec_lines",
-    //     "%autoreload 2"
-    // ],
+    "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/source",
+    "restructuredtext.linter.extraArgs": [
+        "--line-length",
+        "99",
+    ]
 }

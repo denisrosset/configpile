@@ -1,11 +1,52 @@
-Rich argparse
-=============
+Configpile: get clean configuration out of a pile of arguments
+==============================================================
 
+Configpile is a replacement for the :mod:`argparse` module of the Python
+standard library.
 
+It is written in clean, modern Python with extensive support of
+`PEP 484 <https://peps.python.org/pep-0484/>` type hints and :mod:`dataclasses`.
+
+It processes configuration settings coming from a variety of sources:
+
+* Environment variables
+
+* Command-line parameters
+
+* Configuration files (INI)
+
+Its best selling points are:
+
+* Code compactness; from the same dataclass declaration, we derive a
+  configuration parser, a command-line usage description and a Sphinx
+  documentation block.
+
+* Compatibility with IDEs
+
+* Error reporting: Instead of crashing at the first parse error, configpile
+  collects all the errors encountered and reports all of them.
+
+Example code
+------------
+
+.. literalinclude:: ../../examples/calculator.py
+
+We generate Sphinx documentation from it using a simple Sphinx directive.
+
+.. argparse::
+   :module: calculator
+   :func: parser
 
 .. toctree::
     :hidden:
-    :maxdepth: 1
+    :maxdepth: 3
     :caption: General information
+
+    Home page <self>
+
+.. toctree::
+    :hidden:
+    :maxdepth: 3
+    :caption: API
 
     api
