@@ -29,8 +29,4 @@
     "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build/html",
     "esbonio.sphinx.confDir": "/home/denis/w/configpile/docs/source",
     "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/source",
-    "restructuredtext.linter.extraArgs": [
-        "--line-length",
-        "99",
-    ]
 }
