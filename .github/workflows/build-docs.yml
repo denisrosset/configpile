@@ -25,10 +25,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        poetry install
+        poetry install -E docs -E rich -E parsy
 
 
-    # Build the book
+    # Build the site
     - name: Build the site
       run: |
         poetry run make -C docs clean html
