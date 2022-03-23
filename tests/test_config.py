@@ -54,7 +54,7 @@ def test_default_values() -> None:
 
 def test_config_files() -> None:
     dir = Path.cwd() / "tests"  # configpile root directory
-    res = B.parse_command_line_(cwd=dir, args=["--config", "test.ini"], env={})
+    res = B.parse_command_line_(cwd=dir, args=["--config", "example_config.ini"], env={})
     assert isinstance(res, B)
     assert res.a == 4
     assert res.b == 5
