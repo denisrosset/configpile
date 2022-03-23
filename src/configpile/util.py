@@ -13,6 +13,7 @@ Module defining utility functions
 """
 from __future__ import annotations
 
+import logging
 import textwrap
 from collections import OrderedDict
 from dataclasses import dataclass
@@ -85,8 +86,8 @@ class ClassDoc(Generic[_Class]):
         for c in t.mro():
             try:
                 docs.append(extract_docs_from_cls_obj(c))
-            except TypeError:
-                pass
+            except Exception as e:
+                logging.info("Could not retrieve docs for %s: %s", c, e)
 
         return ClassDoc(docs)
 
