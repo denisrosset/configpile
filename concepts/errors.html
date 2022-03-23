@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>int_ &#8212; configpile</title>
+    <title>Error handling in configpile &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="word" href="configpile.types.word.html" />
-    <link rel="prev" title="path" href="configpile.types.path.html" />
+    <link rel="next" title="Parsers" href="parsers.html" />
+    <link rel="prev" title="Concepts" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -84,7 +84,7 @@
   General information
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../index.html">
    Home page
@@ -107,27 +107,69 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step1.html">
-     Step 1: simple calculator
+     Step 1: Simple calculator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step2.html">
-     Step 2: reuse defaults, short flags
+     Step 2: Reuse defaults, short flags
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step3.html">
-     Step 3: positional arguments
+     Step 3: Two positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step4.html">
-     Step 4: positional arguments
+     Step 4: Many positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step5.html">
-     Step 5: additional options
+     Step 5: Additional features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Concepts
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Error handling in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       configpile
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="parsers.html">
+     Parsers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="params.html">
+     Params (parameters)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="config.html">
+     Configurations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="validation.html">
+     Parameter and configuration validation
     </a>
    </li>
   </ul>
@@ -138,57 +180,20 @@
   API
  </span>
 </p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active has-children">
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="../api.html">
    configpile
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
+  <ul>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="configpile.arg.html">
+    <a class="reference internal" href="../_autosummary/configpile.arg.html">
      arg
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Arg.html">
-       Arg
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Derived.html">
-       Derived
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Expander.html">
-       Expander
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Param.html">
-       Param
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Positional.html">
-       Positional
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="configpile.collector.html">
-     collector
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
     <label for="toctree-checkbox-4">
@@ -197,15 +202,35 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.collector.Collector.html">
-       Collector
+      <a class="reference internal" href="../_autosummary/configpile.arg.Arg.html">
+       Arg
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.arg.Derived.html">
+       Derived
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.arg.Expander.html">
+       Expander
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.arg.Param.html">
+       Param
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.arg.Positional.html">
+       Positional
       </a>
      </li>
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="configpile.config.html">
-     config
+    <a class="reference internal" href="../_autosummary/configpile.collector.html">
+     collector
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
     <label for="toctree-checkbox-5">
@@ -214,20 +239,15 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.config.Config.html">
-       Config
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.config.IniSection.html">
-       IniSection
+      <a class="reference internal" href="../_autosummary/configpile.collector.Collector.html">
+       Collector
       </a>
      </li>
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="configpile.processor.html">
-     processor
+    <a class="reference internal" href="../_autosummary/configpile.config.html">
+     config
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
     <label for="toctree-checkbox-6">
@@ -236,127 +256,67 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLConfigParam.html">
-       CLConfigParam
+      <a class="reference internal" href="../_autosummary/configpile.config.Config.html">
+       Config
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLHandler.html">
-       CLHandler
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLInserter.html">
-       CLInserter
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLParam.html">
-       CLParam
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLPos.html">
-       CLPos
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLSpecialAction.html">
-       CLSpecialAction
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLStdHandler.html">
-       CLStdHandler
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.IniProcessor.html">
-       IniProcessor
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.KVConfigParam.html">
-       KVConfigParam
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.KVHandler.html">
-       KVHandler
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.KVParam.html">
-       KVParam
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.Processor.html">
-       Processor
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.ProcessorFactory.html">
-       ProcessorFactory
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.SpecialAction.html">
-       SpecialAction
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.State.html">
-       State
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="configpile.types.html">
-     types
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.path.html">
-       path
-      </a>
-     </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       int_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.word.html">
-       word
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.float_.html">
-       float_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.ForceCase.html">
-       ForceCase
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.ParamType.html">
-       ParamType
+      <a class="reference internal" href="../_autosummary/configpile.config.IniSection.html">
+       IniSection
       </a>
      </li>
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="configpile.userr.html">
-     userr
+    <a class="reference internal" href="../_autosummary/configpile.parsers.html">
+     parsers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.path_parser.html">
+       path_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.int_parser.html">
+       int_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.str_parser.html">
+       str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.stripped_str_parser.html">
+       stripped_str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.float_parser.html">
+       float_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html">
+       Parser
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../_autosummary/configpile.processor.html">
+     processor
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
     <label for="toctree-checkbox-8">
@@ -365,55 +325,85 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.collect.html">
-       collect
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLConfigParam.html">
+       CLConfigParam
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.collect_seq.html">
-       collect_seq
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLHandler.html">
+       CLHandler
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.flatMap.html">
-       flatMap
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLInserter.html">
+       CLInserter
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.in_context.html">
-       in_context
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLParam.html">
+       CLParam
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.map.html">
-       map
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLPos.html">
+       CLPos
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.wrap.html">
-       wrap
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLSpecialAction.html">
+       CLSpecialAction
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.Err.html">
-       Err
+      <a class="reference internal" href="../_autosummary/configpile.processor.CLStdHandler.html">
+       CLStdHandler
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.Err1.html">
-       Err1
+      <a class="reference internal" href="../_autosummary/configpile.processor.IniProcessor.html">
+       IniProcessor
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.ManyErr.html">
-       ManyErr
+      <a class="reference internal" href="../_autosummary/configpile.processor.KVConfigParam.html">
+       KVConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.processor.KVHandler.html">
+       KVHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.processor.KVParam.html">
+       KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.processor.Processor.html">
+       Processor
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.processor.ProcessorFactory.html">
+       ProcessorFactory
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.processor.SpecialAction.html">
+       SpecialAction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.processor.State.html">
+       State
       </a>
      </li>
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="configpile.util.html">
-     util
+    <a class="reference internal" href="../_autosummary/configpile.userr.html">
+     userr
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
     <label for="toctree-checkbox-9">
@@ -422,42 +412,99 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.assert_never.html">
+      <a class="reference internal" href="../_autosummary/configpile.userr.collect.html">
+       collect
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.collect_seq.html">
+       collect_seq
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.flatMap.html">
+       flatMap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.in_context.html">
+       in_context
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.map.html">
+       map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.wrap.html">
+       wrap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.Err.html">
+       Err
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.Err1.html">
+       Err1
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.ManyErr.html">
+       ManyErr
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../_autosummary/configpile.util.html">
+     util
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.util.assert_never.html">
        assert_never
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.dict_from_multiple_keys.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.dict_from_multiple_keys.html">
        dict_from_multiple_keys
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.filter_ordered_dict.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.filter_ordered_dict.html">
        filter_ordered_dict
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.filter_ordered_dict_by_value_type.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.filter_ordered_dict_by_value_type.html">
        filter_ordered_dict_by_value_type
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.filter_sequence_by_value_type.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.filter_sequence_by_value_type.html">
        filter_sequence_by_value_type
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.filter_types.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.filter_types.html">
        filter_types
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.filter_types_single.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.filter_types_single.html">
        filter_types_single
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.util.ClassDoc.html">
+      <a class="reference internal" href="../_autosummary/configpile.util.ClassDoc.html">
        ClassDoc
       </a>
      </li>
@@ -521,7 +568,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>int_</h1>
+                <h1>Error handling in configpile</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -532,14 +579,8 @@
             
               <div>
                 
-  <div class="section" id="int">
-<h1>int_<a class="headerlink" href="#int" title="Permalink to this headline">¶</a></h1>
-<dl class="py data">
-<dt class="sig sig-object py" id="configpile.types.int_">
-<span class="sig-name descname"><span class="pre">int_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="configpile.types.ParamType.html#configpile.types.ParamType" title="configpile.types.ParamType"><span class="pre">configpile.types.ParamType</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">_FunctionThatRaises(fun=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;)</span></em><a class="headerlink" href="#configpile.types.int_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses an integer</p>
-</dd></dl>
-
+  <div class="tex2jax_ignore mathjax_ignore section" id="error-handling-in-configpile">
+<h1>Error handling in <code class="docutils literal notranslate"><span class="pre">configpile</span></code><a class="headerlink" href="#error-handling-in-configpile" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -548,17 +589,17 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="configpile.types.path.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">path</p>
+            <p class="prev-next-title">Concepts</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="configpile.types.word.html" title="next page">
+    <a class='right-next' id="next-link" href="parsers.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">word</p>
+        <p class="prev-next-title">Parsers</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

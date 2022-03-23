@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>configpile.types &#8212; configpile</title>
+    <title>configpile.parsers &#8212; configpile</title>
     
   <link href="../../_static/css/theme.css" rel="stylesheet">
   <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -105,27 +105,69 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../tutorial/step1.html">
-     Step 1: simple calculator
+     Step 1: Simple calculator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../tutorial/step2.html">
-     Step 2: reuse defaults, short flags
+     Step 2: Reuse defaults, short flags
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../tutorial/step3.html">
-     Step 3: positional arguments
+     Step 3: Two positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../tutorial/step4.html">
-     Step 4: positional arguments
+     Step 4: Many positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../../tutorial/step5.html">
-     Step 5: additional options
+     Step 5: Additional features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../concepts/index.html">
+   Concepts
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/errors.html">
+     Error handling in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       configpile
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/parsers.html">
+     Parsers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/params.html">
+     Params (parameters)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/config.html">
+     Configurations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
   </ul>
@@ -141,8 +183,8 @@
   <a class="reference internal" href="../../api.html">
    configpile
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -151,8 +193,8 @@
     <a class="reference internal" href="../../_autosummary/configpile.arg.html">
      arg
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -188,8 +230,8 @@
     <a class="reference internal" href="../../_autosummary/configpile.collector.html">
      collector
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -205,8 +247,8 @@
     <a class="reference internal" href="../../_autosummary/configpile.config.html">
      config
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -224,11 +266,58 @@
     </ul>
    </li>
    <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../_autosummary/configpile.parsers.html">
+     parsers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.path_parser.html">
+       path_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.int_parser.html">
+       int_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.str_parser.html">
+       str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.stripped_str_parser.html">
+       stripped_str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.float_parser.html">
+       float_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.parsers.Parser.html">
+       Parser
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
     <a class="reference internal" href="../../_autosummary/configpile.processor.html">
      processor
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -311,53 +400,11 @@
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="../../_autosummary/configpile.types.html">
-     types
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.types.path.html">
-       path
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.types.int_.html">
-       int_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.types.word.html">
-       word
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.types.float_.html">
-       float_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.types.ForceCase.html">
-       ForceCase
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.types.ParamType.html">
-       ParamType
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
     <a class="reference internal" href="../../_autosummary/configpile.userr.html">
      userr
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -413,8 +460,8 @@
     <a class="reference internal" href="../../_autosummary/configpile.util.html">
      util
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -530,7 +577,7 @@
             
               <div>
                 
-  <h1>Source code for configpile.types</h1><div class="highlight"><pre>
+  <h1>Source code for configpile.parsers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Argument value parsing</span>
 
@@ -563,6 +610,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
@@ -606,7 +654,7 @@
 <span class="n">_ReturnType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;_ReturnType&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ForceCase"><a class="viewcode-back" href="../../_autosummary/configpile.types.ForceCase.html#configpile.types.ForceCase">[docs]</a><span class="k">class</span> <span class="nc">ForceCase</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="ForceCase"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase">[docs]</a><span class="k">class</span> <span class="nc">ForceCase</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Describes whether a string is normalized to lower or upper case before processing</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -616,10 +664,10 @@
     <span class="n">LOWER</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1">#: Change to lowercase</span></div>
 
 
-<div class="viewcode-block" id="ParamType"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType">[docs]</a><span class="k">class</span> <span class="nc">ParamType</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Describes a parameter type, which parses a string into a parameter value&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Parser"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser">[docs]</a><span class="k">class</span> <span class="nc">Parser</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Describes a parser, that takes a string and returns either a value or an error&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ParamType.parse"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.parse">[docs]</a>    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="Parser.parse"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.parse">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses a string into a result</span>
@@ -629,10 +677,10 @@
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; user_input = &quot;invalid&quot;</span>
-<span class="sd">            &gt;&gt;&gt; float_.parse(user_input)</span>
+<span class="sd">            &gt;&gt;&gt; float_parser.parse(user_input)</span>
 <span class="sd">            Err1(&quot;Error &#39;could not convert string to float: &#39;invalid&#39;&#39; in &#39;invalid&#39;&quot;)</span>
 <span class="sd">            &gt;&gt;&gt; user_input = 2.0</span>
-<span class="sd">            &gt;&gt;&gt; float_.parse(user_input)</span>
+<span class="sd">            &gt;&gt;&gt; float_parser.parse(user_input)</span>
 <span class="sd">            2.0</span>
 
 <span class="sd">        Args:</span>
@@ -642,15 +690,19 @@
 <span class="sd">            A result containing either the parsed value or a description of an error</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="ParamType.argparse_argument_kwargs"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.argparse_argument_kwargs">[docs]</a>    <span class="k">def</span> <span class="nf">argparse_argument_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="Parser.choices"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.choices">[docs]</a>    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns, if any, the keyword arguments that should be provided to :mod:`argparse`</span>
+<span class="sd">        Returns, when relevant, a set of inputs whose parse results cover all possible values</span>
 
-<span class="sd">        The arguments will be added to :meth:`argparse.ArgumentParser.add_argument`</span>
+<span class="sd">        The definition above is written carefully: parsers may parse aliases, or normalize input</span>
+<span class="sd">        when parsing (by stripping whitespace or normalizing case).</span>
+
+<span class="sd">        This method returns a set of strings, which does not need to be minimal, so that</span>
+<span class="sd">        their parsed values cover the set of possible result values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{}</span></div>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ParamType.map"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.map">[docs]</a>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">_Item</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Item</span><span class="p">]:</span>
+<div class="viewcode-block" id="Parser.map"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.map">[docs]</a>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">_Item</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Item</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Maps successful results of the parser through the given function</span>
 
@@ -662,7 +714,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_Mapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.as_sequence_of_one"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.as_sequence_of_one">[docs]</a>    <span class="k">def</span> <span class="nf">as_sequence_of_one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Parser.as_sequence_of_one"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.as_sequence_of_one">[docs]</a>    <span class="k">def</span> <span class="nf">as_sequence_of_one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a parameter type, that returns a sequence of a single value on success</span>
 
@@ -672,7 +724,7 @@
         <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_I</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">_I</span><span class="p">]]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.empty_means_none"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.empty_means_none">[docs]</a>    <span class="k">def</span> <span class="nf">empty_means_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Parser.empty_means_none"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.empty_means_none">[docs]</a>    <span class="k">def</span> <span class="nf">empty_means_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a new parameter type where the empty string means None</span>
 
@@ -684,9 +736,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_EmptyMeansNone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.separated_by"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.separated_by">[docs]</a>    <span class="k">def</span> <span class="nf">separated_by</span><span class="p">(</span>
+<div class="viewcode-block" id="Parser.separated_by"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.separated_by">[docs]</a>    <span class="k">def</span> <span class="nf">separated_by</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">remove_empty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a new parameter type that parses values separated by a string</span>
 
@@ -700,7 +752,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_SeparatedBy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">remove_empty</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.validated"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.validated">[docs]</a>    <span class="k">def</span> <span class="nf">validated</span><span class="p">(</span>
+<div class="viewcode-block" id="Parser.validated"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.validated">[docs]</a>    <span class="k">def</span> <span class="nf">validated</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Validated</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -724,8 +776,8 @@
                 <span class="n">msg</span><span class="p">,</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.from_parser"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.from_parser">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_parser</span><span class="p">(</span><span class="n">type_</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+<div class="viewcode-block" id="Parser.from_parsy_parser"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_parsy_parser">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_parsy_parser</span><span class="p">(</span><span class="n">type_</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parameter type from a parsy parser</span>
 
@@ -738,21 +790,24 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_Parsy</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.from_function_that_raises"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.from_function_that_raises">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_function_that_raises</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_Value</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+<div class="viewcode-block" id="Parser.from_function_that_raises"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function_that_raises">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_function_that_raises</span><span class="p">(</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_Value</span><span class="p">],</span> <span class="o">*</span><span class="n">catch</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parameter type from a function that raises exceptions on parse errors</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            f: Function that parses the string</span>
+<span class="sd">            catch: Exception types to catch</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Parameter type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_FunctionThatRaises</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">_FromFunctionThatRaises</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">catch</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.from_result_function"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.from_result_function">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_result_function</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+<div class="viewcode-block" id="Parser.from_function"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_function</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parameter type from a function that returns a value or an error</span>
 
@@ -763,10 +818,10 @@
 <span class="sd">            Parameter type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">_ResultFunction</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">_FromFunction</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.invalid"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.invalid">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">invalid</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+<div class="viewcode-block" id="Parser.invalid"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.invalid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">invalid</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parameter type that always return errors</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -774,14 +829,14 @@
         <span class="k">def</span> <span class="nf">invalid_fun</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Invalid parameter type&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="n">invalid_fun</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="n">invalid_fun</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.choices_str"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.choices_str">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">choices_str</span><span class="p">(</span>
+<div class="viewcode-block" id="Parser.from_choices"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_choices">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_choices</span><span class="p">(</span>
         <span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">force_case</span><span class="p">:</span> <span class="n">ForceCase</span> <span class="o">=</span> <span class="n">ForceCase</span><span class="o">.</span><span class="n">NO_CHANGE</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parameter type whose values are chosen from a set of strings</span>
 
@@ -793,15 +848,15 @@
 <span class="sd">            Parameter type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">choices</span><span class="p">({</span><span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">},</span> <span class="n">strip</span><span class="p">,</span> <span class="n">force_case</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_mapping</span><span class="p">({</span><span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">},</span> <span class="n">strip</span><span class="p">,</span> <span class="n">force_case</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParamType.choices"><a class="viewcode-back" href="../../_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.choices">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span>
+<div class="viewcode-block" id="Parser.from_mapping"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_mapping">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_mapping</span><span class="p">(</span>
         <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">],</span>
         <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">force_case</span><span class="p">:</span> <span class="n">ForceCase</span> <span class="o">=</span> <span class="n">ForceCase</span><span class="o">.</span><span class="n">NO_CHANGE</span><span class="p">,</span>
         <span class="n">aliases</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parameter type whose strings correspond to keys in a dictionary</span>
 
@@ -818,7 +873,7 @@
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_Choices</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">_Choices</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Describes a multiple choice parameter type</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -846,30 +901,34 @@
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Value </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2"> not in choices </span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">argparse_argument_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;choices&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
 
 <span class="nd">@dataclass</span>  <span class="c1"># not frozen because mypy bug, please be responsible</span>
-<span class="k">class</span> <span class="nc">_FunctionThatRaises</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">_FromFunctionThatRaises</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps a function that may raise exceptions</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># the optional is to make mypy happy</span>
     <span class="n">fun</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_Value</span><span class="p">]</span>  <span class="c1">#: Callable function that may raise</span>
+    <span class="n">catch</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fun</span>
             <span class="k">assert</span> <span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error &#39;</span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">catch</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">catch</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error &#39;</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
 
 
 <span class="nd">@dataclass</span>  <span class="c1"># not frozen because mypy bug, please be responsible</span>
-<span class="k">class</span> <span class="nc">_ResultFunction</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">_FromFunction</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps a function that returns a result</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -881,7 +940,7 @@
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_Parsy</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">_Parsy</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps a parser from the parsy library</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -902,12 +961,12 @@
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_EmptyMeansNone</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Item</span><span class="p">]]):</span>
+<span class="k">class</span> <span class="nc">_EmptyMeansNone</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Item</span><span class="p">]]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps an existing parameter type so that &quot;empty means none&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">wrapped</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Item</span><span class="p">]</span>  <span class="c1">#: Wrapped ParamType called if value is not empty</span>
+    <span class="n">wrapped</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Item</span><span class="p">]</span>  <span class="c1">#: Wrapped ParamType called if value is not empty</span>
     <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#:  Whether to strip whitespace before testing for empty</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Item</span><span class="p">]]:</span>
@@ -920,12 +979,12 @@
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_Mapped</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">,</span> <span class="n">_ReturnType</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">_Mapped</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">,</span> <span class="n">_ReturnType</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps an existing parser and applies a function to its successful result</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">wrapped</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">]</span>  <span class="c1">#: Wrapped parser</span>
+    <span class="n">wrapped</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">]</span>  <span class="c1">#: Wrapped parser</span>
     <span class="n">f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Parameter</span><span class="p">],</span> <span class="n">_ReturnType</span><span class="p">]]</span>  <span class="c1">#: Mapping function, made optional as a hack</span>
 
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]:</span>
@@ -935,14 +994,17 @@
             <span class="k">return</span> <span class="n">res</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped</span><span class="o">.</span><span class="n">choices</span><span class="p">()</span>
+
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_SeparatedBy</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Item</span><span class="p">]]):</span>
+<span class="k">class</span> <span class="nc">_SeparatedBy</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Item</span><span class="p">]]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parses values separated by a given separator</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">item</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Item</span><span class="p">]</span>  <span class="c1">#: ParamType of individual items</span>
+    <span class="n">item</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Item</span><span class="p">]</span>  <span class="c1">#: ParamType of individual items</span>
     <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">#: Item separator</span>
     <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#: Whether to strip whitespace around separated strings</span>
     <span class="n">remove_empty</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#: Whether to prune empty strings</span>
@@ -959,12 +1021,12 @@
 
 
 <span class="nd">@dataclass</span>  <span class="c1"># TODO: (frozen=True) when mypy sorts out dataclasses with Callable fields</span>
-<span class="k">class</span> <span class="nc">_Validated</span><span class="p">(</span><span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">_Validated</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parses a value and validates it</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">wrapped</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">_Value</span><span class="p">]</span>
+    <span class="n">wrapped</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]</span>
     <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span>
     <span class="n">msg</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span>
 
@@ -977,19 +1039,26 @@
             <span class="k">return</span> <span class="n">res</span>
         <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
 
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped</span><span class="o">.</span><span class="n">choices</span><span class="p">()</span>
+
 
 <span class="c1">#: Parses a path</span>
-<span class="n">path</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">path_parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
 
 <span class="c1">#: Parses an integer</span>
-<span class="n">int_</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<span class="n">int_parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
 
-<span class="c1">#: Parses a word, stripping whitespace on the left and right</span>
-<span class="n">word</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="c1">#: Parses a string, preserves whitespace</span>
+<span class="n">str_parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="p">)</span>
 
-<span class="c1">#: Float parameter type</span>
-<span class="n">float_</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
-<span class="n">bool_</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
+<span class="c1">#: Parses a string, stripping whitespace left and right</span>
+<span class="n">stripped_str_parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+<span class="c1">#: Parses a float</span>
+<span class="n">float_parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+<span class="n">bool_parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_mapping</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;true&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
     <span class="n">force_case</span><span class="o">=</span><span class="n">ForceCase</span><span class="o">.</span><span class="n">LOWER</span><span class="p">,</span>
     <span class="n">aliases</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>

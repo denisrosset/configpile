@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>path &#8212; configpile</title>
+    <title>parsers &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="int_" href="configpile.types.int_.html" />
-    <link rel="prev" title="types" href="configpile.types.html" />
+    <link rel="next" title="path_parser" href="configpile.parsers.path_parser.html" />
+    <link rel="prev" title="IniSection" href="configpile.config.IniSection.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -107,27 +107,69 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step1.html">
-     Step 1: simple calculator
+     Step 1: Simple calculator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step2.html">
-     Step 2: reuse defaults, short flags
+     Step 2: Reuse defaults, short flags
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step3.html">
-     Step 3: positional arguments
+     Step 3: Two positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step4.html">
-     Step 4: positional arguments
+     Step 4: Many positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step5.html">
-     Step 5: additional options
+     Step 5: Additional features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../concepts/index.html">
+   Concepts
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/errors.html">
+     Error handling in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       configpile
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/parsers.html">
+     Parsers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/params.html">
+     Params (parameters)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
   </ul>
@@ -143,8 +185,8 @@
   <a class="reference internal" href="../api.html">
    configpile
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -153,8 +195,8 @@
     <a class="reference internal" href="configpile.arg.html">
      arg
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -190,8 +232,8 @@
     <a class="reference internal" href="configpile.collector.html">
      collector
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -207,8 +249,8 @@
     <a class="reference internal" href="configpile.config.html">
      config
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -225,12 +267,59 @@
      </li>
     </ul>
    </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="current reference internal" href="#">
+     parsers
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.path_parser.html">
+       path_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.int_parser.html">
+       int_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.str_parser.html">
+       str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.stripped_str_parser.html">
+       stripped_str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.float_parser.html">
+       float_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.Parser.html">
+       Parser
+      </a>
+     </li>
+    </ul>
+   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="configpile.processor.html">
      processor
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -312,54 +401,12 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="configpile.types.html">
-     types
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       path
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.int_.html">
-       int_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.word.html">
-       word
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.float_.html">
-       float_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.ForceCase.html">
-       ForceCase
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.ParamType.html">
-       ParamType
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="configpile.userr.html">
      userr
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -415,8 +462,8 @@
     <a class="reference internal" href="configpile.util.html">
      util
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -521,7 +568,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>path</h1>
+                <h1>parsers</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -532,14 +579,78 @@
             
               <div>
                 
-  <div class="section" id="path">
-<h1>path<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-configpile.parsers">
+<span id="parsers"></span><h1>parsers<a class="headerlink" href="#module-configpile.parsers" title="Permalink to this headline">¶</a></h1>
+<p>Argument value parsing</p>
+<p>This module is mostly self-contained, and provides ways to construct <code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code> instances
+which parse string arguments into values.</p>
+<p>During the configuration building, the parsed values are collected by a
+<a class="reference internal" href="configpile.collector.Collector.html#configpile.collector.Collector" title="configpile.collector.Collector"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.collector.Collector</span></code></a> instance.</p>
+<p class="rubric">Types</p>
+<p>This module uses the following types.</p>
 <dl class="py data">
-<dt class="sig sig-object py" id="configpile.types.path">
-<span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="configpile.types.ParamType.html#configpile.types.ParamType" title="configpile.types.ParamType"><span class="pre">configpile.types.ParamType</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">_FunctionThatRaises(fun=&lt;function</span> <span class="pre">&lt;lambda&gt;&gt;)</span></em><a class="headerlink" href="#configpile.types.path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a path</p>
+<dt class="sig sig-object py" id="configpile.parsers._Value">
+<span class="sig-name descname"><span class="pre">_Value</span></span><a class="headerlink" href="#configpile.parsers._Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value being parsed by a <code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></p>
 </dd></dl>
 
+<dl class="py data">
+<dt class="sig sig-object py" id="configpile.parsers._Parameter">
+<span class="sig-name descname"><span class="pre">_Parameter</span></span><a class="headerlink" href="#configpile.parsers._Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type received by a mapping function</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="configpile.parsers._ReturnType">
+<span class="sig-name descname"><span class="pre">_ReturnType</span></span><a class="headerlink" href="#configpile.parsers._ReturnType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type returned by a mapping function</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="configpile.parsers._Item">
+<span class="sig-name descname"><span class="pre">_Item</span></span><a class="headerlink" href="#configpile.parsers._Item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Item in a sequence</p>
+</dd></dl>
+
+<p class="rubric">Module attributes</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.path_parser.html#configpile.parsers.path_parser" title="configpile.parsers.path_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path_parser</span></code></a></p></td>
+<td><p>Parses a path</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="configpile.parsers.int_parser.html#configpile.parsers.int_parser" title="configpile.parsers.int_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int_parser</span></code></a></p></td>
+<td><p>Parses an integer</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.str_parser.html#configpile.parsers.str_parser" title="configpile.parsers.str_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str_parser</span></code></a></p></td>
+<td><p>Parses a string, preserves whitespace</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="configpile.parsers.stripped_str_parser.html#configpile.parsers.stripped_str_parser" title="configpile.parsers.stripped_str_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stripped_str_parser</span></code></a></p></td>
+<td><p>Parses a string, stripping whitespace left and right</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.float_parser.html#configpile.parsers.float_parser" title="configpile.parsers.float_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float_parser</span></code></a></p></td>
+<td><p>Parses a float</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.ForceCase.html#configpile.parsers.ForceCase" title="configpile.parsers.ForceCase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForceCase</span></code></a></p></td>
+<td><p>Describes whether a string is normalized to lower or upper case before processing</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parser</span></code></a></p></td>
+<td><p>Describes a parser, that takes a string and returns either a value or an error</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
@@ -548,17 +659,17 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="configpile.types.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="configpile.config.IniSection.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">types</p>
+            <p class="prev-next-title">IniSection</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="configpile.types.int_.html" title="next page">
+    <a class='right-next' id="next-link" href="configpile.parsers.path_parser.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">int_</p>
+        <p class="prev-next-title">path_parser</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

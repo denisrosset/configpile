@@ -1,7 +1,7 @@
-﻿types
-=====
+﻿parsers
+=======
 
-.. automodule:: configpile.types
+.. automodule:: configpile.parsers
    
    
    
@@ -10,10 +10,11 @@
    .. autosummary::
       :toctree:
    
-      path
-      int_
-      word
-      float_
+      path_parser
+      int_parser
+      str_parser
+      stripped_str_parser
+      float_parser
    
    
 
@@ -30,7 +31,7 @@
       :nosignatures:
    
       ForceCase
-      ParamType
+      Parser
    
    
 

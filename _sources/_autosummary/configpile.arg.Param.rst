@@ -18,7 +18,7 @@ Param
 
    .. autosummary::
    
-      ~Param.param_type
+      ~Param.parser
       ~Param.is_config
       ~Param.collector
       ~Param.default_value

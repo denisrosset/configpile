@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Step 3: positional arguments &#8212; configpile</title>
+    <title>Step 3: Two positional arguments &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Step 4: positional arguments" href="step4.html" />
-    <link rel="prev" title="Step 2: reuse defaults, short flags" href="step2.html" />
+    <link rel="next" title="Step 4: Many positional arguments" href="step4.html" />
+    <link rel="prev" title="Step 2: Reuse defaults, short flags" href="step2.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -107,27 +107,69 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="step1.html">
-     Step 1: simple calculator
+     Step 1: Simple calculator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="step2.html">
-     Step 2: reuse defaults, short flags
+     Step 2: Reuse defaults, short flags
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     Step 3: positional arguments
+     Step 3: Two positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="step4.html">
-     Step 4: positional arguments
+     Step 4: Many positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="step5.html">
-     Step 5: additional options
+     Step 5: Additional features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../concepts/index.html">
+   Concepts
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/errors.html">
+     Error handling in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       configpile
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/parsers.html">
+     Parsers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/params.html">
+     Params (parameters)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
   </ul>
@@ -143,8 +185,8 @@
   <a class="reference internal" href="../api.html">
    configpile
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -153,8 +195,8 @@
     <a class="reference internal" href="../_autosummary/configpile.arg.html">
      arg
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -190,8 +232,8 @@
     <a class="reference internal" href="../_autosummary/configpile.collector.html">
      collector
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -207,8 +249,8 @@
     <a class="reference internal" href="../_autosummary/configpile.config.html">
      config
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -226,11 +268,58 @@
     </ul>
    </li>
    <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../_autosummary/configpile.parsers.html">
+     parsers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.path_parser.html">
+       path_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.int_parser.html">
+       int_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.str_parser.html">
+       str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.stripped_str_parser.html">
+       stripped_str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.float_parser.html">
+       float_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html">
+       Parser
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
     <a class="reference internal" href="../_autosummary/configpile.processor.html">
      processor
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -313,53 +402,11 @@
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="../_autosummary/configpile.types.html">
-     types
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.types.path.html">
-       path
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.types.int_.html">
-       int_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.types.word.html">
-       word
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.types.float_.html">
-       float_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.types.ForceCase.html">
-       ForceCase
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.types.ParamType.html">
-       ParamType
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
     <a class="reference internal" href="../_autosummary/configpile.userr.html">
      userr
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -415,8 +462,8 @@
     <a class="reference internal" href="../_autosummary/configpile.util.html">
      util
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -520,8 +567,13 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-code">
-   Example code
+  <a class="reference internal nav-link" href="#code">
+   Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#executions">
+   Executions
   </a>
  </li>
 </ul>
@@ -534,7 +586,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Step 3: positional arguments</h1>
+                <h1>Step 3: Two positional arguments</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -545,8 +597,13 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#example-code">
-   Example code
+  <a class="reference internal nav-link" href="#code">
+   Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#executions">
+   Executions
   </a>
  </li>
 </ul>
@@ -558,10 +615,17 @@
             
               <div>
                 
-  <div class="section" id="step-3-positional-arguments">
-<h1>Step 3: positional arguments<a class="headerlink" href="#step-3-positional-arguments" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="example-code">
-<h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="step-3-two-positional-arguments">
+<h1>Step 3: Two positional arguments<a class="headerlink" href="#step-3-two-positional-arguments" title="Permalink to this headline">¶</a></h1>
+<p>For the parameters that are <em>not</em> optional, it makes sense to parse them in a positional manner,
+i.e. take them from the command line arguments without them being preceded by a flag.</p>
+<p>Now, for both <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code>, we set their <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.long_flag_name" title="configpile.arg.Param.long_flag_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">long_flag_name</span></code></a> and
+<a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.short_flag_name" title="configpile.arg.Param.short_flag_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">short_flag_name</span></code></a> fields to <cite>None</cite>, and set their
+<a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.positional" title="configpile.arg.Param.positional"><code class="xref py py-attr docutils literal notranslate"><span class="pre">positional</span></code></a> field to <a class="reference internal" href="../_autosummary/configpile.arg.Positional.html#configpile.arg.Positional.ONCE" title="configpile.arg.Positional.ONCE"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ONCE</span></code></a>,
+which means that a single value is expected for both.</p>
+<p>Note how the usage description changed in the execution sample.</p>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span>
@@ -579,7 +643,7 @@
     <span class="n">x</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">float</span><span class="p">,</span>
         <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span>
-            <span class="n">types</span><span class="o">.</span><span class="n">float_</span><span class="p">,</span>
+            <span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span>
             <span class="n">positional</span><span class="o">=</span><span class="n">Positional</span><span class="o">.</span><span class="n">ONCE</span><span class="p">,</span>
             <span class="n">short_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">long_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -590,7 +654,7 @@
     <span class="n">y</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">float</span><span class="p">,</span>
         <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span>
-            <span class="n">types</span><span class="o">.</span><span class="n">float_</span><span class="p">,</span>
+            <span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span>
             <span class="n">positional</span><span class="o">=</span><span class="n">Positional</span><span class="o">.</span><span class="n">ONCE</span><span class="p">,</span>
             <span class="n">short_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">long_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -602,6 +666,9 @@
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="o">+</span><span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="executions">
+<h2>Executions<a class="headerlink" href="#executions" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python ../../examples/calculator3.py --help
 usage: ../../examples/calculator3.py x y
 
@@ -630,13 +697,13 @@ required arguments:
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Step 2: reuse defaults, short flags</p>
+            <p class="prev-next-title">Step 2: Reuse defaults, short flags</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="step4.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Step 4: positional arguments</p>
+        <p class="prev-next-title">Step 4: Many positional arguments</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

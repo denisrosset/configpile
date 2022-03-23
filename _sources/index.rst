@@ -34,6 +34,8 @@ Its best selling points are:
 
     Home page <self>
     tutorial/index
+    concepts/index
+
 
 .. toctree::
     :hidden:

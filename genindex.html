@@ -105,27 +105,69 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="tutorial/step1.html">
-     Step 1: simple calculator
+     Step 1: Simple calculator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="tutorial/step2.html">
-     Step 2: reuse defaults, short flags
+     Step 2: Reuse defaults, short flags
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="tutorial/step3.html">
-     Step 3: positional arguments
+     Step 3: Two positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="tutorial/step4.html">
-     Step 4: positional arguments
+     Step 4: Many positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="tutorial/step5.html">
-     Step 5: additional options
+     Step 5: Additional features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="concepts/index.html">
+   Concepts
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concepts/errors.html">
+     Error handling in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       configpile
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concepts/parsers.html">
+     Parsers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concepts/params.html">
+     Params (parameters)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concepts/config.html">
+     Configurations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
   </ul>
@@ -141,8 +183,8 @@
   <a class="reference internal" href="api.html">
    configpile
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -151,8 +193,8 @@
     <a class="reference internal" href="_autosummary/configpile.arg.html">
      arg
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -188,8 +230,8 @@
     <a class="reference internal" href="_autosummary/configpile.collector.html">
      collector
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -205,8 +247,8 @@
     <a class="reference internal" href="_autosummary/configpile.config.html">
      config
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -224,11 +266,58 @@
     </ul>
    </li>
    <li class="toctree-l2 has-children">
+    <a class="reference internal" href="_autosummary/configpile.parsers.html">
+     parsers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.path_parser.html">
+       path_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.int_parser.html">
+       int_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.str_parser.html">
+       str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.stripped_str_parser.html">
+       stripped_str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.float_parser.html">
+       float_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.parsers.Parser.html">
+       Parser
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
     <a class="reference internal" href="_autosummary/configpile.processor.html">
      processor
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -311,53 +400,11 @@
     </ul>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="_autosummary/configpile.types.html">
-     types
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/configpile.types.path.html">
-       path
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/configpile.types.int_.html">
-       int_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/configpile.types.word.html">
-       word
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/configpile.types.float_.html">
-       float_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/configpile.types.ForceCase.html">
-       ForceCase
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="_autosummary/configpile.types.ParamType.html">
-       ParamType
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
     <a class="reference internal" href="_autosummary/configpile.userr.html">
      userr
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -413,8 +460,8 @@
     <a class="reference internal" href="_autosummary/configpile.util.html">
      util
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -617,7 +664,7 @@
 </li>
         <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.__new__">(Param static method)</a>
 </li>
-        <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.__new__">(ParamType static method)</a>
+        <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.__new__">(Parser static method)</a>
 </li>
         <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.__new__">(Processor static method)</a>
 </li>
@@ -643,16 +690,16 @@
       <ul>
         <li><a href="_autosummary/configpile.collector.html#configpile.collector._Item">(in module configpile.collector)</a>
 </li>
-        <li><a href="_autosummary/configpile.types.html#configpile.types._Item">(in module configpile.types)</a>
+        <li><a href="_autosummary/configpile.parsers.html#configpile.parsers._Item">(in module configpile.parsers)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/configpile.util.html#configpile.util._Key">_Key (in module configpile.util)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.html#configpile.types._Parameter">_Parameter (in module configpile.types)</a>
+      <li><a href="_autosummary/configpile.parsers.html#configpile.parsers._Parameter">_Parameter (in module configpile.parsers)</a>
 </li>
       <li><a href="_autosummary/configpile.userr.html#configpile.userr._Parameters">_Parameters (in module configpile.userr)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.html#configpile.types._ReturnType">_ReturnType (in module configpile.types)</a>
+      <li><a href="_autosummary/configpile.parsers.html#configpile.parsers._ReturnType">_ReturnType (in module configpile.parsers)</a>
 
       <ul>
         <li><a href="_autosummary/configpile.userr.html#configpile.userr._ReturnType">(in module configpile.userr)</a>
@@ -669,9 +716,9 @@
       <ul>
         <li><a href="_autosummary/configpile.collector.html#configpile.collector._Value">(in module configpile.collector)</a>
 </li>
-        <li><a href="_autosummary/configpile.processor.html#configpile.processor._Value">(in module configpile.processor)</a>
+        <li><a href="_autosummary/configpile.parsers.html#configpile.parsers._Value">(in module configpile.parsers)</a>
 </li>
-        <li><a href="_autosummary/configpile.types.html#configpile.types._Value">(in module configpile.types)</a>
+        <li><a href="_autosummary/configpile.processor.html#configpile.processor._Value">(in module configpile.processor)</a>
 </li>
         <li><a href="_autosummary/configpile.userr.html#configpile.userr._Value">(in module configpile.userr)</a>
 </li>
@@ -739,8 +786,6 @@
 </li>
         <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.argparse_argument_kwargs">(Param method)</a>
 </li>
-        <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.argparse_argument_kwargs">(ParamType method)</a>
-</li>
       </ul></li>
       <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.argument_parser">argument_parser (Processor attribute)</a>
 
@@ -748,7 +793,7 @@
         <li><a href="_autosummary/configpile.processor.ProcessorFactory.html#configpile.processor.ProcessorFactory.argument_parser">(ProcessorFactory attribute)</a>
 </li>
       </ul></li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.as_sequence_of_one">as_sequence_of_one() (ParamType method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.as_sequence_of_one">as_sequence_of_one() (Parser method)</a>
 </li>
       <li><a href="_autosummary/configpile.util.assert_never.html#configpile.util.assert_never">assert_never() (in module configpile.util)</a>
 </li>
@@ -766,9 +811,7 @@
         <li><a href="_autosummary/configpile.userr.ManyErr.html#configpile.userr.ManyErr.check">(ManyErr static method)</a>
 </li>
       </ul></li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.choices">choices() (ParamType static method)</a>
-</li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.choices_str">choices_str() (ParamType static method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.choices">choices() (Parser method)</a>
 </li>
       <li><a href="_autosummary/configpile.processor.ProcessorFactory.html#configpile.processor.ProcessorFactory.cl_flag_handlers">cl_flag_handlers (ProcessorFactory attribute)</a>
 </li>
@@ -852,17 +895,17 @@
 </li>
       </ul></li>
       <li>
+    configpile.parsers
+
+      <ul>
+        <li><a href="_autosummary/configpile.parsers.html#module-configpile.parsers">module</a>
+</li>
+      </ul></li>
+      <li>
     configpile.processor
 
       <ul>
         <li><a href="_autosummary/configpile.processor.html#module-configpile.processor">module</a>
-</li>
-      </ul></li>
-      <li>
-    configpile.types
-
-      <ul>
-        <li><a href="_autosummary/configpile.types.html#module-configpile.types">module</a>
 </li>
       </ul></li>
       <li>
@@ -907,7 +950,7 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.empty_means_none">empty_means_none() (ParamType method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.empty_means_none">empty_means_none() (Parser method)</a>
 </li>
       <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.env_handlers">env_handlers (Processor attribute)</a>
 
@@ -957,21 +1000,25 @@
 </li>
       <li><a href="_autosummary/configpile.processor.CLStdHandler.html#configpile.processor.CLStdHandler.flags">flags (CLStdHandler attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/configpile.userr.flatMap.html#configpile.userr.flatMap">flatMap() (in module configpile.userr)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.float_.html#configpile.types.float_">float_ (in module configpile.types)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/configpile.parsers.float_parser.html#configpile.parsers.float_parser">float_parser (in module configpile.parsers)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.ForceCase.html#configpile.types.ForceCase">ForceCase (class in configpile.types)</a>
+      <li><a href="_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase">ForceCase (class in configpile.parsers)</a>
+</li>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_choices">from_choices() (Parser static method)</a>
 </li>
       <li><a href="_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_">from_command_line_() (Config class method)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.from_function_that_raises">from_function_that_raises() (ParamType static method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function">from_function() (Parser static method)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.from_parser">from_parser() (ParamType static method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function_that_raises">from_function_that_raises() (Parser static method)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.from_result_function">from_result_function() (ParamType static method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_mapping">from_mapping() (Parser static method)</a>
+</li>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_parsy_parser">from_parsy_parser() (Parser static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1061,12 +1108,12 @@
 </li>
       <li><a href="_autosummary/configpile.processor.State.html#configpile.processor.State.instances">instances (State attribute)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.int_.html#configpile.types.int_">int_ (in module configpile.types)</a>
+      <li><a href="_autosummary/configpile.parsers.int_parser.html#configpile.parsers.int_parser">int_parser (in module configpile.parsers)</a>
 </li>
       <li><a href="_autosummary/configpile.collector.Collector.html#configpile.collector.Collector.invalid">invalid() (Collector static method)</a>
 
       <ul>
-        <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.invalid">(ParamType static method)</a>
+        <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.invalid">(Parser static method)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.is_config">is_config (Param attribute)</a>
@@ -1109,7 +1156,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/configpile.types.ForceCase.html#configpile.types.ForceCase.LOWER">LOWER (ForceCase attribute)</a>
+      <li><a href="_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase.LOWER">LOWER (ForceCase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1142,7 +1189,7 @@
       <li><a href="_autosummary/configpile.userr.map.html#configpile.userr.map">map() (in module configpile.userr)</a>
 
       <ul>
-        <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.map">(ParamType method)</a>
+        <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.map">(Parser method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1165,9 +1212,9 @@
 </li>
         <li><a href="_autosummary/configpile.config.html#module-configpile.config">configpile.config</a>
 </li>
-        <li><a href="_autosummary/configpile.processor.html#module-configpile.processor">configpile.processor</a>
+        <li><a href="_autosummary/configpile.parsers.html#module-configpile.parsers">configpile.parsers</a>
 </li>
-        <li><a href="_autosummary/configpile.types.html#module-configpile.types">configpile.types</a>
+        <li><a href="_autosummary/configpile.processor.html#module-configpile.processor">configpile.processor</a>
 </li>
         <li><a href="_autosummary/configpile.userr.html#module-configpile.userr">configpile.userr</a>
 </li>
@@ -1194,7 +1241,7 @@
 </li>
       <li><a href="_autosummary/configpile.arg.Expander.html#configpile.arg.Expander.new_value">new_value (Expander attribute)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.ForceCase.html#configpile.types.ForceCase.NO_CHANGE">NO_CHANGE (ForceCase attribute)</a>
+      <li><a href="_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase.NO_CHANGE">NO_CHANGE (ForceCase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1226,21 +1273,21 @@
         <li><a href="_autosummary/configpile.processor.KVParam.html#configpile.processor.KVParam.param">(KVParam attribute)</a>
 </li>
       </ul></li>
-      <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.param_type">param_type (Param attribute)</a>
-</li>
       <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.params_by_name">params_by_name (Processor attribute)</a>
 
       <ul>
         <li><a href="_autosummary/configpile.processor.ProcessorFactory.html#configpile.processor.ProcessorFactory.params_by_name">(ProcessorFactory attribute)</a>
 </li>
       </ul></li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType">ParamType (class in configpile.types)</a>
-</li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.parse">parse() (ParamType method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.parse">parse() (Parser method)</a>
 </li>
       <li><a href="_autosummary/configpile.config.Config.html#configpile.config.Config.parse_command_line_">parse_command_line_() (Config class method)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.path.html#configpile.types.path">path (in module configpile.types)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser">Parser (class in configpile.parsers)</a>
+</li>
+      <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.parser">parser (Param attribute)</a>
+</li>
+      <li><a href="_autosummary/configpile.parsers.path_parser.html#configpile.parsers.path_parser">path_parser (in module configpile.parsers)</a>
 </li>
       <li><a href="_autosummary/configpile.processor.CLPos.html#configpile.processor.CLPos.pos">pos (CLPos attribute)</a>
 </li>
@@ -1296,7 +1343,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/configpile.processor.IniProcessor.html#configpile.processor.IniProcessor.section_strict">section_strict (IniProcessor attribute)</a>
 </li>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.separated_by">separated_by() (ParamType method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.separated_by">separated_by() (Parser method)</a>
 </li>
       <li><a href="_autosummary/configpile.arg.Arg.html#configpile.arg.Arg.short_flag_name">short_flag_name (Arg attribute)</a>
 
@@ -1310,10 +1357,10 @@
 </li>
       <li><a href="_autosummary/configpile.arg.Derived.html#configpile.arg.Derived.SNAKE_CASE">SNAKE_CASE (Derived attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/configpile.arg.Derived.html#configpile.arg.Derived.SNAKE_CASE_UPPER_CASE">SNAKE_CASE_UPPER_CASE (Derived attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/configpile.processor.CLSpecialAction.html#configpile.processor.CLSpecialAction.special_action">special_action (CLSpecialAction attribute)</a>
 
       <ul>
@@ -1326,7 +1373,11 @@
 </li>
       <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.store">store() (Param static method)</a>
 </li>
+      <li><a href="_autosummary/configpile.parsers.str_parser.html#configpile.parsers.str_parser">str_parser (in module configpile.parsers)</a>
+</li>
       <li><a href="_autosummary/configpile.config.IniSection.html#configpile.config.IniSection.strict">strict (IniSection attribute)</a>
+</li>
+      <li><a href="_autosummary/configpile.parsers.stripped_str_parser.html#configpile.parsers.stripped_str_parser">stripped_str_parser (in module configpile.parsers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1360,7 +1411,7 @@
         <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.updated">(Param method)</a>
 </li>
       </ul></li>
-      <li><a href="_autosummary/configpile.types.ForceCase.html#configpile.types.ForceCase.UPPER">UPPER (ForceCase attribute)</a>
+      <li><a href="_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase.UPPER">UPPER (ForceCase attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1368,7 +1419,7 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/configpile.types.ParamType.html#configpile.types.ParamType.validated">validated() (ParamType method)</a>
+      <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.validated">validated() (Parser method)</a>
 </li>
       <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.validators">validators (Processor attribute)</a>
 
@@ -1389,10 +1440,6 @@
 
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="_autosummary/configpile.types.word.html#configpile.types.word">word (in module configpile.types)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/configpile.userr.wrap.html#configpile.userr.wrap">wrap() (in module configpile.userr)</a>
 </li>

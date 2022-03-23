@@ -1,7 +1,7 @@
 ForceCase
 =========
 
-.. currentmodule:: configpile.types
+.. currentmodule:: configpile.parsers
 
 .. autoclass:: ForceCase
    :show-inheritance:

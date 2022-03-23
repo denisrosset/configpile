@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ParamType &#8212; configpile</title>
+    <title>Parser &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="userr" href="configpile.userr.html" />
-    <link rel="prev" title="ForceCase" href="configpile.types.ForceCase.html" />
+    <link rel="next" title="processor" href="configpile.processor.html" />
+    <link rel="prev" title="ForceCase" href="configpile.parsers.ForceCase.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -107,27 +107,69 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step1.html">
-     Step 1: simple calculator
+     Step 1: Simple calculator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step2.html">
-     Step 2: reuse defaults, short flags
+     Step 2: Reuse defaults, short flags
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step3.html">
-     Step 3: positional arguments
+     Step 3: Two positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step4.html">
-     Step 4: positional arguments
+     Step 4: Many positional arguments
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../tutorial/step5.html">
-     Step 5: additional options
+     Step 5: Additional features
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../concepts/index.html">
+   Concepts
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/errors.html">
+     Error handling in
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       configpile
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/parsers.html">
+     Parsers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/params.html">
+     Params (parameters)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
   </ul>
@@ -143,8 +185,8 @@
   <a class="reference internal" href="../api.html">
    configpile
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -153,8 +195,8 @@
     <a class="reference internal" href="configpile.arg.html">
      arg
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-    <label for="toctree-checkbox-3">
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -190,8 +232,8 @@
     <a class="reference internal" href="configpile.collector.html">
      collector
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -207,8 +249,8 @@
     <a class="reference internal" href="configpile.config.html">
      config
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-    <label for="toctree-checkbox-5">
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -225,12 +267,59 @@
      </li>
     </ul>
    </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="configpile.parsers.html">
+     parsers
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.path_parser.html">
+       path_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.int_parser.html">
+       int_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.str_parser.html">
+       str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.stripped_str_parser.html">
+       stripped_str_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.float_parser.html">
+       float_parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Parser
+      </a>
+     </li>
+    </ul>
+   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="configpile.processor.html">
      processor
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -312,54 +401,12 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="configpile.types.html">
-     types
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.path.html">
-       path
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.int_.html">
-       int_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.word.html">
-       word
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.float_.html">
-       float_
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.types.ForceCase.html">
-       ForceCase
-      </a>
-     </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       ParamType
-      </a>
-     </li>
-    </ul>
-   </li>
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="configpile.userr.html">
      userr
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -415,8 +462,8 @@
     <a class="reference internal" href="configpile.util.html">
      util
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -521,7 +568,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>ParamType</h1>
+                <h1>Parser</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -532,13 +579,13 @@
             
               <div>
                 
-  <div class="section" id="paramtype">
-<h1>ParamType<a class="headerlink" href="#paramtype" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="parser">
+<h1>Parser<a class="headerlink" href="#parser" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="configpile.types.ParamType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParamType</span></span><a class="reference internal" href="../_modules/configpile/types.html#ParamType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.types.html#configpile.types._Value" title="configpile.types._Value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.types._Value</span></code></a>]</p>
-<p>Describes a parameter type, which parses a string into a parameter value</p>
+<dt class="sig sig-object py" id="configpile.parsers.Parser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Parser</span></span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.parsers.html#configpile.parsers._Value" title="configpile.parsers._Value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.parsers._Value</span></code></a>]</p>
+<p>Describes a parser, that takes a string and returns either a value or an error</p>
 <p class="rubric">Methods</p>
 <table class="longtable table autosummary">
 <colgroup>
@@ -546,61 +593,61 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.argparse_argument_kwargs" title="configpile.types.ParamType.argparse_argument_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argparse_argument_kwargs</span></code></a></p></td>
-<td><p>Returns, if any, the keyword arguments that should be provided to <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.types.ParamType.as_sequence_of_one" title="configpile.types.ParamType.as_sequence_of_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_sequence_of_one</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.as_sequence_of_one" title="configpile.parsers.Parser.as_sequence_of_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_sequence_of_one</span></code></a></p></td>
 <td><p>Returns a parameter type, that returns a sequence of a single value on success</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.choices" title="configpile.types.ParamType.choices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choices</span></code></a></p></td>
-<td><p>Creates a parameter type whose strings correspond to keys in a dictionary</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.parsers.Parser.choices" title="configpile.parsers.Parser.choices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choices</span></code></a></p></td>
+<td><p>Returns, when relevant, a set of inputs whose parse results cover all possible values</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.types.ParamType.choices_str" title="configpile.types.ParamType.choices_str"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choices_str</span></code></a></p></td>
-<td><p>Creates a parameter type whose values are chosen from a set of strings</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.empty_means_none" title="configpile.types.ParamType.empty_means_none"><code class="xref py py-obj docutils literal notranslate"><span class="pre">empty_means_none</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.empty_means_none" title="configpile.parsers.Parser.empty_means_none"><code class="xref py py-obj docutils literal notranslate"><span class="pre">empty_means_none</span></code></a></p></td>
 <td><p>Returns a new parameter type where the empty string means None</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.types.ParamType.from_function_that_raises" title="configpile.types.ParamType.from_function_that_raises"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_function_that_raises</span></code></a></p></td>
-<td><p>Creates a parameter type from a function that raises exceptions on parse errors</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.parsers.Parser.from_choices" title="configpile.parsers.Parser.from_choices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_choices</span></code></a></p></td>
+<td><p>Creates a parameter type whose values are chosen from a set of strings</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.from_parser" title="configpile.types.ParamType.from_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_parser</span></code></a></p></td>
-<td><p>Creates a parameter type from a parsy parser</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.types.ParamType.from_result_function" title="configpile.types.ParamType.from_result_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_result_function</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.from_function" title="configpile.parsers.Parser.from_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_function</span></code></a></p></td>
 <td><p>Creates a parameter type from a function that returns a value or an error</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.invalid" title="configpile.types.ParamType.invalid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invalid</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.parsers.Parser.from_function_that_raises" title="configpile.parsers.Parser.from_function_that_raises"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_function_that_raises</span></code></a></p></td>
+<td><p>Creates a parameter type from a function that raises exceptions on parse errors</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.from_mapping" title="configpile.parsers.Parser.from_mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mapping</span></code></a></p></td>
+<td><p>Creates a parameter type whose strings correspond to keys in a dictionary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.parsers.Parser.from_parsy_parser" title="configpile.parsers.Parser.from_parsy_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_parsy_parser</span></code></a></p></td>
+<td><p>Creates a parameter type from a parsy parser</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.invalid" title="configpile.parsers.Parser.invalid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invalid</span></code></a></p></td>
 <td><p>Creates a parameter type that always return errors</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.types.ParamType.map" title="configpile.types.ParamType.map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.parsers.Parser.map" title="configpile.parsers.Parser.map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map</span></code></a></p></td>
 <td><p>Maps successful results of the parser through the given function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.parse" title="configpile.types.ParamType.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.parse" title="configpile.parsers.Parser.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a></p></td>
 <td><p>Parses a string into a result</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.types.ParamType.separated_by" title="configpile.types.ParamType.separated_by"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separated_by</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.parsers.Parser.separated_by" title="configpile.parsers.Parser.separated_by"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separated_by</span></code></a></p></td>
 <td><p>Returns a new parameter type that parses values separated by a string</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.types.ParamType.validated" title="configpile.types.ParamType.validated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.parsers.Parser.validated" title="configpile.parsers.Parser.validated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validated</span></code></a></p></td>
 <td><p>Returns a parameter type that verifies a predicate after successful parse</p></td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">List of members of ParamType</p>
+<p class="rubric">List of members of Parser</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.parse">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.parse" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.parse">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses a string into a result</p>
 <p>This method reports parsing errors using a result type instead of raising
 exceptions.</p>
 <div class="admonition-example admonition">
 <p class="admonition-title">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">user_input</span> <span class="o">=</span> <span class="s2">&quot;invalid&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">float_</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">float_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
 <span class="go">Err1(&quot;Error &#39;could not convert string to float: &#39;invalid&#39;&#39; in &#39;invalid&#39;&quot;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">user_input</span> <span class="o">=</span> <span class="mf">2.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">float_</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">float_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
 <span class="go">2.0</span>
 </pre></div>
 </div>
@@ -619,27 +666,30 @@ exceptions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.argparse_argument_kwargs">
-<span class="sig-name descname"><span class="pre">argparse_argument_kwargs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.argparse_argument_kwargs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.argparse_argument_kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns, if any, the keyword arguments that should be provided to <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.10)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a></p>
-<p>The arguments will be added to <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument" title="(in Python v3.10)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">argparse.ArgumentParser.add_argument()</span></code></a></p>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.choices">
+<span class="sig-name descname"><span class="pre">choices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.choices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.choices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns, when relevant, a set of inputs whose parse results cover all possible values</p>
+<p>The definition above is written carefully: parsers may parse aliases, or normalize input
+when parsing (by stripping whitespace or normalizing case).</p>
+<p>This method returns a set of strings, which does not need to be minimal, so that
+their parsed values cover the set of possible result values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.map">
-<span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.map" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.map">
+<span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Maps successful results of the parser through the given function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item</span></code>)]) – Function to map the result through</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item</span></code>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item</span></code>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Updated parameter type</p>
@@ -648,12 +698,12 @@ exceptions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.as_sequence_of_one">
-<span class="sig-name descname"><span class="pre">as_sequence_of_one</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.as_sequence_of_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.as_sequence_of_one" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.as_sequence_of_one">
+<span class="sig-name descname"><span class="pre">as_sequence_of_one</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.as_sequence_of_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.as_sequence_of_one" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a parameter type, that returns a sequence of a single value on success</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]]</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Updated parameter type</p>
@@ -662,15 +712,15 @@ exceptions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.empty_means_none">
-<span class="sig-name descname"><span class="pre">empty_means_none</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.empty_means_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.empty_means_none" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.empty_means_none">
+<span class="sig-name descname"><span class="pre">empty_means_none</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.empty_means_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.empty_means_none" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a new parameter type where the empty string means None</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>strip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether to strip whitespace</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A new parameter type</p>
@@ -679,8 +729,8 @@ exceptions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.separated_by">
-<span class="sig-name descname"><span class="pre">separated_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.separated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.separated_by" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.separated_by">
+<span class="sig-name descname"><span class="pre">separated_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_empty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.separated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.separated_by" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a new parameter type that parses values separated by a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -691,7 +741,7 @@ exceptions.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A new parameter type</p>
@@ -700,8 +750,8 @@ exceptions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.validated">
-<span class="sig-name descname"><span class="pre">validated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.validated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.validated" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.validated">
+<span class="sig-name descname"><span class="pre">validated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.validated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.validated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a parameter type that verifies a predicate after successful parse</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -721,8 +771,8 @@ and the result</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.from_parser">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.from_parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.from_parser" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.from_parsy_parser">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_parsy_parser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.from_parsy_parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.from_parsy_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a parameter type from a parsy parser</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -732,7 +782,7 @@ and the result</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Parameter type</p>
@@ -741,15 +791,18 @@ and the result</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.from_function_that_raises">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_function_that_raises</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.from_function_that_raises"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.from_function_that_raises" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.from_function_that_raises">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_function_that_raises</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">catch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.from_function_that_raises"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.from_function_that_raises" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a parameter type from a function that raises exceptions on parse errors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]) – Function that parses the string</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]) – Function that parses the string</p></li>
+<li><p><strong>catch</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a>]) – Exception types to catch</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Parameter type</p>
@@ -758,15 +811,15 @@ and the result</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.from_result_function">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_result_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.from_result_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.from_result_function" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.from_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.from_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.from_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a parameter type from a function that returns a value or an error</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]]) – Function that parses the string</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Parameter type</p>
@@ -775,19 +828,19 @@ and the result</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.invalid">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">invalid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.invalid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.invalid" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.invalid">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">invalid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.invalid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.invalid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a parameter type that always return errors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.choices_str">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">choices_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ForceCase.NO_CHANGE</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.choices_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.choices_str" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.from_choices">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_choices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ForceCase.NO_CHANGE</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.from_choices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.from_choices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a parameter type whose values are chosen from a set of strings</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -797,7 +850,7 @@ and the result</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Parameter type</p>
@@ -806,20 +859,20 @@ and the result</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.choices">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">choices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ForceCase.NO_CHANGE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/types.html#ParamType.choices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.types.ParamType.choices" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.from_mapping">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_mapping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_case</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ForceCase.NO_CHANGE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aliases</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/parsers.html#Parser.from_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.parsers.Parser.from_mapping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a parameter type whose strings correspond to keys in a dictionary</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mapping</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]) – Dictionary mapping strings to values</p></li>
 <li><p><strong>strip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether to strip whitespace before looking for keys</p></li>
-<li><p><strong>force_case</strong> (<a class="reference internal" href="configpile.types.ForceCase.html#configpile.types.ForceCase" title="configpile.types.ForceCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForceCase</span></code></a>) – Whether to normalize the case of the user string</p></li>
+<li><p><strong>force_case</strong> (<a class="reference internal" href="configpile.parsers.ForceCase.html#configpile.parsers.ForceCase" title="configpile.parsers.ForceCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForceCase</span></code></a>) – Whether to normalize the case of the user string</p></li>
 <li><p><strong>aliases</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]) – Additional mappings not shown in help</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.types.ParamType" title="configpile.types.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Parameter type</p>
@@ -828,8 +881,8 @@ and the result</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.types.ParamType.__new__">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.types.ParamType.__new__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="configpile.parsers.Parser.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.parsers.Parser.__new__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -842,17 +895,17 @@ and the result</p></li>
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="configpile.types.ForceCase.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="configpile.parsers.ForceCase.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
             <p class="prev-next-title">ForceCase</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="configpile.userr.html" title="next page">
+    <a class='right-next' id="next-link" href="configpile.processor.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">userr</p>
+        <p class="prev-next-title">processor</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

@@ -27,8 +27,8 @@ The main classes reexported are:
    configpile.arg
    configpile.collector
    configpile.config
+   configpile.parsers
    configpile.processor
-   configpile.types
    configpile.userr
    configpile.util
 
