@@ -145,7 +145,7 @@ class CLParam(CLHandler, Generic[_Value]):
 
     def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
         if args:
-            res = self.param.param_type.parse(args[0])
+            res = self.param.parser.parse(args[0])
             if isinstance(res, Err):
                 return (args[1:], res.in_context(param=self.param.name))
             else:
@@ -209,7 +209,7 @@ class CLPos(CLHandler):
             return (args[1:], Err.make(f"Unknown argument {args[0]}"))
         p = self.pos[0]
         assert p.name is not None
-        res = p.param_type.parse(args[0])
+        res = p.parser.parse(args[0])
         if isinstance(res, Err):
             return (args[1:], in_context(res, param=p.name))
         else:
@@ -292,7 +292,7 @@ class KVParam(KVHandler, Generic[_Value]):
         return None
 
     def handle(self, value: str, state: State) -> Optional[Err]:
-        res = self.param.param_type.parse(value)
+        res = self.param.parser.parse(value)
         if isinstance(res, Err):
             return res
         else:
@@ -364,7 +364,7 @@ class State:
         for p in params:
             assert p.name is not None, "Arguments have names after initialization"
             if p.default_value is not None:
-                res = p.param_type.parse(p.default_value)
+                res = p.parser.parse(p.default_value)
                 if isinstance(res, Err):
                     raise ValueError(f"Invalid default {p.default_value} for parameter {p.name}")
                 instances[p.name] = [res]

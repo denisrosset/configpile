@@ -14,12 +14,12 @@ class WithPositional(Config):
     This is a description
     """
 
-    a: Annotated[int, Param.store(types.int_)]  #: Super doc message
+    a: Annotated[int, Param.store(parsers.int_parser)]  #: Super doc message
 
     strings: Annotated[
         Sequence[str],
         Param.append1(
-            types.word,
+            parsers.stripped_str_parser,
             positional=Positional.ONE_OR_MORE,
             long_flag_name=None,
             short_flag_name=None,

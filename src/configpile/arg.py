@@ -61,7 +61,7 @@ from typing import (
 )
 
 from .collector import Collector
-from .types import ParamType, path
+from .parsers import Parser, path_parser
 
 # documented in the module docstring
 
@@ -143,7 +143,9 @@ class Arg(ABC):
             res.append(self.long_flag_name)
         return res
 
-    def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
+    def update_dict_(
+        self, name: str, help: Optional[str], env_prefix: Optional[str]
+    ) -> Mapping[str, Any]:
         """
         Returns updated values for this argument, used during :class:`.App` construction
 
@@ -155,7 +157,9 @@ class Arg(ABC):
         Returns:
 
         """
-        res = {"help": help}
+        res: Dict[str, Any] = {}
+        if self.help is None:
+            res = {"help": help}
         if isinstance(self.long_flag_name, Derived):
             res["long_flag_name"] = "--" + self.long_flag_name.derive(name)
         return res
@@ -292,7 +296,7 @@ class Param(Arg, Generic[_Value]):
     """
 
     #: Argument type, parser from string to value
-    param_type: ParamType[_Value]  # type: ignore
+    parser: Parser[_Value]  # type: ignore
 
     is_config: bool  #: Whether this represent a list of config files
 
@@ -322,7 +326,9 @@ class Param(Arg, Generic[_Value]):
     #: This prefix is provided by :attr:`.App.env_prefix_`
     env_var_name: Union[str, Derived, None]
 
-    def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
+    def update_dict_(
+        self, name: str, help: Optional[str], env_prefix: Optional[str]
+    ) -> Mapping[str, Any]:
         r = {"name": name, **super().update_dict_(name, help, env_prefix)}
         if isinstance(self.config_key_name, Derived):
             r["config_key_name"] = self.config_key_name.derive(name)
@@ -362,10 +368,12 @@ class Param(Arg, Generic[_Value]):
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         res: Dict[str, Any] = {"help": self.help}
+        choices = self.parser.choices()
+        if choices is not None:
+            res = {**res, "choices": choices, "type": str}
         return {
             **res,
             **self.collector.argparse_argument_kwargs(),
-            **self.param_type.argparse_argument_kwargs(),
         }
 
     def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
@@ -401,7 +409,7 @@ class Param(Arg, Generic[_Value]):
 
     @staticmethod
     def store(
-        param_type: ParamType[_Value],
+        parser: Parser[_Value],
         *,
         help: Optional[str] = None,
         default_value: Optional[str] = None,
@@ -419,7 +427,7 @@ class Param(Arg, Generic[_Value]):
         the parameter cannot be omitted.
 
         Args:
-            param_type: Parser that transforms a string into a value
+            parser: Parser that transforms a string into a value
 
         Keyword Args:
             help: Help description (autodoc/docstring is used otherwise)
@@ -437,7 +445,7 @@ class Param(Arg, Generic[_Value]):
         return Param(
             name=None,
             help=help,
-            param_type=param_type,
+            parser=parser,
             collector=Collector.keep_last(),
             default_value=default_value,
             positional=positional,
@@ -471,7 +479,7 @@ class Param(Arg, Generic[_Value]):
         return Param(
             name=None,
             help=help,
-            param_type=path.separated_by(",", strip=True, remove_empty=True),
+            parser=path_parser.separated_by(",", strip=True, remove_empty=True),
             collector=Collector.append(),  # type: ignore
             positional=None,
             short_flag_name=short_flag_name,
@@ -484,7 +492,7 @@ class Param(Arg, Generic[_Value]):
 
     @staticmethod
     def append1(
-        param_type: ParamType[_Item],
+        parser: Parser[_Item],
         *,
         help: Optional[str] = None,
         positional: Optional[Positional] = None,
@@ -500,7 +508,7 @@ class Param(Arg, Generic[_Value]):
         creates a parameter that appends single items to a sequence.
 
         Args:
-            param_type: Parser that transforms a string into a single value item
+            parser: Parser that transforms a string into a single value item
 
         Keyword Args:
             help: Help description (autodoc/docstring is used otherwise)
@@ -513,7 +521,7 @@ class Param(Arg, Generic[_Value]):
         return Param(
             name=None,
             help=help,
-            param_type=param_type.as_sequence_of_one(),
+            parser=parser.as_sequence_of_one(),
             collector=Collector.append(),  # type: ignore
             default_value=None,
             positional=positional,
@@ -526,7 +534,7 @@ class Param(Arg, Generic[_Value]):
 
     @staticmethod
     def append(
-        param_type: ParamType[Sequence[_Item]],
+        parser: Parser[Sequence[_Item]],
         *,
         help: Optional[str] = None,
         positional: Optional[Positional] = None,
@@ -539,7 +547,7 @@ class Param(Arg, Generic[_Value]):
         Returns a newly created argument that joins parsed sequences of values
 
         Args:
-            param_type: Parser that transforms a string into a sequence of values
+            parser: Parser that transforms a string into a sequence of values
 
         Keyword Args:
             help: Help description (autodoc/docstring is used otherwise)
@@ -552,7 +560,7 @@ class Param(Arg, Generic[_Value]):
         return Param(
             name=None,
             help=help,
-            param_type=param_type,
+            parser=parser,
             collector=Collector.append(),  # type: ignore
             default_value=None,
             positional=positional,

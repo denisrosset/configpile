@@ -16,7 +16,7 @@ class WithParamValidation(Config):
 
     a: Annotated[
         int,
-        Param.store(types.int_.validated(lambda v: v >= 0, "Must be non-negative")),
+        Param.store(parsers.int_parser.validated(lambda v: v >= 0, "Must be non-negative")),
     ]  #: Super doc message
 
 
@@ -26,7 +26,7 @@ class WithClassValidation(Config):
     This is a description
     """
 
-    a: Annotated[int, Param.store(types.int_)]  #: Super doc message
+    a: Annotated[int, Param.store(parsers.int_parser)]  #: Super doc message
 
     def validate_a_(self) -> Optional[Err]:
         if self.a < 0:

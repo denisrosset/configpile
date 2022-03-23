@@ -15,7 +15,7 @@ class Calc(Config):
     x: Annotated[
         float,
         Param.store(
-            types.float_,
+            parsers.float_parser,
             positional=Positional.ONCE,
             short_flag_name=None,
             long_flag_name=None,
@@ -26,7 +26,7 @@ class Calc(Config):
     y: Annotated[
         float,
         Param.store(
-            types.float_,
+            parsers.float_parser,
             positional=Positional.ONCE,
             short_flag_name=None,
             long_flag_name=None,

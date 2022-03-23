@@ -12,10 +12,10 @@ class Calc(Config):
     """
 
     #: First argument
-    x: Annotated[float, Param.store(types.float_, short_flag_name="-x")]
+    x: Annotated[float, Param.store(parsers.float_parser, short_flag_name="-x")]
 
     #: Second argument
-    y: Annotated[float, Param.store(types.float_, short_flag_name="-y")]
+    y: Annotated[float, Param.store(parsers.float_parser, short_flag_name="-y")]
 
 
 c = Calc.from_command_line_()

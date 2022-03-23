@@ -1,9 +1,9 @@
 __version__ = "8.0.0"
 
-from . import types
+from . import parsers
 from .arg import Derived, Expander, Param, Positional
 from .config import Config
-from .types import ParamType
+from .parsers import Parser
 from .userr import Err, Res
 
 __all__ = [
@@ -13,7 +13,7 @@ __all__ = [
     "Expander",
     "Res",
     "Param",
-    "ParamType",
+    "Parser",
     "Positional",
-    "types",
+    "parsers",
 ]

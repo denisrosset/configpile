@@ -10,7 +10,7 @@ from configpile import *
 
 @dataclass(frozen=True)
 class A(Config):
-    a: Annotated[int, Param.store(types.int_, default_value="2")]
+    a: Annotated[int, Param.store(parsers.int_parser, default_value="2")]
     set_a_to_zero: ClassVar[Expander] = Expander.make("--a", "0")
 
 

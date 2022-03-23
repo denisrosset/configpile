@@ -37,7 +37,7 @@ from typing import (
 
 from typing_extensions import Annotated, get_origin, get_type_hints
 
-from . import types
+from . import parsers
 from .arg import Param
 from .processor import Processor, SpecialAction
 from .userr import Err, Res
@@ -93,7 +93,9 @@ class Config(ABC):
 
     prog_: ClassVar[Optional[str]] = None  #: Program name
     description_: ClassVar[Optional[str]] = None  #: Text to display before the argument help
-    env_prefix_: ClassVar[Optional[str]] = None  #: Prefix for environment variables
+
+    #: Prefix for automatically derived environment variable names
+    env_prefix_: ClassVar[str] = ""
 
     @classmethod
     def validators_(cls: Type[_Config]) -> Sequence[Callable[[_Config], Optional[Err]]]:

@@ -19,7 +19,7 @@ class Calculator(Config):
     values: Annotated[
         Sequence[float],
         Param.append(
-            types.float_.as_sequence_of_one(),
+            parsers.float_parser.as_sequence_of_one(),
             positional=Positional.ONE_OR_MORE,
             long_flag_name=None,
         ),
@@ -27,7 +27,7 @@ class Calculator(Config):
 
     #: Operation to perform, either addition "+" or multiplication "*"
     operation: Annotated[
-        str, Param.store(types.ParamType.choices_str(["+", "*"]), default_value="+")
+        str, Param.store(parsers.Parser.from_choices(["+", "*"]), default_value="+")
     ]
 
     #: Number of digits to display
@@ -37,7 +37,7 @@ class Calculator(Config):
     digits: Annotated[
         int,
         Param.store(
-            types.int_.validated(lambda i: i > 0, "Must be a positive integer"),
+            parsers.int_parser.validated(lambda i: i > 0, "Must be a positive integer"),
             default_value="3",
             env_var_name="DIGITS",
         ),

@@ -17,7 +17,7 @@ class Calc(Config):
     values: Annotated[
         Sequence[float],
         Param.append1(
-            types.float_,
+            parsers.float_parser,
             positional=Positional.ZERO_OR_MORE,
             short_flag_name=None,
             long_flag_name=None,
@@ -28,7 +28,7 @@ class Calc(Config):
     operation: Annotated[
         str,
         Param.store(
-            types.ParamType.choices_str(["+", "*"]),
+            parsers.Parser.from_choices(["+", "*"]),
             default_value="+",
         ),
     ]
@@ -40,7 +40,7 @@ class Calc(Config):
     digits: Annotated[
         int,
         Param.store(
-            types.int_.validated(lambda i: i > 0, "Must be a positive integer"),
+            parsers.int_parser.validated(lambda i: i > 0, "Must be a positive integer"),
             default_value="3",
             env_var_name="DIGITS",
         ),

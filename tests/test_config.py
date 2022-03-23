@@ -22,7 +22,7 @@ class MyApp(Config):
     #: point to existing INI files containing configuration settings
     config: Annotated[Sequence[Path], Param.config()]
 
-    a: Annotated[int, Param.store(types.int_)]  #: Super doc message
+    a: Annotated[int, Param.store(parsers.int_parser)]  #: Super doc message
 
 
 def test_construct() -> None:
@@ -37,13 +37,13 @@ def test_cmd() -> None:
 @dataclass(frozen=True)
 class A(Config):
     config: Annotated[Sequence[Path], Param.config()]
-    a: Annotated[int, Param.store(types.int_, default_value="2")]
+    a: Annotated[int, Param.store(parsers.int_parser, default_value="2")]
 
 
 @dataclass(frozen=True)
 class B(A):
     ini_strict_sections_ = ["section"]
-    b: Annotated[int, Param.store(types.int_, short_flag_name="-b")]
+    b: Annotated[int, Param.store(parsers.int_parser, short_flag_name="-b")]
 
 
 def test_default_values() -> None:

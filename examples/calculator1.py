@@ -5,7 +5,7 @@ from typing_extensions import Annotated
 from configpile import *
 
 
-class FloatPT(ParamType[float]):
+class FloatPT(Parser[float]):
     """
     Parameter type that parses floats
     """
@@ -27,10 +27,10 @@ class Calc(Config):
     """
 
     #: First argument
-    x: Annotated[float, Param.store(floatPT, long_flag_name=Derived.SNAKE_CASE)]
+    x: Annotated[float, Param.store(floatPT)]
 
     #: Second argument
-    y: Annotated[float, Param.store(floatPT, long_flag_name=Derived.SNAKE_CASE)]
+    y: Annotated[float, Param.store(floatPT)]
 
 
 c = Calc.from_command_line_()
