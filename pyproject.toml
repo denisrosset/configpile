@@ -47,7 +47,6 @@ isort = "^5.10.1"
 mypy = "0.941"
 pytest = "^7.0.1"
 pytest-cov = "^3.0.0"
-pytest-mypy-plugins = "^1.9.3"
 rstcheck = "^3.3.1"
 
 [tool.mypy]
