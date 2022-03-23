@@ -101,7 +101,7 @@ class Config(ABC):
         Returns all validators present in the given subclass of this class
 
         Validators are methods that take no arguments (except self) and return an optional error.
-        Their name starts with "validate_" and ends with an underscore.
+        Their name starts with ``validate_`` and ends with an underscore.
 
         Returns:
             A sequence of all validators
