@@ -6,7 +6,7 @@ from typing import Sequence
 
 from typing_extensions import Annotated
 
-from configpile import Config, Param, types
+from configpile import *
 from configpile.processor import SpecialAction
 
 

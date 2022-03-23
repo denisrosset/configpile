@@ -5,8 +5,7 @@ from typing import ClassVar
 
 from typing_extensions import Annotated
 
-from configpile import Config, Param, types
-from configpile.arg import Expander
+from configpile import *
 
 
 @dataclass(frozen=True)

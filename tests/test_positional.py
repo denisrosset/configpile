@@ -5,8 +5,7 @@ from typing import Sequence
 
 from typing_extensions import Annotated
 
-from configpile import Config, Param, Positional, types
-from configpile.arg import Derived
+from configpile import *
 
 
 @dataclass(frozen=True)

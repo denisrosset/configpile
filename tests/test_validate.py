@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Optional
 
 from typing_extensions import Annotated
 
-from configpile import Config, Err, Param, Validator, types
+from configpile import *
 
 
 @dataclass(frozen=True)
@@ -27,13 +28,14 @@ class WithClassValidation(Config):
 
     a: Annotated[int, Param.store(types.int_)]  #: Super doc message
 
-    def validate_a(self) -> Validator:
+    def validate_a_(self) -> Optional[Err]:
         if self.a < 0:
             return Err.make("Argument a cannot be negative")
         return None
 
 
 def test_class_validation() -> None:
+    print(WithClassValidation.validators_())
     assert len(WithClassValidation.validators_()) == 1
     res = WithClassValidation.parse_command_line_(args=["--a", "2"], env={})
     assert not isinstance(res, Err)

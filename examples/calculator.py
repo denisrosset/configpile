@@ -2,7 +2,7 @@ import argparse
 from dataclasses import dataclass
 from math import prod
 from pathlib import Path
-from typing import Sequence
+from typing import Optional, Sequence
 
 from typing_extensions import Annotated
 
@@ -46,7 +46,7 @@ class Calculator(Config):
     #: INI configuration files to parse
     config: Annotated[Sequence[Path], Param.config()]
 
-    def validate_round_digits(self) -> Validator:
+    def validate_round_digits_(self) -> Optional[Err]:
         """
         Example validator method
         """

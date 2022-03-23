@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from configpile import Err, types
+from configpile import *
 
 
 def test_integer() -> None:

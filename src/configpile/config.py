@@ -11,19 +11,6 @@ This module uses the following types.
 
     Configuration dataclass type being constructed
 
-.. py:data:: Validator
-
-    When used as a return type, marks that a method of :class:`.Config` is a validator.
-
-    A validator is a method that is called right after a :class:`.Config` instance is constructed;
-    the errors returned by all validators are collected, if any is present, the construction of the
-    configuration by :meth:`.Config.from_command_line_` is aborted.
-
-    Disregarding the annotation, which has no impact on type-checking, this is a type alias
-    for :data:`~typing.Optional` [ :class:`~configpile.userr.Err` ]
-
-    Validator = :data:`~typing_extensions.Annotated` [ :data:`~typing.Optional` [ :class:`~configpile.userr.Err` ], _ValidatorToken]
-
 """
 
 from __future__ import annotations
@@ -66,14 +53,6 @@ class IniSection:
 
     name: str  #: Section name
     strict: bool  #: Whether all the keys must correspond to parsed arguments
-
-
-class _ValidatorToken:
-    pass
-
-
-#: Validator type
-Validator = Annotated[Optional[Err], _ValidatorToken]
 
 
 @dataclass(frozen=True)
@@ -122,17 +101,14 @@ class Config(ABC):
         Returns all validators present in the given subclass of this class
 
         Validators are methods that take no arguments (except self) and return an optional error.
-        They are annotated with the _ValidatorToken type, which has the alias Validator.
+        Their name starts with "validate_" and ends with an underscore.
 
         Returns:
             A sequence of all validators
         """
         res: List[Callable[[_Config], Optional[Err]]] = []
         for name, meth in inspect.getmembers(cls, inspect.isroutine):
-            m = getattr(cls, name)
-            th = get_type_hints(m, include_extras=True)
-            rt = th.get("return")
-            if rt is not None and get_origin(rt) is Annotated and _ValidatorToken in get_args(rt):
+            if name.startswith("validate_") and name.endswith("_"):
                 res.append(getattr(cls, name))
         return res
 

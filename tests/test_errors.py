@@ -1,6 +1,7 @@
 import pytest
 
-from configpile.userr import Err, wrap
+from configpile import *
+from configpile.userr import wrap
 
 
 def test_wrap_exceptions() -> None:
