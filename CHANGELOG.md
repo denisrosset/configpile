@@ -1,3 +1,16 @@
+## v8.0.0 (2022-03-23)
+
+### Fix
+
+- **config**: fix docstring for Sphinx
+- remove pytest-mypy-plugins
+- **docs**: fix the name of the calculator script in the example
+
+### Refactor
+
+- **config**: change Validator definition due to bug
+- refactored configpile.arg
+
 ## v8.0.0b0 (2022-03-22)
 
 ### Fix

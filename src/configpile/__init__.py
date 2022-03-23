@@ -1,4 +1,4 @@
-__version__ = "8.0.0b0"
+__version__ = "8.0.0"
 
 from . import types
 from .arg import Derived, Expander, Param, Positional
