@@ -5,6 +5,9 @@ This tutorial develops a simple calculator application using Configpile.
 
 Step-by-step, we walk through the concepts of configpile.
 
+The corresponding code examples are available in the 
+`/examples <https://github.com/denisrosset/configpile/tree/main/examples>` folder of the project.
+
 .. toctree::
     :hidden:
     :maxdepth: 3
