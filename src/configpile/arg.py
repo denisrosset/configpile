@@ -349,7 +349,7 @@ class Param(Arg, Generic[_Value]):
         Returns:
             Command line options
         """
-        if isinstance(self.env_var_name, str): 
+        if isinstance(self.env_var_name, str):
             return [self.env_var_name]
         else:
             return []
