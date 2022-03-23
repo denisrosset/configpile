@@ -87,11 +87,12 @@ module = 'class_doc'
 addopts = [
   "--tb=short",
   "--doctest-modules",
+  "--cov=configpile",
+  "--cov=tests",
+  "--cov-report=term",
+  "--cov-report=xml",
 ]
 
-# removed coverage as it interferes with debugging
-# "--cov=result",  # "--cov=tests",  # "--cov-report=term",
-# "--cov-report=xml",
 doctest_optionflags = ['NORMALIZE_WHITESPACE', 'IGNORE_EXCEPTION_DETAIL', 'ELLIPSIS']
 
 testpaths = [
