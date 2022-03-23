@@ -18,7 +18,6 @@ Positional
 
    .. autosummary::
    
-      ~Positional.FORBIDDEN
       ~Positional.ONCE
       ~Positional.ZERO_OR_MORE
       ~Positional.ONE_OR_MORE
@@ -33,7 +32,6 @@ Positional
       :nosignatures:
    
       ~Positional.should_be_last
-      ~Positional.is_positional
    
    
 

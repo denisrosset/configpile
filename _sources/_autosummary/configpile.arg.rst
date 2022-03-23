@@ -20,7 +20,7 @@
       :nosignatures:
    
       Arg
-      AutoName
+      Derived
       Expander
       Param
       Positional

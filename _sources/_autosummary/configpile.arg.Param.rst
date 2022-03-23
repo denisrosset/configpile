@@ -26,7 +26,6 @@ Param
       ~Param.positional
       ~Param.config_key_name
       ~Param.env_var_name
-      ~Param.validator
       ~Param.help
       ~Param.short_flag_name
       ~Param.long_flag_name
@@ -44,6 +43,7 @@ Param
       ~Param.all_env_var_names
       ~Param.all_flags
       ~Param.append
+      ~Param.append1
       ~Param.argparse_argument_kwargs
       ~Param.config
       ~Param.is_required

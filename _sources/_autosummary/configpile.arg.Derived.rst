@@ -1,9 +1,9 @@
-AutoName
-========
+Derived
+=======
 
 .. currentmodule:: configpile.arg
 
-.. autoclass:: AutoName
+.. autoclass:: Derived
    :show-inheritance:
    :members:
    :undoc-members:
@@ -18,8 +18,9 @@ AutoName
 
    .. autosummary::
    
-      ~AutoName.FORBIDDEN
-      ~AutoName.DERIVED
+      ~Derived.SNAKE_CASE
+      ~Derived.SNAKE_CASE_UPPER_CASE
+      ~Derived.KEBAB_CASE
    
    
 
@@ -30,11 +31,9 @@ AutoName
    .. autosummary::
       :nosignatures:
    
-      ~AutoName.derive_long_flag_name
-      ~AutoName.derive_env_var_name
-      ~AutoName.derive_config_key_name
+      ~Derived.derive
    
    
 
 
-   .. rubric:: List of members of AutoName
+   .. rubric:: List of members of Derived

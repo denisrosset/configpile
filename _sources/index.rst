@@ -26,17 +26,6 @@ Its best selling points are:
 * Error reporting: Instead of crashing at the first parse error, configpile
   collects all the errors encountered and reports all of them.
 
-Example code
-------------
-
-.. literalinclude:: ../../examples/calculator.py
-
-We generate Sphinx documentation from it using a simple Sphinx directive.
-
-.. argparse::
-   :module: calculator
-   :func: parser
-   :prog: calculator
 
 .. toctree::
     :hidden:
@@ -44,6 +33,7 @@ We generate Sphinx documentation from it using a simple Sphinx directive.
     :caption: General information
 
     Home page <self>
+    tutorial/index
 
 .. toctree::
     :hidden:
