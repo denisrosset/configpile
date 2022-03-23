@@ -544,18 +544,6 @@
 <dd><p>Configuration dataclass type being constructed</p>
 </dd></dl>
 
-<dl class="py data">
-<dt class="sig sig-object py" id="configpile.config.Validator">
-<span class="sig-name descname"><span class="pre">Validator</span></span><a class="headerlink" href="#configpile.config.Validator" title="Permalink to this definition">¶</a></dt>
-<dd><p>When used as a return type, marks that a method of <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> is a validator.</p>
-<p>A validator is a method that is called right after a <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> instance is constructed;
-the errors returned by all validators are collected, if any is present, the construction of the
-configuration by <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Config.from_command_line_()</span></code></a> is aborted.</p>
-<p>Disregarding the annotation, which has no impact on type-checking, this is a type alias
-for <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a> ]</p>
-<p>Validator = <code class="xref py py-data docutils literal notranslate"><span class="pre">Annotated</span></code> [ <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a> [ <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a> ], _ValidatorToken]</p>
-</dd></dl>
-
 <p class="rubric">Classes</p>
 <table class="longtable table autosummary">
 <colgroup>

@@ -544,19 +544,6 @@
 
 <span class="sd">    Configuration dataclass type being constructed</span>
 
-<span class="sd">.. py:data:: Validator</span>
-
-<span class="sd">    When used as a return type, marks that a method of :class:`.Config` is a validator.</span>
-
-<span class="sd">    A validator is a method that is called right after a :class:`.Config` instance is constructed;</span>
-<span class="sd">    the errors returned by all validators are collected, if any is present, the construction of the</span>
-<span class="sd">    configuration by :meth:`.Config.from_command_line_` is aborted.</span>
-
-<span class="sd">    Disregarding the annotation, which has no impact on type-checking, this is a type alias</span>
-<span class="sd">    for :data:`~typing.Optional` [ :class:`~configpile.userr.Err` ]</span>
-
-<span class="sd">    Validator = :data:`~typing_extensions.Annotated` [ :data:`~typing.Optional` [ :class:`~configpile.userr.Err` ], _ValidatorToken]</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
@@ -599,14 +586,6 @@
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1">#: Section name</span>
     <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#: Whether all the keys must correspond to parsed arguments</span></div>
-
-
-<span class="k">class</span> <span class="nc">_ValidatorToken</span><span class="p">:</span>
-    <span class="k">pass</span>
-
-
-<span class="c1">#: Validator type</span>
-<span class="n">Validator</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">],</span> <span class="n">_ValidatorToken</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -655,17 +634,14 @@
 <span class="sd">        Returns all validators present in the given subclass of this class</span>
 
 <span class="sd">        Validators are methods that take no arguments (except self) and return an optional error.</span>
-<span class="sd">        They are annotated with the _ValidatorToken type, which has the alias Validator.</span>
+<span class="sd">        Their name starts with ``validate_`` and ends with an underscore.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A sequence of all validators</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">res</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">meth</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isroutine</span><span class="p">):</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="n">th</span> <span class="o">=</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">include_extras</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">rt</span> <span class="o">=</span> <span class="n">th</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;return&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">rt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">rt</span><span class="p">)</span> <span class="ow">is</span> <span class="n">Annotated</span> <span class="ow">and</span> <span class="n">_ValidatorToken</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">rt</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;validate_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
                 <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">res</span></div>
 
