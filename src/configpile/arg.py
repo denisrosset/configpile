@@ -20,17 +20,6 @@ This module enables the definitions of various kinds of configuration arguments.
 
 This module uses the following types. 
 
-.. py:data:: ArgName
-
-    Name used for an argument invocation; can be::abbreviation:
-    
-    - :attr:`.AutoName.FORBIDDEN`, in which case the argument cannot be invoked in that context
-
-    - :attr:`.AutoName.DERIVED`, in which case the name is derived from the field name in the
-      :class:`~configpile.config.Config` subclass.
-
-    - a user provided string
-
 .. py:data:: _Config
 
     Configuration dataclass type being constructed
@@ -60,7 +49,6 @@ from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Any,
-    Callable,
     Dict,
     Generic,
     List,
@@ -72,11 +60,8 @@ from typing import (
     Union,
 )
 
-from typing_extensions import TypeGuard
-
 from .collector import Collector
 from .types import ParamType, path
-from .userr import Err
 
 # documented in the module docstring
 
@@ -89,73 +74,37 @@ if TYPE_CHECKING:
     from .processor import ProcessorFactory
 
 
-class AutoName(Enum):
+class Derived(Enum):
     """
     Describes automatic handling of an argument name
     """
 
-    #: The argument should not be present in the corresponding source
-    FORBIDDEN = 0
+    #: Derives the name/key using snake_case
+    SNAKE_CASE = 1
 
-    #: Derives the argument name from the original Python identifier (default)
-    DERIVED = 1
+    #: Derives the name/key using SNAKE_CASE (and sets uppercase, default for env. variables)
+    SNAKE_CASE_UPPER_CASE = 2
 
-    @staticmethod
-    def derive_long_flag_name(name: str) -> str:
+    #: Derives the argument name using kebab-case (default for INI file keys and cmd line flags)
+    KEBAB_CASE = 3
+
+    def derive(self, name: str) -> str:
         """
-        Returns a long flag name
-
-        Changes the snake_case to kebab-case and adds a ``--`` prefix
+        Returns a derived name from a field name
 
         Args:
-            name: Python identifier used to derive the flag
-
-        Returns:
-            A long flag name
+            name: Field name in Python identifier format
         """
-        if name.endswith("_command"):
-            name = name[:-8]
-        return "--" + name.replace("_", "-")
-
-    @staticmethod
-    def derive_env_var_name(name: str, prefix: Optional[str]) -> str:
-        """
-        Returns a environment variable name derived from a Python identifier
-
-        Keeps snake_case but transforms into upper case, and optionally adds a prefix,
-        separated by an underscore.
-
-        Args:
-            name: Python identifier used to derive the flag
-            prefix: Optional prefix
-
-        Returns:
-            An environment variable name
-        """
-        if prefix is not None:
-            return prefix + "_" + name.upper()
-        else:
+        assert str.isidentifier(name)
+        if self == Derived.SNAKE_CASE:
+            return name
+        elif self == Derived.SNAKE_CASE_UPPER_CASE:
             return name.upper()
+        elif self == Derived.KEBAB_CASE:
+            return name.replace("_", "-")
+        else:
+            raise NotImplementedError
 
-    @staticmethod
-    def derive_config_key_name(name: str) -> str:
-        """
-        Derives a INI key name
-
-        It matches the Python identifier, with snake_case replaced by kebab-case.
-
-        Args:
-            name: Python identifier used to derive the key name
-
-        Returns:
-            INI file key name
-        """
-        return name.replace("_", "-")
-
-
-# those types are documented in the module docstring
-
-ArgName = Union[str, AutoName]
 
 _Arg = TypeVar("_Arg", bound="Arg")
 _Config = TypeVar("_Config", bound="Config")
@@ -180,7 +129,7 @@ class Arg(ABC):
     #: It is in general lowercase, prefixed with ``--`` and words are separated by hyphens.,
     #:
     #: If set to
-    long_flag_name: ArgName
+    long_flag_name: Union[str, Derived, None]
 
     def all_flags(self) -> Sequence[str]:
         """
@@ -189,7 +138,7 @@ class Arg(ABC):
         res: List[str] = []
         if self.short_flag_name is not None:
             res.append(self.short_flag_name)
-        assert self.long_flag_name != AutoName.DERIVED
+        assert not isinstance(self.long_flag_name, Derived)
         if isinstance(self.long_flag_name, str):
             res.append(self.long_flag_name)
         return res
@@ -207,8 +156,8 @@ class Arg(ABC):
 
         """
         res = {"help": help}
-        if self.long_flag_name == AutoName.DERIVED:
-            res["long_flag_name"] = AutoName.derive_long_flag_name(name)
+        if isinstance(self.long_flag_name, Derived):
+            res["long_flag_name"] = "--" + self.long_flag_name.derive(name)
         return res
 
     def updated(self: _Arg, name: str, help: str, env_prefix: Optional[str]) -> _Arg:
@@ -277,7 +226,7 @@ class Expander(Arg):
         *,
         help: Optional[str] = None,
         short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoName.DERIVED,
+        long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
     ) -> Expander:
         """
         Constructs an expander that inserts a flag/value pair in the command line
@@ -311,22 +260,15 @@ class Positional(Enum):
     Describes the positional behavior of a parameter
     """
 
-    FORBIDDEN = 0  #: The argument is not positional
-    ONCE = 1  #: The argument parses a single positional value
-    ZERO_OR_MORE = 2  #: The argument parses the remaining positional value
-    ONE_OR_MORE = 3  #: The argument parses at least one remaining positional value
+    ONCE = 1  #: Eats a single positional value
+    ZERO_OR_MORE = 2  #: Eats as many positional values as possible
+    ONE_OR_MORE = 3  #: Eats as many positional values as possible, but at least one
 
     def should_be_last(self) -> bool:
         """
         Returns whether a positional parameter should be the last one
         """
         return self in {Positional.ZERO_OR_MORE, Positional.ONE_OR_MORE}
-
-    def is_positional(self) -> bool:
-        """
-        Returns whether a parameter is positional
-        """
-        return self != Positional.FORBIDDEN
 
 
 @dataclass(frozen=True)
@@ -365,32 +307,27 @@ class Param(Arg, Generic[_Value]):
     #: Whether this parameter can appear as a positional parameter and how
     #:
     #: A positional parameter is a paramater that appears without a preceding flag
-    positional: Positional
+    positional: Optional[Positional]
 
     #: Configuration key name used in INI files
     #:
     #: It is lowercase, and words are separated by hyphens.
-    config_key_name: ArgName
+    config_key_name: Union[str, Derived, None]
 
     #: Environment variable name
     #:
-    #: The environment variable name has an optional prefix, followed by the
+    #: The environment variable name has a prefix, followed by the
     #: Python identifier in uppercase, with underscore as separator.
     #:
     #: This prefix is provided by :attr:`.App.env_prefix_`
-    #:
-    #: If a non-empty prefix is given, the name is prefixed with it
-    #: (and an underscore).
-    env_var_name: ArgName
-
-    validator: Optional[Callable[[_Value], Optional[Err]]]
+    env_var_name: Union[str, Derived, None]
 
     def update_dict_(self, name: str, help: str, env_prefix: Optional[str]) -> Mapping[str, Any]:
         r = {"name": name, **super().update_dict_(name, help, env_prefix)}
-        if self.config_key_name == AutoName.DERIVED:
-            r["config_key_name"] = AutoName.derive_config_key_name(name)
-        if self.env_var_name == AutoName.DERIVED and env_prefix is not None:
-            r["env_var_name"] = AutoName.derive_env_var_name(name, env_prefix)
+        if isinstance(self.config_key_name, Derived):
+            r["config_key_name"] = self.config_key_name.derive(name)
+        if isinstance(self.env_var_name, Derived) and env_prefix is not None:
+            r["env_var_name"] = env_prefix + self.env_var_name.derive(name)
         return r
 
     def all_config_key_names(self) -> Sequence[str]:
@@ -412,7 +349,7 @@ class Param(Arg, Generic[_Value]):
         Returns:
             Command line options
         """
-        if isinstance(self.env_var_name, str):
+        if isinstance(self.env_var_name, str): 
             return [self.env_var_name]
         else:
             return []
@@ -425,8 +362,6 @@ class Param(Arg, Generic[_Value]):
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         res: Dict[str, Any] = {"help": self.help}
-        if self.is_required():
-            res = {**res, "required": True}
         return {
             **res,
             **self.collector.argparse_argument_kwargs(),
@@ -438,7 +373,7 @@ class Param(Arg, Generic[_Value]):
 
         assert self.name is not None
         pf.params_by_name[self.name] = self
-        if self.positional != Positional.FORBIDDEN:
+        if self.positional is not None:
             pf.cl_positionals.append(self)
         for flag in self.all_flags():
             if self.is_config:
@@ -470,12 +405,11 @@ class Param(Arg, Generic[_Value]):
         *,
         help: Optional[str] = None,
         default_value: Optional[str] = None,
-        positional: Positional = Positional.FORBIDDEN,
+        positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoName.DERIVED,
-        config_key_name: ArgName = AutoName.DERIVED,
-        env_var_name: ArgName = AutoName.FORBIDDEN,
-        validator: Optional[Callable[[_Value], Optional[Err]]] = None,
+        long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        env_var_name: Union[str, Derived, None] = None,
     ) -> Param[_Value]:
         """
         Creates a parameter that stores the last provided value
@@ -512,7 +446,6 @@ class Param(Arg, Generic[_Value]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
-            validator=validator,
         )
 
     @staticmethod
@@ -520,9 +453,8 @@ class Param(Arg, Generic[_Value]):
         *,
         help: Optional[str] = None,
         short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoName.DERIVED,
-        env_var_name: ArgName = AutoName.FORBIDDEN,
-        validator: Optional[Callable[[Sequence[Path]], Optional[Err]]] = None,
+        long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        env_var_name: Union[str, Derived, None] = None,
     ) -> Param[Sequence[Path]]:
         """
         Creates a parameter that parses configuration files and stores their names
@@ -541,33 +473,34 @@ class Param(Arg, Generic[_Value]):
             help=help,
             param_type=path.separated_by(",", strip=True, remove_empty=True),
             collector=Collector.append(),  # type: ignore
-            positional=Positional.FORBIDDEN,
+            positional=None,
             short_flag_name=short_flag_name,
             long_flag_name=long_flag_name,
-            config_key_name=AutoName.FORBIDDEN,
+            config_key_name=None,
             env_var_name=env_var_name,
             is_config=True,
             default_value=None,
-            validator=validator,
         )
 
     @staticmethod
-    def append(
-        param_type: ParamType[Sequence[_Item]],
+    def append1(
+        param_type: ParamType[_Item],
         *,
         help: Optional[str] = None,
-        positional: Positional = Positional.FORBIDDEN,
+        positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
-        long_flag_name: ArgName = AutoName.DERIVED,
-        config_key_name: ArgName = AutoName.DERIVED,
-        env_var_name: ArgName = AutoName.FORBIDDEN,
-        validator: Optional[Callable[[Sequence[_Item]], Optional[Err]]] = None,
+        long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        env_var_name: Union[str, Derived, None] = None,
     ) -> Param[Sequence[_Item]]:
         """
-        Creates an argument that stores the last provided value
+        Returns a newly created argument that appends single parsed values
+
+        While :meth:`~Param.append` creates a parameter that joins sequences of values, this method
+        creates a parameter that appends single items to a sequence.
 
         Args:
-            param_type: Parser that transforms a string into a value
+            param_type: Parser that transforms a string into a single value item
 
         Keyword Args:
             help: Help description (autodoc/docstring is used otherwise)
@@ -576,9 +509,45 @@ class Param(Arg, Generic[_Value]):
             long_flag_name: Long option name (auto. derived from fieldname by default)
             config_key_name: Config key name (auto. derived from fieldname by default)
             env_var_name: Environment variable name (forbidden by default)
+        """
+        return Param(
+            name=None,
+            help=help,
+            param_type=param_type.as_sequence_of_one(),
+            collector=Collector.append(),  # type: ignore
+            default_value=None,
+            positional=positional,
+            short_flag_name=short_flag_name,
+            long_flag_name=long_flag_name,
+            config_key_name=config_key_name,
+            env_var_name=env_var_name,
+            is_config=False,
+        )
 
-        Returns:
-            The constructed Arg instance
+    @staticmethod
+    def append(
+        param_type: ParamType[Sequence[_Item]],
+        *,
+        help: Optional[str] = None,
+        positional: Optional[Positional] = None,
+        short_flag_name: Optional[str] = None,
+        long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        env_var_name: Union[str, Derived, None] = None,
+    ) -> Param[Sequence[_Item]]:
+        """
+        Returns a newly created argument that joins parsed sequences of values
+
+        Args:
+            param_type: Parser that transforms a string into a sequence of values
+
+        Keyword Args:
+            help: Help description (autodoc/docstring is used otherwise)
+            positional: Whether this argument is present in positional arguments
+            short_flag_name: Short option name (optional)
+            long_flag_name: Long option name (auto. derived from fieldname by default)
+            config_key_name: Config key name (auto. derived from fieldname by default)
+            env_var_name: Environment variable name (forbidden by default)
         """
         return Param(
             name=None,
@@ -592,5 +561,4 @@ class Param(Arg, Generic[_Value]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
-            validator=validator,
         )

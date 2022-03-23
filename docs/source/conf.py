@@ -21,6 +21,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
     "sphinx_autodoc_typehints",
+    "sphinxcontrib.programoutput",
     "sphinx.ext.mathjax",
     "myst_nb",
     "sphinxarg.ext",

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from ast import With
 from dataclasses import dataclass
-from typing import Optional, Sequence
 
 from typing_extensions import Annotated
 
-from configpile import Config, Err, Param, Positional, Validator, config, types
+from configpile import Config, Err, Param, Validator, types
 
 
 @dataclass(frozen=True)
@@ -17,9 +15,7 @@ class WithParamValidation(Config):
 
     a: Annotated[
         int,
-        Param.store(
-            types.int_, validator=lambda v: Err.make("Must be non-negative") if v < 0 else None
-        ),
+        Param.store(types.int_.validated(lambda v: v >= 0, "Must be non-negative")),
     ]  #: Super doc message
 
 

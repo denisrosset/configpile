@@ -21,7 +21,7 @@ class Calculator(Config):
         Param.append(
             types.float_.as_sequence_of_one(),
             positional=Positional.ONE_OR_MORE,
-            long_flag_name=AutoName.FORBIDDEN,
+            long_flag_name=None,
         ),
     ]
 
@@ -60,10 +60,9 @@ def parser() -> argparse.ArgumentParser:
     return Calculator.get_argument_parser_()
 
 
-def run() -> None:
-    """
-    Runs the calculator command-line script
-    """
+# calc = Calculator([2, 3, 4], "*", 6, [])
+
+if __name__ == "__main__":
     calc = Calculator.from_command_line_()
     res: float = 0.0
     if calc.operation == "+":
@@ -71,7 +70,3 @@ def run() -> None:
     elif calc.operation == "*":
         res = prod(calc.values)
     print(f"%.{calc.digits}f" % res)
-
-
-if __name__ == "__main__":
-    run()

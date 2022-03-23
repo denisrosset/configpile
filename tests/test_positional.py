@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from ast import With
 from dataclasses import dataclass
 from typing import Sequence
 
 from typing_extensions import Annotated
 
 from configpile import Config, Param, Positional, types
-from configpile.arg import AutoName
+from configpile.arg import Derived
 
 
 @dataclass(frozen=True)
@@ -20,10 +19,10 @@ class WithPositional(Config):
 
     strings: Annotated[
         Sequence[str],
-        Param.append(
-            types.word.as_sequence_of_one(),
+        Param.append1(
+            types.word,
             positional=Positional.ONE_OR_MORE,
-            long_flag_name=AutoName.FORBIDDEN,
+            long_flag_name=None,
             short_flag_name=None,
         ),
     ]

@@ -195,11 +195,9 @@ class CLPos(CLHandler):
         Returns:
             Handler
         """
+        assert all([p.positional is not None for p in seq]), "All parameters should be positional"
         assert all(
-            [p.positional.is_positional() for p in seq]
-        ), "All parameters should be positional"
-        assert all(
-            [not p.positional.should_be_last() for p in seq[:-1]]
+            [not p.positional.should_be_last() for p in seq[:-1] if p.positional is not None]
         ), "Positional parameters with a variable number of arguments should be last"
         l = list(seq)  # makes a mutable copy
         return CLPos(l)
@@ -663,10 +661,6 @@ class Processor(Generic[_Config]):
         for name, param in self.params_by_name.items():
             instances = state.instances[name]
             res = param.collector.collect(instances)
-            if not isinstance(res, Err) and param.validator is not None:
-                res1 = param.validator(res)
-                if res1 is not None:
-                    res = res1
             if isinstance(res, Err):
                 errors.append(res.in_context(param=name))
             else:
