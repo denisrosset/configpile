@@ -133,7 +133,7 @@ class Parser(ABC, Generic[_Value]):
             f: Function to map the result through
 
         Returns:
-            Updated parameter type
+            Updated parser
         """
         return _Mapped(self, f)
 
@@ -151,23 +151,23 @@ class Parser(ABC, Generic[_Value]):
 
     def as_sequence_of_one(self) -> Parser[Sequence[_Value]]:
         """
-        Returns a parameter type, that returns a sequence of a single value on success
+        Returns a parser, that returns a sequence of a single value on success
 
         Returns:
-            Updated parameter type
+            Updated parser
         """
         f: Callable[[_I], Sequence[_I]] = lambda t: [t]
         return self.map(f)
 
     def empty_means_none(self, strip: bool = True) -> Parser[Optional[_Value]]:
         """
-        Returns a new parameter type where the empty string means None
+        Returns a new parser where the empty string means None
 
         Args:
             strip: Whether to strip whitespace
 
         Returns:
-            A new parameter type
+            A new parser
         """
         return _EmptyMeansNone(self, strip)
 
@@ -175,7 +175,7 @@ class Parser(ABC, Generic[_Value]):
         self, sep: str, strip: bool = True, remove_empty: bool = True
     ) -> Parser[Sequence[_Value]]:
         """
-        Returns a new parameter type that parses values separated by a string
+        Returns a new parser that parses values separated by a string
 
         Args:
             sep: Separator
@@ -183,7 +183,7 @@ class Parser(ABC, Generic[_Value]):
             remove_empty: Whether to remove empty strings before parsing them
 
         Returns:
-            A new parameter type
+            A new parser
         """
         return _SeparatedBy(self, sep, strip, remove_empty)
 
@@ -191,7 +191,7 @@ class Parser(ABC, Generic[_Value]):
         self, predicate: Callable[[_Value], bool], msg: Union[str, Callable[[str, _Value], str]]
     ) -> _Validated[_Value]:
         """
-        Returns a parameter type that verifies a predicate after successful parse
+        Returns a parser that verifies a predicate after successful parse
 
         Args:
             predicate: Predicate to check
@@ -199,7 +199,7 @@ class Parser(ABC, Generic[_Value]):
                  and the result
 
         Returns:
-            A new parameter type
+            A new parser
         """
         if isinstance(msg, str):
             c: str = msg
@@ -214,7 +214,7 @@ class Parser(ABC, Generic[_Value]):
     @staticmethod
     def from_parsy_parser(type_: Type[_Value], parser: parsy.Parser) -> Parser[_Value]:
         """
-        Creates a parameter type from a parsy parser
+        Creates a parser from a parsy parser
 
         Args:
             type_: PEP 484 type, used to type the return argument
@@ -252,11 +252,12 @@ class Parser(ABC, Generic[_Value]):
         f: Callable[[str], _Value], *catch: Type[Exception]
     ) -> Parser[_Value]:
         """
-        Creates a parameter type from a function that raises exceptions on parse errors
+        Creates a parser from a function that raises exceptions on parse errors
 
         Args:
             f: Function that parses the string
-            catch: Exception types to catch
+            catch: Exception types to catch; if no types are provided, all exceptions will be
+                   caught
 
         Returns:
             Parameter type
@@ -266,7 +267,7 @@ class Parser(ABC, Generic[_Value]):
     @staticmethod
     def from_function(f: Callable[[str], Res[_Value]]) -> Parser[_Value]:
         """
-        Creates a parameter type from a function that returns a value or an error
+        Creates a parser from a function that returns a value or an error
 
         Args:
             f: Function that parses the string
@@ -280,11 +281,11 @@ class Parser(ABC, Generic[_Value]):
     @staticmethod
     def invalid() -> Parser[_Value]:
         """
-        Creates a parameter type that always return errors
+        Creates a parser that always return errors
         """
 
         def invalid_fun(s: str) -> NoReturn:
-            raise RuntimeError("Invalid parameter type")
+            raise RuntimeError("Invalid parser")
 
         return Parser.from_function_that_raises(invalid_fun)
 
@@ -295,7 +296,7 @@ class Parser(ABC, Generic[_Value]):
         force_case: ForceCase = ForceCase.NO_CHANGE,
     ) -> Parser[str]:
         """
-        Creates a parameter type whose values are chosen from a set of strings
+        Creates a parser whose values are chosen from a set of strings
 
         Args:
             values: Set of values
@@ -315,7 +316,7 @@ class Parser(ABC, Generic[_Value]):
         aliases: Mapping[str, _Value] = {},
     ) -> Parser[_Value]:
         """
-        Creates a parameter type whose strings correspond to keys in a dictionary
+        Creates a parser whose strings correspond to keys in a dictionary
 
         Args:
             mapping: Dictionary mapping strings to values
@@ -332,7 +333,7 @@ class Parser(ABC, Generic[_Value]):
 @dataclass(frozen=True)
 class _Choices(Parser[_Value]):
     """
-    Describes a multiple choice parameter type
+    Describes a multiple choice parser
     """
 
     mapping: Mapping[str, _Value]
@@ -399,7 +400,7 @@ class _FromFunction(Parser[_Value]):
 @dataclass(frozen=True)
 class _EmptyMeansNone(Parser[Optional[_Item]]):
     """
-    Wraps an existing parameter type so that "empty means none"
+    Wraps an existing parser so that "empty means none"
     """
 
     wrapped: Parser[_Item]  #: Wrapped ParamType called if value is not empty
