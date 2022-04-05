@@ -478,7 +478,7 @@ def collect(*args):  # type: ignore[no-untyped-def]
         else:
             ok.append(arg)
     if errs:
-        return ManyErr(errs)
+        return Err.collect1(*errs)
     else:
         return tuple(ok)
 
@@ -578,7 +578,7 @@ def collect_seq(seq: Sequence[Res[_Value]]) -> Res[Sequence[_Value]]:
         ... def parse(s: str) -> int:
         ...    return int(s)
         >>> collect_seq([parse("2"), parse("invalid")])
-        ManyErr(...)
+        Err1(...)
         >>> collect_seq([parse("2"), parse("3")])
         [2, 3]
 
@@ -597,6 +597,6 @@ def collect_seq(seq: Sequence[Res[_Value]]) -> Res[Sequence[_Value]]:
         else:
             ok.append(res)
     if errs:
-        return ManyErr(errs)
+        return Err.collect1(*errs)
     else:
         return ok
