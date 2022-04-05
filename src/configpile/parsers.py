@@ -137,6 +137,18 @@ class Parser(ABC, Generic[_Value]):
         """
         return _Mapped(self, f)
 
+    def flat_map(self, f: Callable[[_Value], Res[_Item]]) -> Parser[_Item]:
+        """
+        Maps successful results of the parser through the given function that may fail
+
+        Args:
+            f: Function to map the result through, may return an error
+
+        Returns:
+            Updated parser
+        """
+        return _FlatMapped(self, f)
+
     def as_sequence_of_one(self) -> Parser[Sequence[_Value]]:
         """
         Returns a parameter type, that returns a sequence of a single value on success
@@ -400,6 +412,28 @@ class _EmptyMeansNone(Parser[Optional[_Item]]):
             return None
         else:
             return self.wrapped.parse(value)
+
+
+@dataclass(frozen=True)
+class _FlatMapped(Parser[_ReturnType], Generic[_Parameter, _ReturnType]):
+    """
+    Wraps an existing parser and applies a function to its successful result
+    """
+
+    wrapped: Parser[_Parameter]  #: Wrapped parser
+
+    #: Mapping function, made optional as a hack
+    f: Optional[Callable[[_Parameter], Res[_ReturnType]]]
+
+    def parse(self, arg: str) -> Res[_ReturnType]:
+        assert self.f is not None
+        res: Res[_Parameter] = self.wrapped.parse(arg)
+        if isinstance(res, Err):
+            return res
+        return self.f(res)
+
+    def choices(self) -> Optional[Sequence[str]]:
+        return self.wrapped.choices()
 
 
 @dataclass(frozen=True)
