@@ -55,7 +55,10 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    import parsy
+    try:
+        import parsy
+    except ImportError:
+        pass
 
 from . import userr
 from .userr import Err, Res, collect_seq
@@ -208,6 +211,28 @@ class Parser(ABC, Generic[_Value]):
         Returns:
             Parameter type
         """
+        import parsy
+
+        @dataclass(frozen=True)
+        class _Parsy(Parser[_Value]):
+            """
+            Wraps a parser from the parsy library
+            """
+
+            parser: parsy.Parser
+
+            def parse(self, arg: str) -> Res[_Value]:
+                res = (self.parser << parsy.eof)(arg, 0)  # Inspired by Parser.parse
+                if res.status:
+                    return cast(_Value, res.value)
+                else:
+                    if res.furthest is not None:
+                        return Err.make(
+                            f"Parse error '{res.expected}' in '{arg}' at position '{res.furthest}'"
+                        )
+                    else:
+                        return Err.make(f"Parse error '{res.expected}' in '{arg}'")
+
         return _Parsy(parser)
 
     @staticmethod
@@ -357,27 +382,6 @@ class _FromFunction(Parser[_Value]):
 
     def parse(self, arg: str) -> Res[_Value]:
         return self.fun(arg)
-
-
-@dataclass(frozen=True)
-class _Parsy(Parser[_Value]):
-    """
-    Wraps a parser from the parsy library
-    """
-
-    parser: parsy.Parser
-
-    def parse(self, arg: str) -> Res[_Value]:
-        res = (self.parser << parsy.eof)(arg, 0)  # Inspired by Parser.parse
-        if res.status:
-            return cast(_Value, res.value)
-        else:
-            if res.furthest is not None:
-                return Err.make(
-                    f"Parse error '{res.expected}' in '{arg}' at position '{res.furthest}'"
-                )
-            else:
-                return Err.make(f"Parse error '{res.expected}' in '{arg}'")
 
 
 @dataclass(frozen=True)
