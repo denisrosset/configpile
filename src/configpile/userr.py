@@ -246,7 +246,7 @@ class Err1(Err):
         return [*c, "`" + self.msg + "`"]
 
     def in_context(self, **contexts: Any) -> Err1:
-        return Err1(self.msg, [*self.contexts, *contexts.items()])
+        return Err1(self.msg, [*contexts.items(), *self.contexts])
 
     def __repr__(self) -> str:
         if self.contexts:
@@ -282,7 +282,7 @@ class _GroupedErrors:
         d = len(str(len(self.ungrouped) - 1)) + 1
         for i, e in enumerate(self.ungrouped):
             err_lines: List[str] = []
-            ctxs = list(reversed(e.contexts))[skip_contexts:]
+            ctxs = list(e.contexts)[skip_contexts:]
             for ctx in ctxs:
                 ctx_name, ctx_value = ctx
                 err_lines.append(f"In {ctx_name}: {ctx_value}")
@@ -308,7 +308,7 @@ class _GroupedErrors:
         ungrouped_pairs: List[Tuple[int, Err1]] = []
         for i, e in enumerate(errors):
             if index < len(e.contexts):
-                ctx = e.contexts[-index - 1]
+                ctx = e.contexts[index]
                 if isinstance(ctx, Hashable):
                     if ctx not in grouped_pairs:
                         grouped_pairs[ctx] = [(i, e)]
