@@ -53,6 +53,7 @@ from __future__ import annotations
 
 import shutil
 import textwrap
+import warnings
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import (
@@ -499,7 +500,7 @@ def map(f: Callable[[_Value], _ReturnType], r: Res[_Value]) -> Res[_ReturnType]:
         4.0
         >>> map(square, parse("-1"))
         1.0
-        >>> flatMap(square, parse("invalid"))
+        >>> flat_map(square, parse("invalid"))
         Err1("ValueError thrown: could not convert string to float: 'invalid'")
 
     Args:
@@ -518,7 +519,7 @@ def map(f: Callable[[_Value], _ReturnType], r: Res[_Value]) -> Res[_ReturnType]:
         return f(r)
 
 
-def flatMap(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_ReturnType]:
+def flat_map(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_ReturnType]:
     """
     Enables the chaining computations that can error
 
@@ -531,11 +532,11 @@ def flatMap(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_Ret
         >>> @wrap(ValueError)
         ... def my_sqrt(f: float) -> float:
         ...    return sqrt(f)
-        >>> flatMap(my_sqrt, parse("2"))
+        >>> flat_map(my_sqrt, parse("2"))
         1.414...
-        >>> flatMap(my_sqrt, parse("-1"))
+        >>> flat_map(my_sqrt, parse("-1"))
         Err1('ValueError thrown: math domain error')
-        >>> flatMap(my_sqrt, parse("invalid"))
+        >>> flat_map(my_sqrt, parse("invalid"))
         Err1("ValueError thrown: could not convert string to float: 'invalid'")
 
     Args:
@@ -553,6 +554,13 @@ def flatMap(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_Ret
         return r
     else:
         return f(r)
+
+
+def flatMap(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_ReturnType]:
+    warnings.warn(
+        "flatMap has been deprecated, use flat_map instead", DeprecationWarning, stacklevel=2
+    )
+    return flat_map(f, r)
 
 
 def collect_seq(seq: Sequence[Res[_Value]]) -> Res[Sequence[_Value]]:
