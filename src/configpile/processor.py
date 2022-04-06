@@ -27,6 +27,7 @@ from __future__ import annotations
 import argparse
 import configparser
 import sys
+import warnings
 from abc import ABC, abstractmethod
 from configparser import ConfigParser
 from dataclasses import dataclass
@@ -615,6 +616,24 @@ class Processor(Generic[_Config]):
             if err is not None:
                 errors.append(err.in_context(ini_file=p))
         return Err.collect(*errors)
+
+    def process(
+        self,
+        cwd: Path,
+        args: Sequence[str],
+        env: Mapping[str, str],
+    ) -> Res[Union[_Config, SpecialAction]]:
+        """
+        Processes command-line arguments (deprecated)
+
+        See also: :meth:`.process_command_line`
+        """
+        warnings.warn(
+            "process has been deprecated, use process_command_line instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.process_command_line(cwd, args, env)
 
     def process_command_line(
         self,
