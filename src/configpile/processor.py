@@ -597,7 +597,7 @@ class Processor(Generic[_Config]):
             validators=pf.validators,
         )
 
-    def process_config(self, cwd: Path, state: State) -> Optional[Err]:
+    def _process_config(self, cwd: Path, state: State) -> Optional[Err]:
         """
         Processes configuration files if such processing was requested by a handler
 
@@ -661,7 +661,7 @@ class Processor(Generic[_Config]):
                 err = handler.handle(value, state)
                 if err is not None:
                     errors.append(err.in_context(environment_variable=key))
-            err = self.process_config(cwd, state)
+            err = self._process_config(cwd, state)
             if err is not None:
                 errors.append(err.in_context(environment_variable=key))
         # process command line arguments
@@ -670,7 +670,7 @@ class Processor(Generic[_Config]):
             rest_args, err = self.cl_handler.handle(rest_args, state)
             if err is not None:
                 errors.append(err)
-            err = self.process_config(cwd, state)
+            err = self._process_config(cwd, state)
             if err is not None:
                 errors.append(err)
 
