@@ -13,6 +13,7 @@
         "positionals",
         "pyparsing",
         "Rosset",
+        "rtype",
         "toctree",
         "userr"
     ],
