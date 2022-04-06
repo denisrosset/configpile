@@ -3,9 +3,9 @@ Argument definition
 
 This module enables the definitions of various kinds of configuration arguments.
 
-- Parameters (:class:`.Param`) correspond to values that will be present in the configuration. 
-  Each invocation of a parameter has a user-provided string attached, which is parsed by a 
-  :class:`~configpile.types.ParamType`. Those invocations can come from environment variables
+- Parameters (:class:`.Param`) correspond to values that will be present in the configuration.
+  Each invocation of a parameter has a user-provided string attached, which is parsed by a
+  :class:`~configpile.parsers.Parser`. Those invocations can come from environment variables
   (:attr:`.Param.env_var_name`), configuration files (:attr:`.Param.config_key_name`),
   command-line flags (:attr:`.Arg.short_flag_name`, :attr:`.Arg.long_flag_name`), or finally
   as positional command-line parameters (:attr:`.Param.positional`).
@@ -14,11 +14,11 @@ This module enables the definitions of various kinds of configuration arguments.
 
 - Expanders (:class:`.Expander`) can only be present as command-line flags; their action is
   to insert a key/value pair in the command-line. This enables, for example, flags that set
-  a boolean parameter to `True` or `False`. 
+  a boolean parameter to `True` or `False`.
 
 .. rubric:: Types
 
-This module uses the following types. 
+This module uses the following types.
 
 .. py:data:: _Config
 
@@ -30,11 +30,11 @@ This module uses the following types.
 
     See `<https://en.wikipedia.org/wiki/Bounded_quantification>`_
 
-.. py:data:: _Value
+.. py:data:: _Value_co
 
     Type of the parameter value
 
-.. py:data:: _Item
+.. py:data:: _Item_co
 
     Item in a sequence
 """
@@ -42,9 +42,7 @@ This module uses the following types.
 from __future__ import annotations
 
 import dataclasses
-from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
@@ -61,59 +59,27 @@ from typing import (
 )
 
 from .collector import Collector
+from .enums import Derived, Positional
+from .handlers import CLConfigParam, CLInserter, CLParam, KVConfigParam, KVParam
 from .parsers import Parser, path_parser
 
 # documented in the module docstring
 
-_Value = TypeVar("_Value", covariant=True)
+_Value_co = TypeVar("_Value_co", covariant=True)
 
-_Item = TypeVar("_Item", covariant=True)
+_Item_co = TypeVar("_Item_co", covariant=True)
 
 if TYPE_CHECKING:
     from .config import Config
     from .processor import ProcessorFactory
 
 
-class Derived(Enum):
-    """
-    Describes automatic handling of an argument name
-    """
-
-    #: Derives the name/key using snake_case
-    SNAKE_CASE = 1
-
-    #: Derives the name/key using SNAKE_CASE (and sets uppercase, default for env. variables)
-    SNAKE_CASE_UPPER_CASE = 2
-
-    #: Derives the argument name using kebab-case (default for INI file keys and cmd line flags)
-    KEBAB_CASE = 3
-
-    def derive(self, name: str) -> str:
-        """
-        Returns a derived name from a field name
-
-        Args:
-            name: Field name in Python identifier format
-        """
-        assert str.isidentifier(name)
-        if self == Derived.SNAKE_CASE:
-            return name
-        elif self == Derived.SNAKE_CASE_UPPER_CASE:
-            return name.upper()
-        elif self == Derived.KEBAB_CASE:
-            return name.replace("_", "-")
-        else:
-            raise NotImplementedError
-
-
 _Arg = TypeVar("_Arg", bound="Arg")
 _Config = TypeVar("_Config", bound="Config")
 
-# TODO: solve this bug
 
-
-@dataclass(frozen=True)  # type: ignore[misc]
-class Arg(ABC):
+@dataclass(frozen=True)
+class Arg:
     """
     Base class for all kinds of arguments
     """
@@ -131,6 +97,10 @@ class Arg(ABC):
     #: If set to
     long_flag_name: Union[str, Derived, None]
 
+    def __post_init__(self) -> None:
+        if self.__class__ == Arg:
+            raise NotImplementedError("Cannot instantiate Arg directly")
+
     def all_flags(self) -> Sequence[str]:
         """
         Returns a sequence of all forms of command line flags
@@ -144,7 +114,10 @@ class Arg(ABC):
         return res
 
     def update_dict_(
-        self, name: str, help: Optional[str], env_prefix: Optional[str]
+        self,
+        name: str,
+        help: Optional[str],  # pylint: disable=redefined-builtin
+        env_prefix: Optional[str],
     ) -> Mapping[str, Any]:
         """
         Returns updated values for this argument, used during :class:`.App` construction
@@ -164,7 +137,12 @@ class Arg(ABC):
             res["long_flag_name"] = "--" + self.long_flag_name.derive(name)
         return res
 
-    def updated(self: _Arg, name: str, help: str, env_prefix: Optional[str]) -> _Arg:
+    def updated(
+        self: _Arg,
+        name: str,
+        help: str,  # pylint: disable=redefined-builtin
+        env_prefix: Optional[str],
+    ) -> _Arg:
         """
         Returns a copy of this argument with some data updated from its declaration context
 
@@ -179,7 +157,6 @@ class Arg(ABC):
         """
         return dataclasses.replace(self, **self.update_dict_(name, help, env_prefix))
 
-    @abstractmethod
     def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
         """
         Updates a config processor with the processing required by this argument
@@ -187,9 +164,8 @@ class Arg(ABC):
         Args:
             pf: Processor factory
         """
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
         """
         Returns the keyword arguments for use with argparse.ArgumentParser.add_argument
@@ -197,7 +173,7 @@ class Arg(ABC):
         Returns:
             Keyword arguments mapping
         """
-        pass
+        raise NotImplementedError
 
 
 @dataclass(frozen=True)
@@ -217,8 +193,6 @@ class Expander(Arg):
         return (self.new_flag, self.new_value)
 
     def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
-        from .processor import CLInserter
-
         for flag in self.all_flags():
             pf.cl_flag_handlers[flag] = CLInserter([self.new_flag, self.new_value])
         pf.ap_commands.add_argument(*self.all_flags(), **self.argparse_argument_kwargs())
@@ -228,7 +202,7 @@ class Expander(Arg):
         new_flag: str,
         new_value: str,
         *,
-        help: Optional[str] = None,
+        help: Optional[str] = None,  # pylint: disable=redefined-builtin
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
     ) -> Expander:
@@ -259,24 +233,8 @@ class Expander(Arg):
         return {"help": self.help}
 
 
-class Positional(Enum):
-    """
-    Describes the positional behavior of a parameter
-    """
-
-    ONCE = 1  #: Eats a single positional value
-    ZERO_OR_MORE = 2  #: Eats as many positional values as possible
-    ONE_OR_MORE = 3  #: Eats as many positional values as possible, but at least one
-
-    def should_be_last(self) -> bool:
-        """
-        Returns whether a positional parameter should be the last one
-        """
-        return self in {Positional.ZERO_OR_MORE, Positional.ONE_OR_MORE}
-
-
 @dataclass(frozen=True)
-class Param(Arg, Generic[_Value]):
+class Param(Arg, Generic[_Value_co]):
     """
     Describes an argument holding a value of a given type
 
@@ -284,24 +242,25 @@ class Param(Arg, Generic[_Value]):
 
     - :meth:`~.Param.store` to create a parameter that keeps the last value provided
 
-    - :meth:`~.Param.append` to create a parameter that collects all the provided value into
-      a sequence. Note that the parsed value must already be a sequence; for that, use the
-      method :meth:`~configpile.types.ParamType.as_sequence_of_one` on the
-      :class:`~configpile.types.ParamType` instance.
+    - :meth:`~.Param.append` to create a parameter that collects all the provided values into
+      a sequence. Note that the parsed value must already be a sequence.
 
-    For the two constructions above, you can construct positional parameters by setting the
+    - :meth:`~.Param.append1` to create a parameter that collects all the provided value into
+      a sequence. The parsed value should not be a sequence.
+
+    For the constructions above, you can construct positional parameters by setting the
     :attr:`.Param.positional` field.
 
     - :meth:`~.Param.config` returns a parameter that parses configuration files.
     """
 
     #: Argument type, parser from string to value
-    parser: Parser[_Value]  # type: ignore
+    parser: Parser[_Value_co]  # type: ignore
 
     is_config: bool  #: Whether this represent a list of config files
 
     #: Argument collector
-    collector: Collector[_Value]  # type: ignore
+    collector: Collector[_Value_co]  # type: ignore
 
     default_value: Optional[str]  #: Default value inserted as instance
 
@@ -327,7 +286,10 @@ class Param(Arg, Generic[_Value]):
     env_var_name: Union[str, Derived, None]
 
     def update_dict_(
-        self, name: str, help: Optional[str], env_prefix: Optional[str]
+        self,
+        name: str,
+        help: Optional[str],  # pylint: disable=redefined-builtin
+        env_prefix: Optional[str],
     ) -> Mapping[str, Any]:
         r = {"name": name, **super().update_dict_(name, help, env_prefix)}
         if isinstance(self.config_key_name, Derived):
@@ -377,7 +339,6 @@ class Param(Arg, Generic[_Value]):
         }
 
     def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
-        from .processor import CLConfigParam, CLParam, KVConfigParam, KVParam
 
         assert self.name is not None
         pf.params_by_name[self.name] = self
@@ -399,26 +360,22 @@ class Param(Arg, Generic[_Value]):
 
         flags = self.all_flags()
         if self.is_required():
-            pf.ap_required.add_argument(
-                *self.all_flags(), dest=self.name, **self.argparse_argument_kwargs()
-            )
+            pf.ap_required.add_argument(*flags, dest=self.name, **self.argparse_argument_kwargs())
         else:
-            pf.ap_optional.add_argument(
-                *self.all_flags(), dest=self.name, **self.argparse_argument_kwargs()
-            )
+            pf.ap_optional.add_argument(*flags, dest=self.name, **self.argparse_argument_kwargs())
 
     @staticmethod
     def store(
-        parser: Parser[_Value],
+        parser: Parser[_Value_co],
         *,
-        help: Optional[str] = None,
+        help: Optional[str] = None,  # pylint: disable=redefined-builtin
         default_value: Optional[str] = None,
         positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         env_var_name: Union[str, Derived, None] = None,
-    ) -> Param[_Value]:
+    ) -> Param[_Value_co]:
         """
         Creates a parameter that stores the last provided value
 
@@ -459,7 +416,7 @@ class Param(Arg, Generic[_Value]):
     @staticmethod
     def config(
         *,
-        help: Optional[str] = None,
+        help: Optional[str] = None,  # pylint: disable=redefined-builtin
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         env_var_name: Union[str, Derived, None] = None,
@@ -492,15 +449,15 @@ class Param(Arg, Generic[_Value]):
 
     @staticmethod
     def append1(
-        parser: Parser[_Item],
+        parser: Parser[_Item_co],
         *,
-        help: Optional[str] = None,
+        help: Optional[str] = None,  # pylint: disable=redefined-builtin
         positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         env_var_name: Union[str, Derived, None] = None,
-    ) -> Param[Sequence[_Item]]:
+    ) -> Param[Sequence[_Item_co]]:
         """
         Returns a newly created argument that appends single parsed values
 
@@ -534,15 +491,15 @@ class Param(Arg, Generic[_Value]):
 
     @staticmethod
     def append(
-        parser: Parser[Sequence[_Item]],
+        parser: Parser[Sequence[_Item_co]],
         *,
-        help: Optional[str] = None,
+        help: Optional[str] = None,  # pylint: disable=redefined-builtin
         positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         env_var_name: Union[str, Derived, None] = None,
-    ) -> Param[Sequence[_Item]]:
+    ) -> Param[Sequence[_Item_co]]:
         """
         Returns a newly created argument that joins parsed sequences of values
 

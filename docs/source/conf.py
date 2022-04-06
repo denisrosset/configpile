@@ -1,3 +1,6 @@
+"""
+Sphinx documentation configuration
+"""
 import sys
 from pathlib import Path
 
@@ -10,7 +13,7 @@ __import__(project)
 
 repository_url = f"https://github.com/denisrosset/{project}"
 repository_branch = "main"
-copyright = "2022, Denis Rosset"
+copyright_ = "2022, Denis Rosset"
 
 sys.path.append(str(Path(__file__).parent.parent.parent / "examples"))
 

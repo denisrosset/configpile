@@ -86,7 +86,7 @@ class ClassDoc(Generic[_Class]):
         for c in t.mro():
             try:
                 docs.append(extract_docs_from_cls_obj(c))
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 logging.info("Could not retrieve docs for %s: %s", c, e)
 
         return ClassDoc(docs)

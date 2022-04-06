@@ -1,8 +1,11 @@
+"""
+Calculator tutorial, step 2
+"""
 from dataclasses import dataclass
 
 from typing_extensions import Annotated
 
-from configpile import *
+from configpile import Config, Param, parsers
 
 
 @dataclass(frozen=True)

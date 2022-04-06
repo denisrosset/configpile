@@ -1,10 +1,10 @@
 """
 Argument value parsing
 
-This module is mostly self-contained, and provides ways to construct :class:`.ParamType` instances
+This module is mostly self-contained, and provides ways to construct :class:`.Parser` instances
 which parse string arguments into values.
 
-During the configuration building, the parsed values are collected by a 
+During the configuration building, the parsed values are collected by a
 :class:`configpile.collector.Collector` instance.
 
 .. rubric:: Types
@@ -13,7 +13,7 @@ This module uses the following types.
 
 .. py:data:: _Value
 
-    Value being parsed by a :class:`.ParamType`
+    Value being parsed by a :class:`.Parser`
 
 .. py:data:: _Parameter
 
@@ -30,23 +30,16 @@ This module uses the following types.
 
 from __future__ import annotations
 
-import logging
 import pathlib
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from enum import Enum
 from typing import (
     TYPE_CHECKING,
-    Any,
     Callable,
     Generic,
     Iterable,
-    List,
-    Literal,
     Mapping,
-    NoReturn,
     Optional,
-    Protocol,
     Sequence,
     Type,
     TypeVar,
@@ -54,21 +47,25 @@ from typing import (
     cast,
 )
 
+from typing_extensions import Protocol, runtime_checkable
+
+from .enums import ForceCase
+from .userr import Err, Res, collect_seq
+from .util import assert_never
+
 if TYPE_CHECKING:
     try:
         import parsy
     except ImportError:
         pass
 
-from . import userr
-from .userr import Err, Res, collect_seq
-from .util import assert_never
-
 # those types are documented in the module docstring
 
 _I = TypeVar("_I")  # type used only internally
 
 _Value = TypeVar("_Value")
+
+_Value_contra = TypeVar("_Value_contra", contravariant=True)
 
 _Item = TypeVar("_Item")
 
@@ -77,14 +74,38 @@ _Parameter = TypeVar("_Parameter")
 _ReturnType = TypeVar("_ReturnType")
 
 
-class ForceCase(Enum):
+@runtime_checkable
+class Predicate(Protocol, Generic[_Value_contra]):
     """
-    Describes whether a string is normalized to lower or upper case before processing
+    Defines a function or callable that takes a value and returns whether it is valid
     """
 
-    NO_CHANGE = 0  #: Keep case
-    UPPER = 1  #: Change to uppercase
-    LOWER = 2  #: Change to lowercase
+    def __call__(self, value: _Value_contra) -> bool:
+        """
+        Checks whether the given value is valid
+
+        Args:
+            value: Value to check
+
+        Returns:
+            True if the value is valid, False otherwise
+        """
+
+
+@runtime_checkable
+class ErrorMessageProvider(Protocol, Generic[_Value_contra]):
+    """
+    Generates formatted error messages when values are invalid
+    """
+
+    def __call__(self, string_to_parse: str, parsed_value: _Value_contra) -> str:
+        """
+        Returns a formatted error message describing a validation problem
+
+        Args:
+            string_to_parse: String provided by the user
+            parsed_value: Value parsed from string
+        """
 
 
 class Parser(ABC, Generic[_Value]):
@@ -101,7 +122,7 @@ class Parser(ABC, Generic[_Value]):
         Example:
             >>> user_input = "invalid"
             >>> float_parser.parse(user_input)
-            Err1(msg="Error 'could not convert string to float: 'invalid'' in 'invalid'", contexts=[])
+            Err1(msg="...", contexts=[])
             >>> user_input = 2.0
             >>> float_parser.parse(user_input)
             2.0
@@ -203,8 +224,10 @@ class Parser(ABC, Generic[_Value]):
         """
         if isinstance(msg, str):
             c: str = msg
+            assert isinstance(predicate, Predicate)
             return _Validated(self, predicate, lambda a, t: c)
         else:
+            assert isinstance(predicate, Predicate)
             return _Validated(
                 self,
                 predicate,
@@ -223,7 +246,7 @@ class Parser(ABC, Generic[_Value]):
         Returns:
             Parameter type
         """
-        import parsy
+        import parsy  # pylint: disable=import-outside-toplevel,redefined-outer-name
 
         @dataclass(frozen=True)
         class _Parsy(Parser[_Value]):
@@ -279,17 +302,6 @@ class Parser(ABC, Generic[_Value]):
         return _FromFunction(f)
 
     @staticmethod
-    def invalid() -> Parser[_Value]:
-        """
-        Creates a parser that always return errors
-        """
-
-        def invalid_fun(s: str) -> NoReturn:
-            raise RuntimeError("Invalid parser")
-
-        return Parser.from_function_that_raises(invalid_fun)
-
-    @staticmethod
     def from_choices(
         values: Iterable[str],
         strip: bool = True,
@@ -313,7 +325,7 @@ class Parser(ABC, Generic[_Value]):
         mapping: Mapping[str, _Value],
         strip: bool = True,
         force_case: ForceCase = ForceCase.NO_CHANGE,
-        aliases: Mapping[str, _Value] = {},
+        aliases: Optional[Mapping[str, _Value]] = None,
     ) -> Parser[_Value]:
         """
         Creates a parser whose strings correspond to keys in a dictionary
@@ -327,6 +339,8 @@ class Parser(ABC, Generic[_Value]):
         Returns:
             Parameter type
         """
+        if aliases is None:
+            aliases = {}
         return _Choices(mapping, strip, force_case, aliases)
 
 
@@ -378,7 +392,7 @@ class _FromFunctionThatRaises(Parser[_Value]):
             f = self.fun
             assert f is not None
             return f(arg)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             if (not self.catch) or any([isinstance(e, t) for t in self.catch]):
                 return Err.make(f"Error '{e}' in '{arg}'")
             else:
@@ -403,16 +417,16 @@ class _EmptyMeansNone(Parser[Optional[_Item]]):
     Wraps an existing parser so that "empty means none"
     """
 
-    wrapped: Parser[_Item]  #: Wrapped ParamType called if value is not empty
+    wrapped: Parser[_Item]  #: Wrapped Parser called if value is not empty
     strip: bool  #:  Whether to strip whitespace before testing for empty
 
-    def parse(self, value: str) -> Res[Optional[_Item]]:
+    def parse(self, arg: str) -> Res[Optional[_Item]]:
         if self.strip:
-            value = value.strip()
-        if not value:
+            arg = arg.strip()
+        if not arg:
             return None
         else:
-            return self.wrapped.parse(value)
+            return self.wrapped.parse(arg)
 
 
 @dataclass(frozen=True)
@@ -463,7 +477,7 @@ class _SeparatedBy(Parser[Sequence[_Item]]):
     Parses values separated by a given separator
     """
 
-    item: Parser[_Item]  #: ParamType of individual items
+    item: Parser[_Item]  #: Parser of individual items
     sep: str  #: Item separator
     strip: bool  #: Whether to strip whitespace around separated strings
     remove_empty: bool  #: Whether to prune empty strings
@@ -479,15 +493,15 @@ class _SeparatedBy(Parser[Sequence[_Item]]):
         return collect_seq(res)
 
 
-@dataclass  # TODO: (frozen=True) when mypy sorts out dataclasses with Callable fields
+@dataclass(frozen=True)
 class _Validated(Parser[_Value]):
     """
     Parses a value and validates it
     """
 
     wrapped: Parser[_Value]
-    predicate: Callable[[_Value], bool]
-    msg: Callable[[str, _Value], str]
+    predicate: Predicate[_Value]
+    msg: ErrorMessageProvider[_Value]
 
     def parse(self, arg: str) -> Res[_Value]:
         res = self.wrapped.parse(arg)
@@ -503,10 +517,10 @@ class _Validated(Parser[_Value]):
 
 
 #: Parses a path
-path_parser: Parser[pathlib.Path] = Parser.from_function_that_raises(lambda s: pathlib.Path(s))
+path_parser: Parser[pathlib.Path] = Parser.from_function_that_raises(pathlib.Path)
 
 #: Parses an integer
-int_parser: Parser[int] = Parser.from_function_that_raises(lambda s: int(s))
+int_parser: Parser[int] = Parser.from_function_that_raises(int)
 
 #: Parses a string, preserves whitespace
 str_parser: Parser[str] = Parser.from_function(lambda s: s)
@@ -515,7 +529,7 @@ str_parser: Parser[str] = Parser.from_function(lambda s: s)
 stripped_str_parser: Parser[str] = Parser.from_function(lambda s: s.strip())
 
 #: Parses a float
-float_parser: Parser[float] = Parser.from_function_that_raises(lambda s: float(s))
+float_parser: Parser[float] = Parser.from_function_that_raises(float)
 
 bool_parser: Parser[bool] = Parser.from_mapping(
     {"true": True, "false": False},

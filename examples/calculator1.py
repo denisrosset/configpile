@@ -1,8 +1,11 @@
+"""
+Calculator tutorial, step 1
+"""
 from dataclasses import dataclass
 
 from typing_extensions import Annotated
 
-from configpile import *
+from configpile import Config, Err, Param, Parser, Res
 
 
 class FloatPT(Parser[float]):

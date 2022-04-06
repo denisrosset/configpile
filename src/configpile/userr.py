@@ -1,11 +1,11 @@
 """
 Error-reporting module
 
-This implements a union-based result type similar to `<https://github.com/rustedpy/result/>`_, 
+This implements a union-based result type similar to `<https://github.com/rustedpy/result/>`_,
 except that we do not wrap the "good" result.
 
-The type :data:`.Res` contains either a value of a user-defined type :data:`._Value`, an error or a
-list of errors.
+The type :data:`.Res` contains either a value of a user-defined type :data:`._Value_co`, an error
+or a list of errors.
 
 Errors have an associated context, see the description for :class:`.Err1`.
 
@@ -13,7 +13,7 @@ Errors have an associated context, see the description for :class:`.Err1`.
 
 .. py:data:: Res
 
-    Result type (parameterized :data:`.Res` [ :data:`._Value` ] )
+    Result type (parameterized :data:`.Res` [ :data:`._Value_co` ] )
 
     Note:
         Wrapping an error in :data:`.Res` as in :data:`.Res` [ :class:`.Err` ] is meaningless,
@@ -21,9 +21,9 @@ Errors have an associated context, see the description for :class:`.Err1`.
 
         There are other "monadic" result types for Python that have better composability.
 
-    :data:`.Res` = :data:`~typing.Union` [ :data:`._Value`, :class:`Err` ]
+    :data:`.Res` = :data:`~typing.Union` [ :data:`._Value_co`, :class:`Err` ]
 
-.. py:data:: _Value
+.. py:data:: _Value_co
 
     OK Value in our custom result type
 
@@ -85,7 +85,6 @@ class Err(ABC):
         """
         Returns a Markdown-formatted summary of this error (or list of errors)
         """
-        pass
 
     @abstractmethod
     def errors(self) -> Sequence[Err1]:
@@ -95,7 +94,6 @@ class Err(ABC):
         If this is not a collection of errors :class:`.ManyErr`, returns a sequence with
         a single item, this instance itself.
         """
-        pass
 
     @abstractmethod
     def in_context(self, **contexts: Any) -> Err:
@@ -108,20 +106,19 @@ class Err(ABC):
         Returns:
             Updated error
         """
-        pass
 
     def pretty_print(self) -> None:
         """
         Pretty prints an error on the console
         """
         try:
-            from rich.console import Console
-            from rich.markdown import Markdown
+            from rich.console import Console  # pylint: disable=import-outside-toplevel
+            from rich.markdown import Markdown  # pylint: disable=import-outside-toplevel
 
             console = Console()
             md = Markdown("\n".join(self.markdown()))
             console.print(md)
-        except:
+        except ImportError:
             sz = shutil.get_terminal_size()
             t = self.markdown()
             print(textwrap.fill("\n".join(t), width=sz.columns))
@@ -267,6 +264,13 @@ class _GroupedErrors:
         self,
         skip_contexts: int = 0,
     ) -> Sequence[str]:
+        """
+        Returns the markdown formatted info about this group of errors
+
+        Args:
+            skip_contexts: How many context to skip because they are displayed by the surrounding
+                           text
+        """
         lines: List[str] = []
         for ctx, ge in self.groups.items():
             ctx_name, ctx_value = ctx
@@ -360,13 +364,13 @@ _V = TypeVar("_V")
 
 _W = TypeVar("_W")
 
-_Value = TypeVar("_Value", covariant=True)
+_Value_co = TypeVar("_Value_co", covariant=True)
 
 _Parameters = ParamSpec("_Parameters")
 
 _ReturnType = TypeVar("_ReturnType")
 
-Res = Union[_Value, Err]
+Res = Union[_Value_co, Err]
 
 
 def wrap(
@@ -385,16 +389,16 @@ def wrap(
         >>> parse("2")
         2
         >>> parse("should error")
-        Err1(msg="ValueError thrown: invalid literal for int() with base 10: 'should error'", contexts=[])
+        Err1(msg="...", contexts=[])
     """
 
     def decorator(
         func: Callable[_Parameters, _ReturnType]
     ) -> Callable[_Parameters, Res[_ReturnType]]:
-        def wrapper(*args, **kwargs) -> Res[ReturnType_]:  # type: ignore
+        def wrapper(*args, **kwargs) -> Res[_ReturnType]:  # type: ignore
             try:
                 res: Res[_ReturnType] = func(*args, **kwargs)
-            except Exception as e:
+            except Exception as e:  # pylint: disable=broad-except
                 if (not keep) or any([isinstance(e, t) for t in keep]):
                     res = Err.make(f"{type(e).__name__} thrown: {e}")
                 else:
@@ -412,11 +416,13 @@ def in_context(result: Optional[Err], **contexts: Any) -> Optional[Err]:
 
 
 @overload
-def in_context(result: Res[_Value], **contexts: Any) -> Res[_Value]:
+def in_context(result: Res[_Value_co], **contexts: Any) -> Res[_Value_co]:
     pass
 
 
-def in_context(result: Union[_Value, Err, None], **contexts: Any) -> Union[_Value, Err, None]:
+def in_context(
+    result: Union[_Value_co, Err, None], **contexts: Any
+) -> Union[_Value_co, Err, None]:
     """
     Adds context to an error contained in a result type (when applicable)
 
@@ -443,17 +449,19 @@ def in_context(result: Union[_Value, Err, None], **contexts: Any) -> Union[_Valu
 
 
 @overload
-def collect(t: Res[_Value], u: Res[_U]) -> Res[Tuple[_Value, _U]]:
+def collect(t: Res[_Value_co], u: Res[_U]) -> Res[Tuple[_Value_co, _U]]:
     pass
 
 
 @overload
-def collect(t: Res[_Value], u: Res[_U], v: Res[_V]) -> Res[Tuple[_Value, _U, _V]]:
+def collect(t: Res[_Value_co], u: Res[_U], v: Res[_V]) -> Res[Tuple[_Value_co, _U, _V]]:
     pass
 
 
 @overload
-def collect(t: Res[_Value], u: Res[_U], v: Res[_V], w: Res[_W]) -> Res[Tuple[_Value, _U, _V, _W]]:
+def collect(
+    t: Res[_Value_co], u: Res[_U], v: Res[_V], w: Res[_W]
+) -> Res[Tuple[_Value_co, _U, _V, _W]]:
     pass
 
 
@@ -472,12 +480,14 @@ def collect(*args):  # type: ignore[no-untyped-def]
         else:
             ok.append(arg)
     if errs:
-        return Err.collect1(*errs)
+        return Err.collect1(*errs)  # pylint: disable=no-value-for-parameter
     else:
         return tuple(ok)
 
 
-def map(f: Callable[[_Value], _ReturnType], r: Res[_Value]) -> Res[_ReturnType]:
+def map(  # pylint: disable=redefined-builtin
+    f: Callable[[_Value_co], _ReturnType], r: Res[_Value_co]
+) -> Res[_ReturnType]:
     """
     Enables a computation on the value of a result
 
@@ -498,8 +508,9 @@ def map(f: Callable[[_Value], _ReturnType], r: Res[_Value]) -> Res[_ReturnType]:
         Err1(msg="ValueError thrown: could not convert string to float: 'invalid'", contexts=[])
 
     Args:
-        f: Function that takes a value of type `._Value` and returns a value of type `._ReturnType`
-        r: Result parameterized by type `._Value`
+        f: Function that takes a value of type `._Value_co` and returns a value of type
+           `._ReturnType`
+        r: Result parameterized by type `._Value_co`
 
     Returns:
         Result parameterized by type `._ReturnType`
@@ -513,7 +524,7 @@ def map(f: Callable[[_Value], _ReturnType], r: Res[_Value]) -> Res[_ReturnType]:
         return f(r)
 
 
-def flat_map(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_ReturnType]:
+def flat_map(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> Res[_ReturnType]:
     """
     Enables the chaining computations that can error
 
@@ -550,7 +561,7 @@ def flat_map(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_Re
         return f(r)
 
 
-def flatMap(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_ReturnType]:
+def flatMap(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> Res[_ReturnType]:
     """
     Enables the chaining computations that can error (deprecated)
 
@@ -562,7 +573,7 @@ def flatMap(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_Ret
     return flat_map(f, r)
 
 
-def collect_seq(seq: Sequence[Res[_Value]]) -> Res[Sequence[_Value]]:
+def collect_seq(seq: Sequence[Res[_Value_co]]) -> Res[Sequence[_Value_co]]:
     """
     Collects a sequence of results
 
@@ -588,7 +599,7 @@ def collect_seq(seq: Sequence[Res[_Value]]) -> Res[Sequence[_Value]]:
     Returns:
         An error or a sequence
     """
-    ok: List[_Value] = []
+    ok: List[_Value_co] = []
     errs: List[Err1] = []
     for res in seq:
         if isinstance(res, Err):
@@ -596,6 +607,6 @@ def collect_seq(seq: Sequence[Res[_Value]]) -> Res[Sequence[_Value]]:
         else:
             ok.append(res)
     if errs:
-        return Err.collect1(*errs)
+        return Err.collect1(*errs)  # pylint: disable=unused-import
     else:
         return ok

@@ -1,8 +1,8 @@
 API
 ===
 
-The package ``configpile`` reexports a few symbols for ease of use, and they are imported in the
-current scope by ``from configpile import *``.
+The package ``configpile`` reexports a few symbols for ease of use, and they are imported in
+the current scope by ``from configpile import *``.
 
 Those identifiers are:
 
@@ -28,8 +28,9 @@ Those identifiers are:
    configpile.arg
    configpile.collector
    configpile.config
+   configpile.enums
+   configpile.handlers
    configpile.parsers
    configpile.processor
    configpile.userr
    configpile.util
-

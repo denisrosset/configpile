@@ -125,7 +125,7 @@ class Config(ABC):
             A sequence of all validators
         """
         res: List[Callable[[_Config], Optional[Err]]] = []
-        for name, meth in inspect.getmembers(cls, inspect.isroutine):
+        for name, _ in inspect.getmembers(cls, inspect.isroutine):
             if name.startswith("validate_"):
                 res.append(getattr(cls, name))
         return res
