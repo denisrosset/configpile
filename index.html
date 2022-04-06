@@ -576,6 +576,11 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-to-use">
+   How to use
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#code-example">
    Code example
   </a>
@@ -607,6 +612,11 @@
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-to-use">
+   How to use
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#code-example">
    Code example
@@ -649,6 +659,22 @@ documentation block.</p></li>
 <li><p><strong>Error reporting</strong>: Instead of crashing at the first parse error, configpile
 collects all the errors encountered and reports all of them.</p></li>
 </ul>
+<div class="section" id="how-to-use">
+<h2>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">configpile</span></code> is easily installed through <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">configpile</span>
+</pre></div>
+</div>
+<p>It supports Python &gt;= 3.8, depends only on
+<a class="reference external" href="https://github.com/danields761/class-doc">class-doc</a> and <code class="docutils literal notranslate"><span class="pre">typing_extensions</span></code>.</p>
+<p>Optionally, it supports <a class="reference external" href="https://github.com/python-parsy/parsy">parsy</a> (to define more
+complicated parsers) and <a class="reference external" href="https://github.com/Textualize/rich">rich</a> (for pretty-printing
+error information).</p>
+<p>You can do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">configpile</span><span class="p">[</span><span class="n">parsy</span><span class="p">,</span><span class="n">rich</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="code-example">
 <h2>Code example<a class="headerlink" href="#code-example" title="Permalink to this headline">¶</a></h2>
 <p>(taken from <a class="reference internal" href="tutorial/step2.html#tutorial-step2"><span class="std std-ref">Step 2: Reuse defaults, short flags</span></a>)</p>
