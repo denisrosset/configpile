@@ -1,3 +1,35 @@
+## v9.0.0 (2022-04-06)
+
+### Feat
+
+- add standalone INI file processing
+- **processor**: new method IniProcessor.process_string to process INI file content without opening a file
+- export ForceCase from the main configpile package
+- **parsers**: add Parser.flat_map method
+
+### Fix
+
+- **config**: renamed Processor.process to Processor.process_command_line to avoid deprecation warning
+- **processor**: made Processor.process_config private, as it related to an internal update
+- **userr**: fix the string representation of Err1
+- **userr**: fix the order of contexts, left is outer-most
+- **userr**: fix construction of ManyErr when dealing with a single error
+- **userr**: rename flatMap to flat_map to obey style guidelines
+- **parsers**: handle better the optional parsy import
+- **config**: enable use of configpile in Jupyter notebooks
+
+### BREAKING CHANGE
+
+- This is a breaking change as we make a public method private, but it should not break any code as there is no reason to call this method from outside the Processor class.
+- Methods in a Config subclass that start with "validate_", do not end with an underscore, and are not validators must be renamed so that their name no longer starts with the "validate_" string.
+- configpile.types -> configpile.parsers, ParamType -> Parser, float_ -> float_parser etc
+
+### Refactor
+
+- **processor**: rename Processor.process to process_command_line
+- **config**: enable instance validators that do not end with an underscore
+- rename param_type to parser
+
 ## v8.0.0 (2022-03-23)
 
 ### Fix

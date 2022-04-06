@@ -26,7 +26,6 @@ Its best selling points are:
 * Error reporting: Instead of crashing at the first parse error, configpile
   collects all the errors encountered and reports all of them.
 
-
 .. toctree::
     :hidden:
     :maxdepth: 3
