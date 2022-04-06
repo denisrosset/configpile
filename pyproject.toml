@@ -45,9 +45,23 @@ doc8 = "^0.10.1"
 esbonio = "^0.10.2"
 isort = "^5.10.1"
 mypy = "0.941"
+pylint = "^2.13.4"
 pytest = "^7.0.1"
 pytest-cov = "^3.0.0"
 rstcheck = "^3.3.1"
+tomli = "^2.0.1"
+
+[tool.pylint.BASIC]
+
+variable-rgx = "[a-z_][a-z0-9_]{1,30}$"
+
+[tool.pylint.messages_control]
+disable = [
+  "assignment-from-none", # this is caught by mypy and has false positives
+  "no-value-for-parameter", # this is caught by mypy and has false positives
+  "unused-argument", # happens quite often in OOP hierarchies
+  "invalid-name", # we like our single letter argument names
+]
 
 [tool.mypy]
 python_version = "3.8"
