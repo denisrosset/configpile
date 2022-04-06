@@ -616,7 +616,7 @@ class Processor(Generic[_Config]):
                 errors.append(err.in_context(ini_file=p))
         return Err.collect(*errors)
 
-    def process(
+    def process_command_line(
         self,
         cwd: Path,
         args: Sequence[str],
