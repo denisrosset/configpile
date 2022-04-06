@@ -1,3 +1,14 @@
+## v10.0.1 (2022-04-06)
+
+### Fix
+
+- **parsers**: fix Parser.from_parsy_parser call convention as it breaks when using collections
+- add words to cSpell dictionary
+
+### Refactor
+
+- fix more PyLint warnings
+
 ## v10.0.0 (2022-04-06)
 
 ### Refactor
