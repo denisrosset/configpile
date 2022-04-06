@@ -1,3 +1,13 @@
+## v10.0.0 (2022-04-06)
+
+### Refactor
+
+- moved classes to avoid circular imports; corrected PyLint warnings
+
+### BREAKING CHANGE
+
+- Internal classes have been moved around, so imports may need to be fixed. Imports from configpile.* are unchanged.
+
 ## v9.0.0 (2022-04-06)
 
 ### Feat
