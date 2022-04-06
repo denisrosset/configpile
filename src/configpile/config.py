@@ -161,7 +161,7 @@ class Config(ABC):
         if env is None:
             env = os.environ
         processor = cls.processor_()
-        return processor.process(cwd, args, env)
+        return processor.process_command_line(cwd, args, env)
 
     @classmethod
     def from_command_line_(
