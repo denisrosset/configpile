@@ -1,17 +1,19 @@
-import os
 import sys
 from pathlib import Path
 
 import configpile
 
 project = "configpile"  # Name of the documented package
+
+__import__(project)
+
+
 repository_url = f"https://github.com/denisrosset/{project}"
 repository_branch = "main"
 copyright = "2022, Denis Rosset"
 
 sys.path.append(str(Path(__file__).parent.parent.parent / "examples"))
 
-print(configpile.__version__)
 # General stuff
 extensions = [
     "sphinx.ext.autodoc",
@@ -52,20 +54,6 @@ napoleon_use_admonition_for_notes = True
 napoleon_use_admonition_for_references = True
 
 autodoc_type_aliases = {"Res": "configpile.userr.Res"}
-# try:
-#     __import__(project)
-# except ImportError as error:
-#     package_path = Path(__file__).resolve().parents[2]
-#     sys.path.append(str(package_path))
-#     try:
-#         __import__(project)
-#     except ImportError as error2:
-#         warnings.warn(f"Could not import the {project} package")
-
-# try:
-#     __version__ = get_distribution(project).version
-# except DistributionNotFound:
-#     __version__ = "unknown version"
 
 
 source_suffix = ".rst"
@@ -88,7 +76,7 @@ html_copy_source = True
 html_show_sourcelink = True
 html_sourcelink_suffix = ""
 html_title = project
-html_favicon = "_static/favicon.png"
+# html_favicon = "_static/favicon.png"
 html_static_path = ["_static"]
 html_theme_options = {
     "path_to_docs": "docs",

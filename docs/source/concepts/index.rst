@@ -1,12 +1,14 @@
 Concepts
 ========
 
-.. toctree::
-    :hidden:
-    :maxdepth: 3
+Here we describe several important concepts used in ``configpile``.
 
+.. toctree::
+    :maxdepth: 1
+
+    overview
     errors
     parsers
     params
-    config
     validation
+    config
