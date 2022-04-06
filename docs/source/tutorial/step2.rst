@@ -1,3 +1,5 @@
+.. _tutorial_step2:
+
 Step 2: Reuse defaults, short flags
 ===================================
 
