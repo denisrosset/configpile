@@ -143,6 +143,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -424,6 +429,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.flatMap.html">
        flatMap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flat_map.html">
+       flat_map
       </a>
      </li>
      <li class="toctree-l3">
@@ -728,7 +738,7 @@ a single item, this instance itself.</p>
 <div class="admonition-example admonition">
 <p class="admonition-title">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;test error&quot;</span><span class="p">)</span>
-<span class="go">Err1(&#39;test error&#39;)</span>
+<span class="go">Err1(msg=&#39;test error&#39;, contexts=[])</span>
 </pre></div>
 </div>
 </div>
@@ -757,7 +767,7 @@ a single item, this instance itself.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;a &lt; 0&quot;</span><span class="p">),</span> <span class="n">Err</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">b</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b &lt; 0&quot;</span><span class="p">))</span>
-<span class="go">Err1(&#39;a &lt; 0&#39;)</span>
+<span class="go">Err1(msg=&#39;a &lt; 0&#39;, contexts=[])</span>
 </pre></div>
 </div>
 </div>

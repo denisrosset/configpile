@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>configpile &#8212; configpile</title>
+    <title>API &#8212; configpile</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="arg" href="_autosummary/configpile.arg.html" />
-    <link rel="prev" title="Parameter and configuration validation" href="concepts/validation.html" />
+    <link rel="prev" title="Configurations" href="concepts/config.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -143,6 +143,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concepts/config.html">
-     Configurations
+    <a class="reference internal" href="concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
-   configpile
+   API
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -568,7 +578,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>configpile</h1>
+                <h1>API</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -579,21 +589,22 @@
             
               <div>
                 
-  <div class="section" id="configpile">
-<h1>configpile<a class="headerlink" href="#configpile" title="Permalink to this headline">¶</a></h1>
-<p>The package <code class="docutils literal notranslate"><span class="pre">configpile</span></code> reexports a few symbols for ease of use.</p>
-<p>The main classes reexported are:</p>
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>The package <code class="docutils literal notranslate"><span class="pre">configpile</span></code> reexports a few symbols for ease of use, and they are imported in the
+current scope by <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">configpile</span> <span class="pre">import</span> <span class="pre">*</span></code>.</p>
+<p>Those identifiers are:</p>
 <ul class="simple">
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">AutoName</span></code></p></li>
 <li><p><a class="reference internal" href="_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/configpile.arg.Derived.html#configpile.arg.Derived" title="configpile.arg.Derived"><code class="xref py py-class docutils literal notranslate"><span class="pre">Derived</span></code></a></p></li>
 <li><p><a class="reference internal" href="_autosummary/configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a></p></li>
 <li><p><a class="reference internal" href="_autosummary/configpile.arg.Expander.html#configpile.arg.Expander" title="configpile.arg.Expander"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expander</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase" title="configpile.parsers.ForceCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForceCase</span></code></a></p></li>
 <li><p><a class="reference internal" href="_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></p></li>
+<li><p><a class="reference internal" href="_autosummary/configpile.parsers.html#module-configpile.parsers" title="configpile.parsers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">parsers</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a></p></li>
 <li><p><a class="reference internal" href="_autosummary/configpile.arg.Positional.html#configpile.arg.Positional" title="configpile.arg.Positional"><code class="xref py py-class docutils literal notranslate"><span class="pre">Positional</span></code></a></p></li>
 <li><p><a class="reference internal" href="_autosummary/configpile.userr.html#configpile.userr.Res" title="configpile.userr.Res"><code class="xref py py-class docutils literal notranslate"><span class="pre">Res</span></code></a></p></li>
-<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Validator</span></code></p></li>
-<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">types</span></code></p></li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>
@@ -634,11 +645,11 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="concepts/validation.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="concepts/config.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Parameter and configuration validation</p>
+            <p class="prev-next-title">Configurations</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="_autosummary/configpile.arg.html" title="next page">

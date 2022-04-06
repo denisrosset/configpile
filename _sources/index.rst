@@ -5,7 +5,7 @@ Configpile is a replacement for the :mod:`argparse` module of the Python
 standard library.
 
 It is written in clean, modern Python with extensive support of
-`PEP 484 <https://peps.python.org/pep-0484/>` type hints and :mod:`dataclasses`.
+`PEP 484 <https://peps.python.org/pep-0484/>`_ type hints and :mod:`dataclasses`.
 
 It processes configuration settings coming from a variety of sources:
 
@@ -25,7 +25,6 @@ Its best selling points are:
 
 * Error reporting: Instead of crashing at the first parse error, configpile
   collects all the errors encountered and reports all of them.
-
 
 .. toctree::
     :hidden:

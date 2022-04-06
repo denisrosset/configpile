@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Parameter and configuration validation" href="validation.html" />
-    <link rel="prev" title="Params (parameters)" href="params.html" />
+    <link rel="next" title="API" href="../api.html" />
+    <link rel="prev" title="Parameter and configuration validation" href="validation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -143,6 +143,11 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
+    <a class="reference internal" href="overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -162,14 +167,14 @@
      Params (parameters)
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     Configurations
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="validation.html">
      Parameter and configuration validation
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -561,6 +571,62 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#help-strings">
+   Help strings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#members-of-a-config-subclass">
+   Members of a
+   <code class="xref py py-class docutils literal notranslate">
+    <span class="pre">
+     Config
+    </span>
+   </code>
+   subclass
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parameters">
+   Parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arguments">
+   Arguments
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ini-handling">
+   INI handling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example">
+     Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#descriptions-of-the-program">
+   Descriptions of the program
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ending-names-with-underscores">
+   Ending names with underscores
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -573,73 +639,251 @@
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#help-strings">
+   Help strings
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#members-of-a-config-subclass">
+   Members of a
+   <code class="xref py py-class docutils literal notranslate">
+    <span class="pre">
+     Config
+    </span>
+   </code>
+   subclass
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parameters">
+   Parameters
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#arguments">
+   Arguments
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ini-handling">
+   INI handling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example">
+     Example
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#descriptions-of-the-program">
+   Descriptions of the program
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ending-names-with-underscores">
+   Ending names with underscores
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="configurations">
+  <p>(concepts:configurations)</p>
+<div class="tex2jax_ignore mathjax_ignore section" id="configurations">
 <h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
+<p>Here we mention a few details that were not part of the <a class="reference internal" href="overview.html#concepts-overview"><span class="std std-ref">Overview of the process</span></a>.</p>
+<div class="section" id="help-strings">
+<h2>Help strings<a class="headerlink" href="#help-strings" title="Permalink to this headline">¶</a></h2>
+<p>Descriptions are provided in two places: for the script itself, and for each parameter.
+Note that the parameter help strings are not parsed when the class is not constructed from a <code class="docutils literal notranslate"><span class="pre">.py</span></code>
+file, which is the case here (as this uses a Jupyter notebook). So we show the syntax below but
+do not demonstrate its use.</p>
+<p>Note that providing a docstring for the class is always recommended, as it seems
+<a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclasses.dataclass()</span></code></a> fills one up if missing.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
 <span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="c1"># or `from typing import Annotated` if Python &gt;= 3.9</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">Test</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TestConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Docstring</span>
+<span class="sd">    Docstring describing the program </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">x</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Value&quot;</span><span class="p">)]</span>
+    <span class="c1">#: Sphinx autodoc-style comment (starting with #:) describing the parameter immediately below.</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
 </div>
+</div>
+<div class="section" id="members-of-a-config-subclass">
+<h2>Members of a <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> subclass<a class="headerlink" href="#members-of-a-config-subclass" title="Permalink to this headline">¶</a></h2>
+<p>There are different kinds of members in a configuration:</p>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>They correspond to annotated field declarations, with the general syntax:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">PARAM_NAME</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">PARAM_TYPE</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">PARAM_STATIC_METHOD</span><span class="p">(</span><span class="n">PARSER</span><span class="p">,</span> <span class="n">EXTRA_OPTIONS</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>where</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PARAM_NAME</span></code> is the parameter name, cannot end with an underscore <code class="docutils literal notranslate"><span class="pre">_</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PARAM_TYPE</span></code> is the Python type of the parameter,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PARSER</span></code> is a parser instance (see <a class="reference internal" href="parsers.html#concepts-parsers"><span class="std std-ref">Parsers</span></a>),</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EXTRA_OPTIONS</span></code> modify how <code class="docutils literal notranslate"><span class="pre">configpile</span></code> handles the processing.</p></li>
+</ul>
+<p>See {ref}concepts:params` for further details.</p>
+</div>
+<div class="section" id="arguments">
+<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h2>
+<p>Argument declarations provide information to <code class="docutils literal notranslate"><span class="pre">configpile</span></code> about how to handle command line flags
+that do not correspond to parameters.</p>
+<p>For example, an <a class="reference internal" href="../_autosummary/configpile.arg.Expander.html#configpile.arg.Expander" title="configpile.arg.Expander"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.arg.Expander</span></code></a> provides a key/value pair. They often go along
+with a proper parameter.</p>
+<p>Because the arguments are not fields that will be part of the dataclass (they do not store values
+themselves, but modify the processing), they need to be declared as class attributes using
+<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.ClassVar</span></code></a>. Here is a short example.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--x&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Test(x=2)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span><span class="o">.</span><span class="n">get_argument_parser_</span><span class="p">()</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: /home/runner/.cache/pypoetry/virtualenvs/configpile-OmRJEK4a-py3.8/lib/python3.8/site-packages/ipykernel_launcher.py
-       [--x X]
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ConfigWithBool</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
 
-    Docstring
-    
+    <span class="n">smoothing</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">bool_parser</span><span class="p">)]</span>
 
-required arguments:
-  --x X  Value
+    <span class="n">perform_smoothing</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Expander</span><span class="p">]</span> <span class="o">=</span> <span class="n">Expander</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;--smoothing&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span>
+    <span class="n">skip_smoothing</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Expander</span><span class="p">]</span> <span class="o">=</span> <span class="n">Expander</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;--smoothing&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span><span class="o">.</span><span class="n">params_by_name</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfigWithBool</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--perform-smoothing&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;x&#39;: Param(help=&#39;Value&#39;, short_flag_name=None, long_flag_name=&#39;--x&#39;, parser=_FromFunctionThatRaises(fun=&lt;function &lt;lambda&gt; at 0x7fcabc532160&gt;, catch=()), is_config=False, collector=&lt;configpile.collector._KeepLast object at 0x7fcabc61d160&gt;, default_value=None, name=&#39;x&#39;, positional=None, config_key_name=&#39;x&#39;, env_var_name=None)}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ConfigWithBool(smoothing=True)
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfigWithBool</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--skip-smoothing&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ConfigWithBool(smoothing=False)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="ini-handling">
+<h2>INI handling<a class="headerlink" href="#ini-handling" title="Permalink to this headline">¶</a></h2>
+<p>Sections in an INI file are parsed according to two modes:</p>
+<ul class="simple">
+<li><p>the relaxed mode ignore keys that do not match known parameters,</p></li>
+<li><p>the strict mode reports an error when a key is present that does not match a parameter.</p></li>
+</ul>
+<p>Only the section names that are specified in the <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> instance
+through the <code class="xref py py-attr docutils literal notranslate"></code>
+By default, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> parses the section named <code class="docutils literal notranslate"><span class="pre">common</span></code>, <code class="docutils literal notranslate"><span class="pre">COMMON</span></code> or <code class="docutils literal notranslate"><span class="pre">Common</span></code> in the relaxed
+mode.</p>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>We present an example where the two behaviors are shown.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ConfigWithCustomINI</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">ini_relaxed_sections_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span>
+    <span class="n">ini_strict_sections_</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;specific&#39;</span><span class="p">]</span>
+
+    <span class="n">number</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="p">)]</span>
+    <span class="n">word</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">stripped_str_parser</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfigWithCustomINI</span><span class="o">.</span><span class="n">parse_ini_contents_</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[all]</span>
+<span class="s2">number = 123</span>
+<span class="s2">extra_stuff = will_be_ignored</span>
+
+<span class="s2">[specific]</span>
+<span class="s2">word = hello</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ConfigWithCustomINI(number=123, word=&#39;hello&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ConfigWithCustomINI</span><span class="o">.</span><span class="n">parse_ini_contents_</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[all]</span>
+<span class="s2">number = 123</span>
+
+<span class="s2">[specific]</span>
+<span class="s2">word = hello</span>
+<span class="s2">extra_stuff = not_ignored</span>
+
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;Unknown key extra_stuff&#39;, contexts=[(&#39;ini_section&#39;, &#39;specific&#39;)])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="descriptions-of-the-program">
+<h2>Descriptions of the program<a class="headerlink" href="#descriptions-of-the-program" title="Permalink to this headline">¶</a></h2>
+<p>Class attributes such as <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.prog_" title="configpile.config.Config.prog_"><code class="xref py py-attr docutils literal notranslate"><span class="pre">prog_</span></code></a>,
+<a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.description_" title="configpile.config.Config.description_"><code class="xref py py-attr docutils literal notranslate"><span class="pre">description_</span></code></a>, methods such as
+<a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.version_" title="configpile.config.Config.version_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">version_()</span></code></a> provide information about your program that is
+mostly used for documentation/help purposes.</p>
+<p>Note that those attributes are typed using :data:<code class="docutils literal notranslate"><span class="pre">typing.ClassVar</span></code>, and thus they are not part of
+the dataclass fields; see
+<a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#class-variables">the dataclass help</a>.</p>
+</div>
+<div class="section" id="ending-names-with-underscores">
+<h2>Ending names with underscores<a class="headerlink" href="#ending-names-with-underscores" title="Permalink to this headline">¶</a></h2>
+<p>Note that the methods, fields and attributes designed for <code class="docutils literal notranslate"><span class="pre">configpile</span></code> use have an underscore <code class="docutils literal notranslate"><span class="pre">_</span></code>
+suffix. This is to avoid clashing with user-provided configuration fields that may use the same
+name.</p>
+<p>In your own <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> subclasses, we suggest you follow the same naming
+scheme: underscore suffix for any class member which is not a configuration dataclass field.</p>
 </div>
 </div>
 
@@ -649,17 +893,17 @@ required arguments:
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="params.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="validation.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Params (parameters)</p>
+            <p class="prev-next-title">Parameter and configuration validation</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="validation.html" title="next page">
+    <a class='right-next' id="next-link" href="../api.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Parameter and configuration validation</p>
+        <p class="prev-next-title">API</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

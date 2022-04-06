@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parameter and configuration validation &#8212; configpile</title>
+    <title>Overview of the process &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Configurations" href="config.html" />
-    <link rel="prev" title="Params (parameters)" href="params.html" />
+    <link rel="next" title="Error handling in configpile" href="errors.html" />
+    <link rel="prev" title="Concepts" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -142,8 +142,8 @@
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="overview.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      Overview of the process
     </a>
    </li>
@@ -167,8 +167,8 @@
      Params (parameters)
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="validation.html">
      Parameter and configuration validation
     </a>
    </li>
@@ -577,14 +577,26 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#validation-during-parsing">
-   Validation during parsing
+  <a class="reference internal nav-link" href="#demonstrating-the-process">
+   Demonstrating the process
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#validation-during-construction">
-   Validation during construction
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parse-errors">
+     Parse errors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#collection-errors">
+     Collection errors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#instance-level-validation-errors">
+     Instance-level validation errors
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -596,7 +608,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Parameter and configuration validation</h1>
+                <h1>Overview of the process</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -607,14 +619,26 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#validation-during-parsing">
-   Validation during parsing
+  <a class="reference internal nav-link" href="#demonstrating-the-process">
+   Demonstrating the process
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#validation-during-construction">
-   Validation during construction
-  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#parse-errors">
+     Parse errors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#collection-errors">
+     Collection errors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#instance-level-validation-errors">
+     Instance-level validation errors
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -625,66 +649,109 @@
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="parameter-and-configuration-validation">
-<span id="concepts-validation"></span><h1>Parameter and configuration validation<a class="headerlink" href="#parameter-and-configuration-validation" title="Permalink to this headline">¶</a></h1>
-<p>The validation of a parameter value checks requirements that are not part of the parsing process
-itself. For example, we may require that a numerical parameter is within a certain range.</p>
-<p>There are two places where the validation may occur.</p>
-<ul>
-<li><p>The validation may be done right after parsing, if the parameter value can be checked on its own.
-This is the recommended place to perform validation, if at all possible. The validation function
-is then tacked on to the parser.</p>
-<p>More interestingly, errors about this kind of validation will be reported early in the processing
-along with other parse errors. This is the most user-friendly option.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="overview-of-the-process">
+<span id="concepts-overview"></span><h1>Overview of the process<a class="headerlink" href="#overview-of-the-process" title="Permalink to this headline">¶</a></h1>
+<p>How is a configuration processed by <code class="docutils literal notranslate"><span class="pre">configpile</span></code>, for example when calling
+<a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_command_line_()</span></code></a>?</p>
+<ol>
+<li><p>First, the configuration class, which is a <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a> inherting from
+<a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> is inspected. All the dataclass fields should be annotated
+with a <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> instance, see <a class="reference internal" href="params.html#concepts-params"><span class="std std-ref">Params (parameters)</span></a>. <code class="docutils literal notranslate"><span class="pre">configpile</span></code> makes
+a list of triggers, for environment variables, INI files key/value pairs, and command-line
+arguments.</p></li>
+<li><p>For each parameter, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> prepares a list of values. If the parameter does not have a
+default value, the list is initially empty. If the parameter has a default value, this value
+is parsed (see <a class="reference internal" href="parsers.html#concepts-parsers"><span class="std std-ref">Parsers</span></a>) and stored in the list.</p></li>
+<li><p>Then, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> inspects environment variables. If any of the environment variables
+corresponds to a parameter, the variable content is parsed and added to the list.</p>
+<p>If any environment variable points to an INI file, the file is read, and for each
+parameter key present in the INI file, the corresponding value is parsed and added to the list.</p>
 </li>
-<li><p>If the validation is about a <em>relationship</em> between parameter values, it must be done after the
-configuration has been processed and constructed. The validation function needs to be a method
-in the configuration subclass.</p></li>
+<li><p>After that, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> processes command-line arguments. Some arguments will point to an INI
+file: again, those files are parsed and the corresponding values added to the list of the
+corresponding parameter. Some arguments provide parameter values directly: those values are
+parsed and again added to the corresponding list.</p></li>
+<li><p>At this point, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> may have failed to parse some of the strings, have had problems
+reading a configuration file, or some values may have failed validation
+(see <a class="reference internal" href="validation.html#concepts-validation"><span class="std std-ref">Parameter and configuration validation</span></a>). All these errors are collected and reported together to the
+user.</p></li>
+<li><p>If everything is fine, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> looks at each parameter in turn. Now, each parameter
+corresponds to a list of values. The question is how to process this list to populate the
+configuration with a single value. This is the job of the
+<a class="reference internal" href="../_autosummary/configpile.collector.Collector.html#configpile.collector.Collector" title="configpile.collector.Collector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collector</span></code></a>: the standard collectors provided by <code class="docutils literal notranslate"><span class="pre">configpile</span></code>
+either append the values together (useful when collecting a list of files to process, for
+example), or return the last value (useful when later parameter value override the values
+provided previously).</p>
+<p>This process can eventually fail for some or all the parameters: for example, if a collector
+needs to return the last value provided, and nothing was provided at all, it will error.
+All the errors are collected together, in that case, and reported to the user.</p>
+</li>
+<li><p>The next step is the construction of the configuration dataclass, with the computed parameter
+values. After that, the validation methods of the configuration dataclass are called for the
+final validation round, see <a class="reference internal" href="validation.html#concepts-validation"><span class="std std-ref">Parameter and configuration validation</span></a>. If everything works, the constructed
+dataclass is returned.</p></li>
+</ol>
+<p>This whole process is short-circuited in a few cases.</p>
+<ul class="simple">
+<li><p>By default, the command-line flags <code class="docutils literal notranslate"><span class="pre">-h</span></code> and <code class="docutils literal notranslate"><span class="pre">--help</span></code> display the usage information and exit the
+program using <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.exit" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sys.exit()</span></code></a>.</p></li>
+<li><p>In the future, we may support other special actions such as displaying the program version
+using a <code class="docutils literal notranslate"><span class="pre">--version</span></code> flag for example.</p></li>
 </ul>
-<p>We demonstrate the two options in the example below.</p>
+<p>There are two static methods on <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> that can be called to construct
+a configuration.</p>
+<ul class="simple">
+<li><p>The <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_command_line_()</span></code></a> method, in case of errors, displays
+usage information and exits through <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.exit" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sys.exit()</span></code></a>.</p></li>
+<li><p>The <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.parse_command_line_" title="configpile.config.Config.parse_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_command_line_()</span></code></a> method, always returns to the caller,
+and returns either a constructed configuration dataclass, a token corresponding to a special
+action (such as a command to display help information or the version number), or finally
+a <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a> error.</p></li>
+</ul>
+<div class="section" id="demonstrating-the-process">
+<h2>Demonstrating the process<a class="headerlink" href="#demonstrating-the-process" title="Permalink to this headline">¶</a></h2>
+<p>Here is a simple configuration class, and we will make its construction fail at several points in
+the construction.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
-
-
-<span class="k">def</span> <span class="nf">int_is_not_negative</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span>
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">TestConfig</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A superb program</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">a</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span>
-        <span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="o">.</span><span class="n">validated</span><span class="p">(</span><span class="n">int_is_not_negative</span><span class="p">,</span> <span class="s2">&quot;The value cannot be negative&quot;</span><span class="p">)</span>
-    <span class="p">)]</span>
-    
-    <span class="n">b</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span>
-        <span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="o">.</span><span class="n">validated</span><span class="p">(</span><span class="n">int_is_not_negative</span><span class="p">,</span> <span class="s2">&quot;The value cannot be negative&quot;</span><span class="p">)</span>
-        <span class="p">)]</span>
+    <span class="c1">#: First parameter, must be greater than the second parameter</span>
+    <span class="n">a</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="p">,</span> <span class="n">short_flag_name</span><span class="o">=</span><span class="s1">&#39;-a&#39;</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="nf">validate_a_is_greater_than_b</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+    <span class="c1">#: Second parameter</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">int_parser</span><span class="p">,</span> <span class="n">short_flag_name</span><span class="o">=</span><span class="s1">&#39;-b&#39;</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">validate_a_greater_than_b</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The value a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2"> needs to be greater than the value b=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2"> should be &gt; than b=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="validation-during-parsing">
-<h2>Validation during parsing<a class="headerlink" href="#validation-during-parsing" title="Permalink to this headline">¶</a></h2>
-<p>This example has the validation during parsing fail.</p>
+<div class="section" id="parse-errors">
+<h3>Parse errors<a class="headerlink" href="#parse-errors" title="Permalink to this headline">¶</a></h3>
+<p>Note that all parse errors are collected and reported. The rest of the construction process is
+not done.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">TestConfig</span><span class="o">.</span><span class="n">parse_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--a&quot;</span><span class="p">,</span> <span class="s2">&quot;-2&quot;</span><span class="p">,</span> <span class="s2">&quot;--b&quot;</span><span class="p">,</span> <span class="s2">&quot;-3&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">TestConfig</span><span class="o">.</span><span class="n">parse_command_line_</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;invalid&#39;</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span><span class="s1">&#39;also_invalid&#39;</span><span class="p">,</span> <span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;last_invalid&#39;</span><span class="p">],</span> <span class="n">env</span> <span class="o">=</span> <span class="p">{})</span>
 <span class="n">res</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ManyErr(errs=[Err1(msg=&#39;The value cannot be negative&#39;, contexts=[(&#39;flag&#39;, &#39;--a&#39;), (&#39;param&#39;, &#39;a&#39;)]), Err1(msg=&#39;The value cannot be negative&#39;, contexts=[(&#39;flag&#39;, &#39;--b&#39;), (&#39;param&#39;, &#39;b&#39;)])])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ManyErr(errs=[Err1(msg=&quot;Error &#39;invalid literal for int() with base 10: &#39;invalid&#39;&#39; in &#39;invalid&#39;&quot;, contexts=[(&#39;flag&#39;, &#39;-a&#39;), (&#39;param&#39;, &#39;a&#39;)]), Err1(msg=&quot;Error &#39;invalid literal for int() with base 10: &#39;also_invalid&#39;&#39; in &#39;also_invalid&#39;&quot;, contexts=[(&#39;flag&#39;, &#39;-b&#39;), (&#39;param&#39;, &#39;b&#39;)]), Err1(msg=&quot;Error &#39;invalid literal for int() with base 10: &#39;last_invalid&#39;&#39; in &#39;last_invalid&#39;&quot;, contexts=[(&#39;flag&#39;, &#39;-a&#39;), (&#39;param&#39;, &#39;a&#39;)])])
 </pre></div>
 </div>
 </div>
@@ -697,28 +764,30 @@ in the configuration subclass.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
-<span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> 0 </span>In flag: --a                                                                              
-<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">   </span>In param: a                                                                               
-<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">   </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">The value cannot be negative</span>                                                              
-<span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> 1 </span>In flag: --b                                                                              
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>In flag: -a                                                                               
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">    • </span>In param: a                                                                            
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">       0 </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">Error 'invalid literal for int() with base 10: 'invalid'' in 'invalid'</span>              
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">       1 </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">Error 'invalid literal for int() with base 10: 'last_invalid'' in 'last_invalid'</span>    
+
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> 0 </span>In flag: -b                                                                               
 <span style="color: #808000; text-decoration-color: #808000; font-weight: bold">   </span>In param: b                                                                               
-<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">   </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">The value cannot be negative</span>                                                              
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">   </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">Error 'invalid literal for int() with base 10: 'also_invalid'' in 'also_invalid'</span>          
 </pre>
 </div></div>
 </div>
 </div>
-<div class="section" id="validation-during-construction">
-<h2>Validation during construction<a class="headerlink" href="#validation-during-construction" title="Permalink to this headline">¶</a></h2>
-<p>This example has the validation post-construction fail.</p>
+<div class="section" id="collection-errors">
+<h3>Collection errors<a class="headerlink" href="#collection-errors" title="Permalink to this headline">¶</a></h3>
+<p>Those errors happen during the collection process. Here, because of missing values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">TestConfig</span><span class="o">.</span><span class="n">parse_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--a&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;--b&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">TestConfig</span><span class="o">.</span><span class="n">parse_command_line_</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">],</span> <span class="n">env</span> <span class="o">=</span> <span class="p">{})</span>
 <span class="n">res</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;The value a=2 needs to be greater than the value b=3&#39;, contexts=[])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;Argument is required&#39;, contexts=[(&#39;param&#39;, &#39;b&#39;)])
 </pre></div>
 </div>
 </div>
@@ -730,9 +799,30 @@ in the configuration subclass.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">The value a=2 needs to be greater than the value b=3</span>                                         
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">In param: b                                                                                  
+
+<span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">Argument is required</span>                                                                         
 </pre>
 </div></div>
+</div>
+</div>
+<div class="section" id="instance-level-validation-errors">
+<h3>Instance-level validation errors<a class="headerlink" href="#instance-level-validation-errors" title="Permalink to this headline">¶</a></h3>
+<p>Those errors are reported in a last step, and will only be shown if the previous steps were
+completed successfully.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">TestConfig</span><span class="o">.</span><span class="n">parse_command_line_</span><span class="p">(</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="n">env</span> <span class="o">=</span> <span class="p">{})</span>
+<span class="n">res</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;Parameter a=2 should be &gt; than b=3&#39;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -743,17 +833,17 @@ in the configuration subclass.</p></li>
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="params.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Params (parameters)</p>
+            <p class="prev-next-title">Concepts</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="config.html" title="next page">
+    <a class='right-next' id="next-link" href="errors.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configurations</p>
+        <p class="prev-next-title">Error handling in <code class="docutils literal notranslate"><span class="pre">configpile</span></code></p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

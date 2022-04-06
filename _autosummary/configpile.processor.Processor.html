@@ -143,6 +143,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.in_context.html">
        in_context
       </a>
@@ -628,13 +638,19 @@
 <td><p>Creates the processor corresponding to a configuration</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#configpile.processor.Processor.process" title="configpile.processor.Processor.process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process</span></code></a></p></td>
-<td><p>Processes command-line arguments, configuration files and environment variables</p></td>
+<td><p>Processes command-line arguments (deprecated)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.Processor.process_config" title="configpile.processor.Processor.process_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_config</span></code></a></p></td>
-<td><p>Processes configuration files if such processing was requested by a handler</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.Processor.process_command_line" title="configpile.processor.Processor.process_command_line"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_command_line</span></code></a></p></td>
+<td><p>Processes command-line arguments, configuration files and environment variables</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#configpile.processor.Processor.process_fields" title="configpile.processor.Processor.process_fields"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_fields</span></code></a></p></td>
 <td><p>Returns a sequence of the arguments present in a configuration, with updated data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.Processor.process_ini_contents" title="configpile.processor.Processor.process_ini_contents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_ini_contents</span></code></a></p></td>
+<td><p>Processes the configuration in INI format contained in a string</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.processor.Processor.process_ini_file" title="configpile.processor.Processor.process_ini_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_ini_file</span></code></a></p></td>
+<td><p>Processes the configuration contained in an INI file</p></td>
 </tr>
 </tbody>
 </table>
@@ -665,7 +681,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.Processor.cl_handler">
-<span class="sig-name descname"><span class="pre">cl_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="configpile.processor.CLHandler.html#configpile.processor.CLHandler" title="configpile.processor.CLHandler"><span class="pre">configpile.processor.CLHandler</span></a></em><a class="headerlink" href="#configpile.processor.Processor.cl_handler" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cl_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="configpile.processor.CLStdHandler.html#configpile.processor.CLStdHandler" title="configpile.processor.CLStdHandler"><span class="pre">configpile.processor.CLStdHandler</span></a></em><a class="headerlink" href="#configpile.processor.Processor.cl_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Command line arguments handler</p>
 </dd></dl>
 
@@ -709,21 +725,35 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.processor.Processor.process_config">
-<span class="sig-name descname"><span class="pre">process_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#Processor.process_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.Processor.process_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processes configuration files if such processing was requested by a handler</p>
+<dt class="sig sig-object py" id="configpile.processor.Processor.process_ini_contents">
+<span class="sig-name descname"><span class="pre">process_ini_contents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_contents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#Processor.process_ini_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.Processor.process_ini_contents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the configuration in INI format contained in a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cwd</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Working directory, base path for relative paths of config files</p></li>
-<li><p><strong>state</strong> (<a class="reference internal" href="configpile.processor.State.html#configpile.processor.State" title="configpile.processor.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>) – Mutable state to update</p></li>
-</ul>
+<dd class="field-odd"><p><strong>ini_contents</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Multiline string containing information in INI format</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>An optional error</p>
+<dd class="field-odd"><p>The parsed configuration or an error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.processor.Processor.process_ini_file">
+<span class="sig-name descname"><span class="pre">process_ini_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#Processor.process_ini_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.Processor.process_ini_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes the configuration contained in an INI file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ini_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Path to the file to parse</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The parsed configuration or an error</p>
 </dd>
 </dl>
 </dd></dl>
@@ -731,6 +761,18 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="configpile.processor.Processor.process">
 <span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#Processor.process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.Processor.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes command-line arguments (deprecated)</p>
+<p>See also: <a class="reference internal" href="#configpile.processor.Processor.process_command_line" title="configpile.processor.Processor.process_command_line"><code class="xref py py-meth docutils literal notranslate"><span class="pre">process_command_line()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.processor.SpecialAction.html#configpile.processor.SpecialAction" title="configpile.processor.SpecialAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecialAction</span></code></a>, <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.processor.Processor.process_command_line">
+<span class="sig-name descname"><span class="pre">process_command_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cwd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#Processor.process_command_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.Processor.process_command_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Processes command-line arguments, configuration files and environment variables</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

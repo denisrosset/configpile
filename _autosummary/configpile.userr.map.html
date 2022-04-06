@@ -143,6 +143,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.in_context.html">
        in_context
       </a>
@@ -598,8 +608,8 @@
 <span class="go">4.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">map</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;-1&quot;</span><span class="p">))</span>
 <span class="go">1.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flatMap</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">))</span>
-<span class="go">Err1(&quot;ValueError thrown: could not convert string to float: &#39;invalid&#39;&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">flat_map</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">))</span>
+<span class="go">Err1(msg=&quot;ValueError thrown: could not convert string to float: &#39;invalid&#39;&quot;, contexts=[])</span>
 </pre></div>
 </div>
 </div>

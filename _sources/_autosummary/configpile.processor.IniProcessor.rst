@@ -31,6 +31,7 @@ IniProcessor
       :nosignatures:
    
       ~IniProcessor.process
+      ~IniProcessor.process_string
    
    
 

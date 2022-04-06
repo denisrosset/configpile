@@ -24,6 +24,7 @@ Parser
       ~Parser.as_sequence_of_one
       ~Parser.choices
       ~Parser.empty_means_none
+      ~Parser.flat_map
       ~Parser.from_choices
       ~Parser.from_function
       ~Parser.from_function_that_raises

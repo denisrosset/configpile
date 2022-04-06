@@ -143,6 +143,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.in_context.html">
        in_context
       </a>
@@ -642,6 +652,12 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.parse_command_line_" title="configpile.config.Config.parse_command_line_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_command_line_</span></code></a></p></td>
 <td><p>Parses multiple information sources, returns a configuration, a command or an error</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.parse_ini_contents_" title="configpile.config.Config.parse_ini_contents_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_ini_contents_</span></code></a></p></td>
+<td><p>Parses the contents of an INI file into a configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.config.Config.parse_ini_file_" title="configpile.config.Config.parse_ini_file_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_ini_file_</span></code></a></p></td>
+<td><p>Parses an INI file into a configuration</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#configpile.config.Config.processor_" title="configpile.config.Config.processor_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processor_</span></code></a></p></td>
 <td><p>Returns a processor for this configuration</p></td>
 </tr>
@@ -671,7 +687,8 @@
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ini_sections_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.ini_sections_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.ini_sections_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sequence of INI file sections to parse</p>
 <p>By default, this parses first the relaxed sections and then the strict ones.</p>
-<p>This method can be overridden.</p>
+<p>First, try to replace the contents of <a class="reference internal" href="#configpile.config.Config.ini_relaxed_sections_" title="configpile.config.Config.ini_relaxed_sections_"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ini_relaxed_sections_</span></code></a>
+and <a class="reference internal" href="#configpile.config.Config.ini_strict_sections_" title="configpile.config.Config.ini_strict_sections_"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ini_strict_sections_</span></code></a>. Otherwise, override this method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference internal" href="configpile.config.IniSection.html#configpile.config.IniSection" title="configpile.config.IniSection"><code class="xref py py-class docutils literal notranslate"><span class="pre">IniSection</span></code></a>]</p>
@@ -689,6 +706,22 @@
 <dt class="sig sig-object py" id="configpile.config.Config.description_">
 <span class="sig-name descname"><span class="pre">description_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configpile.config.Config.description_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to display before the argument help</p>
+<p>If not present, taken from the Config subclass docstring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.version_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.version_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.version_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the version number of this script</p>
+<p>Designed to be overridden by a subclass</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Version number as a string</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -702,7 +735,7 @@
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validators_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.validators_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.validators_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all validators present in the given subclass of this class</p>
 <p>Validators are methods that take no arguments (except self) and return an optional error.
-Their name starts with <code class="docutils literal notranslate"><span class="pre">validate_</span></code> and ends with an underscore.</p>
+Their name starts with <code class="docutils literal notranslate"><span class="pre">validate_</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]]]</p>
@@ -714,27 +747,48 @@ Their name starts with <code class="docutils literal notranslate"><span class="p
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configpile.config.Config.version_">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.version_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.version_" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the version number of this script</p>
-<p>Designed to be overridden by a subclass</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Version</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="configpile.config.Config.processor_">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">processor_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.processor_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.processor_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a processor for this configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="configpile.processor.Processor.html#configpile.processor.Processor" title="configpile.processor.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.parse_ini_contents_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_ini_contents_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_contents</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.parse_ini_contents_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.parse_ini_contents_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the contents of an INI file into a configuration</p>
+<p>This method skips the processing of environment variables and command-line parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ini_contents</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Multiline string describing the configuration contents</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A parsed configuration or an error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.config.Config.parse_ini_file_">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_ini_file_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.parse_ini_file_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.parse_ini_file_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses an INI file into a configuration</p>
+<p>This method skips the processing of environment variables and command-line parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ini_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Path to an INI file</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A parsed configuration or an error</p>
 </dd>
 </dl>
 </dd></dl>
@@ -789,6 +843,8 @@ arguments, and the current environment variables.</p>
 <dt class="sig sig-object py" id="configpile.config.Config.get_argument_parser_">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_argument_parser_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/config.html#Config.get_argument_parser_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.config.Config.get_argument_parser_" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code></a> for documentation purposes</p>
+<p>This may be removed or deprecated in later versions of configpile, if we write our
+own help/usage display function, and propose a Sphinx extension.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></a></p>

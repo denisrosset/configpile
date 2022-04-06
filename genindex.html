@@ -141,6 +141,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -161,13 +166,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concepts/config.html">
-     Configurations
+    <a class="reference internal" href="concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -181,7 +186,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -422,6 +427,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="_autosummary/configpile.userr.flatMap.html">
        flatMap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="_autosummary/configpile.userr.flat_map.html">
+       flat_map
       </a>
      </li>
      <li class="toctree-l3">
@@ -1000,10 +1010,16 @@
 </li>
       <li><a href="_autosummary/configpile.processor.CLStdHandler.html#configpile.processor.CLStdHandler.flags">flags (CLStdHandler attribute)</a>
 </li>
-      <li><a href="_autosummary/configpile.userr.flatMap.html#configpile.userr.flatMap">flatMap() (in module configpile.userr)</a>
+      <li><a href="_autosummary/configpile.userr.flat_map.html#configpile.userr.flat_map">flat_map() (in module configpile.userr)</a>
+
+      <ul>
+        <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.flat_map">(Parser method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/configpile.userr.flatMap.html#configpile.userr.flatMap">flatMap() (in module configpile.userr)</a>
+</li>
       <li><a href="_autosummary/configpile.parsers.float_parser.html#configpile.parsers.float_parser">float_parser (in module configpile.parsers)</a>
 </li>
       <li><a href="_autosummary/configpile.parsers.ForceCase.html#configpile.parsers.ForceCase">ForceCase (class in configpile.parsers)</a>
@@ -1283,6 +1299,10 @@
 </li>
       <li><a href="_autosummary/configpile.config.Config.html#configpile.config.Config.parse_command_line_">parse_command_line_() (Config class method)</a>
 </li>
+      <li><a href="_autosummary/configpile.config.Config.html#configpile.config.Config.parse_ini_contents_">parse_ini_contents_() (Config class method)</a>
+</li>
+      <li><a href="_autosummary/configpile.config.Config.html#configpile.config.Config.parse_ini_file_">parse_ini_file_() (Config class method)</a>
+</li>
       <li><a href="_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser">Parser (class in configpile.parsers)</a>
 </li>
       <li><a href="_autosummary/configpile.arg.Param.html#configpile.arg.Param.parser">parser (Param attribute)</a>
@@ -1311,9 +1331,15 @@
         <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process">(Processor method)</a>
 </li>
       </ul></li>
-      <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_config">process_config() (Processor method)</a>
+      <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_command_line">process_command_line() (Processor method)</a>
 </li>
       <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_fields">process_fields() (Processor static method)</a>
+</li>
+      <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_ini_contents">process_ini_contents() (Processor method)</a>
+</li>
+      <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_ini_file">process_ini_file() (Processor method)</a>
+</li>
+      <li><a href="_autosummary/configpile.processor.IniProcessor.html#configpile.processor.IniProcessor.process_string">process_string() (IniProcessor method)</a>
 </li>
       <li><a href="_autosummary/configpile.processor.Processor.html#configpile.processor.Processor">Processor (class in configpile.processor)</a>
 </li>

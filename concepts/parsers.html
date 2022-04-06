@@ -143,6 +143,11 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
+    <a class="reference internal" href="overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="config.html">
-     Configurations
+    <a class="reference internal" href="validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -561,6 +571,73 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parser-construction">
+   Parser construction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-multiple-string-choices">
+     From multiple (string) choices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-multiple-choices-corresponding-to-values">
+     From multiple choices corresponding to values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-functions-that-raise-exceptions">
+     From functions that raise exceptions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-functions-that-return-a-result">
+     From functions that return a result
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-parsy-parsers">
+     From parsy parsers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parser-manipulation">
+   Parser manipulation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#handling-optional-parameters">
+     Handling optional parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#handling-sequences">
+     Handling sequences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transforming-the-parser-output">
+     Transforming the parser output
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#validation">
+   Validation
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -573,6 +650,73 @@
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parser-construction">
+   Parser construction
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-multiple-string-choices">
+     From multiple (string) choices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-multiple-choices-corresponding-to-values">
+     From multiple choices corresponding to values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-functions-that-raise-exceptions">
+     From functions that raise exceptions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-functions-that-return-a-result">
+     From functions that return a result
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#from-parsy-parsers">
+     From parsy parsers
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parser-manipulation">
+   Parser manipulation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#handling-optional-parameters">
+     Handling optional parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#handling-sequences">
+     Handling sequences
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transforming-the-parser-output">
+     Transforming the parser output
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#validation">
+   Validation
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -580,26 +724,29 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="parsers">
-<h1>Parsers<a class="headerlink" href="#parsers" title="Permalink to this headline">¶</a></h1>
+<span id="concepts-parsers"></span><h1>Parsers<a class="headerlink" href="#parsers" title="Permalink to this headline">¶</a></h1>
+<p>Parsers convert strings to values. To create a parser for a new type, you can simply subclass
+the <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.parsers.Parser</span></code></a> class, not forgetting that this class takes a type
+parameter corresponding to the type of the value it parses.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="k">class</span> <span class="nc">IntParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">FloatParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-<span class="n">ip</span> <span class="o">=</span> <span class="n">IntParser</span><span class="p">()</span>
+<span class="n">fp</span> <span class="o">=</span> <span class="n">FloatParser</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -611,15 +758,244 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;asd&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(&quot;could not convert string to float: &#39;asd&#39;&quot;)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;could not convert string to float: &#39;invalid&#39;&quot;, contexts=[])
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="parser-construction">
+<h2>Parser construction<a class="headerlink" href="#parser-construction" title="Permalink to this headline">¶</a></h2>
+<p>A parser can also be constructed in several ways.</p>
+<div class="section" id="from-multiple-string-choices">
+<h3>From multiple (string) choices<a class="headerlink" href="#from-multiple-string-choices" title="Permalink to this headline">¶</a></h3>
+<p>If the multiple choices are strings, use <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_choices" title="configpile.parsers.Parser.from_choices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_choices()</span></code></a>. In
+particular, one can force lower or upper case (which we do here).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_choices</span><span class="p">([</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">],</span> <span class="n">force_case</span><span class="o">=</span> <span class="n">ForceCase</span><span class="o">.</span><span class="n">LOWER</span><span class="p">)</span>
+
+<span class="n">cp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;yellow&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;Value yellow not in choices red,green,blue&#39;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;blue&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-multiple-choices-corresponding-to-values">
+<h3>From multiple choices corresponding to values<a class="headerlink" href="#from-multiple-choices-corresponding-to-values" title="Permalink to this headline">¶</a></h3>
+<p>When the strings correspond to values, use <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_mapping" title="configpile.parsers.Parser.from_mapping"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_mapping()</span></code></a>.
+The <code class="docutils literal notranslate"><span class="pre">aliases</span></code> are alternate strings, they are accepted during the parse but not showed in the
+usage description.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bp</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_mapping</span><span class="p">({</span><span class="s2">&quot;true&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span><span class="n">force_case</span><span class="o">=</span><span class="n">ForceCase</span><span class="o">.</span><span class="n">LOWER</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-functions-that-raise-exceptions">
+<h3>From functions that raise exceptions<a class="headerlink" href="#from-functions-that-raise-exceptions" title="Permalink to this headline">¶</a></h3>
+<p>In this case, the exceptions will be converted to <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.userr.Err</span></code></a> instances;
+one can specify which exceptions should be caught, and the rest will be propagated.</p>
+<p>The static method <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function_that_raises" title="configpile.parsers.Parser.from_function_that_raises"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_function_that_raises()</span></code></a> is useful for Python
+code coming from standard or external libraries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp1</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp1</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp1</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;Error &#39;could not convert string to float: &#39;invalid&#39;&#39; in &#39;invalid&#39;&quot;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-functions-that-return-a-result">
+<h3>From functions that return a result<a class="headerlink" href="#from-functions-that-return-a-result" title="Permalink to this headline">¶</a></h3>
+<p>One does not need the big ceremonial of constructing a <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.parsers.Parser</span></code></a> instance
+as only one method needs to be implemented.</p>
+<p>The static method <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function" title="configpile.parsers.Parser.from_function"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configpile.parsers.Parser.from_function()</span></code></a> is useful for functions that
+you will implement yourself: those functions take a string and return a
+<a class="reference internal" href="../_autosummary/configpile.userr.html#configpile.userr.Res" title="configpile.userr.Res"><code class="xref py py-data docutils literal notranslate"><span class="pre">configpile.userr.Res</span></code></a>, as discussed in <a class="reference internal" href="errors.html#concepts-errors"><span class="std std-ref">Error handling in configpile</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">parse_fun</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+<span class="n">fp2</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span><span class="n">parse_fun</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp2</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp2</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;could not convert string to float: &#39;invalid&#39;&quot;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="from-parsy-parsers">
+<h3>From <a class="reference external" href="https://github.com/python-parsy/parsy">parsy</a> parsers<a class="headerlink" href="#from-parsy-parsers" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">parsy</span></code> is a parser combinator library, useful to parse more involved expressions.</p>
+<p>Here is how you would use this library. Note that <code class="docutils literal notranslate"><span class="pre">configpile</span></code> has <code class="docutils literal notranslate"><span class="pre">parsy</span></code> as an optional
+dependency, so that every <code class="docutils literal notranslate"><span class="pre">configpile</span></code> user is not forced to have <code class="docutils literal notranslate"><span class="pre">parsy</span></code> as a dependency.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">parsy</span></code> does not support <a class="reference external" href="https://peps.python.org/pep-0484/">type hints</a>, so one needs
+to provide the type as a first argument to <a class="reference internal" href="../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_parsy_parser" title="configpile.parsers.Parser.from_parsy_parser"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_parsy_parser()</span></code></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">parsy</span>
+<span class="n">int_parsy_parser</span> <span class="o">=</span> <span class="n">parsy</span><span class="o">.</span><span class="n">regex</span><span class="p">(</span><span class="s1">&#39;[0-9]+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">ip</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_parsy_parser</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">int_parsy_parser</span><span class="p">)</span>
+<span class="n">ip</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1234
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="parser-manipulation">
+<h2>Parser manipulation<a class="headerlink" href="#parser-manipulation" title="Permalink to this headline">¶</a></h2>
+<p>Parsers can be adapted as to change their return value, or even modify the parsing behavior.</p>
+<div class="section" id="handling-optional-parameters">
+<h3>Handling optional parameters<a class="headerlink" href="#handling-optional-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Here, we mean optional in the sense of possibly having a <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> value. We take, for example,
+our <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> parser, and make it optional.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="n">fp_opt</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">empty_means_none</span><span class="p">()</span>
+
+<span class="n">fp_opt</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp_opt</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;3.14&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.14
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="handling-sequences">
+<h3>Handling sequences<a class="headerlink" href="#handling-sequences" title="Permalink to this headline">¶</a></h3>
+<p>One can parse sequences of values. Note that the pattern we show below is very crude, and
+appropriate only when the separator is never part of the strings representing the values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fp_seq</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">separated_by</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">fp_seq</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;1,2,3,4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1.0, 2.0, 3.0, 4.0]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="transforming-the-parser-output">
+<h3>Transforming the parser output<a class="headerlink" href="#transforming-the-parser-output" title="Permalink to this headline">¶</a></h3>
+<p>One can map the result of a parser through a function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rounded_fp</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">rounded_fp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;1.23&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="validation.html#concepts-validation"><span class="std std-ref">Parameter and configuration validation</span></a>.</p>
 </div>
 </div>
 

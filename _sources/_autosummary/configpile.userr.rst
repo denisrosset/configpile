@@ -18,6 +18,7 @@
       collect
       collect_seq
       flatMap
+      flat_map
       in_context
       map
       wrap

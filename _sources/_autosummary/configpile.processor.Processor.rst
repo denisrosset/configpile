@@ -37,8 +37,10 @@ Processor
    
       ~Processor.make
       ~Processor.process
-      ~Processor.process_config
+      ~Processor.process_command_line
       ~Processor.process_fields
+      ~Processor.process_ini_contents
+      ~Processor.process_ini_file
    
    
 

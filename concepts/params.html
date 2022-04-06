@@ -41,7 +41,7 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Configurations" href="config.html" />
+    <link rel="next" title="Parameter and configuration validation" href="validation.html" />
     <link rel="prev" title="Parsers" href="parsers.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -143,6 +143,11 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
+    <a class="reference internal" href="overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="config.html">
-     Configurations
+    <a class="reference internal" href="validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -561,6 +571,51 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-parameters-handle-their-values">
+   How parameters handle their values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-parameters-are-described-help">
+   How parameters are described (help)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#where-parameter-values-are-taken">
+   Where parameter values are taken
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#environment-variables">
+     Environment variables
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ini-configuration-files">
+     INI configuration files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#command-line-arguments-using-flags">
+     Command-line arguments using flags
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#positional-arguments">
+     Positional arguments
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -573,6 +628,51 @@
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-parameters-handle-their-values">
+   How parameters handle their values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-parameters-are-described-help">
+   How parameters are described (help)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#where-parameter-values-are-taken">
+   Where parameter values are taken
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#environment-variables">
+     Environment variables
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ini-configuration-files">
+     INI configuration files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#command-line-arguments-using-flags">
+     Command-line arguments using flags
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#positional-arguments">
+     Positional arguments
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -581,6 +681,278 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="params-parameters">
 <span id="concepts-params"></span><h1>Params (parameters)<a class="headerlink" href="#params-parameters" title="Permalink to this headline">¶</a></h1>
+<p>Parameters are what constitute a configuration. The values in a configuration dataclass are fields that are annotated with a <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> instance, using the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> type.</p>
+<p>(Note that the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> type needs to be imported from the
+<a class="reference external" href="https://github.com/python/typing/blob/master/typing_extensions/README.rst">typing_extensions</a>
+package instead if one is not using Python &gt;= 3.9).</p>
+<p><a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> is modeled after the <a class="reference external" href="https://docs.python.org/3/library/argparse.html#the-add-argument-method">add_argument</a> method in the <a class="reference external" href="https://docs.python.org/3/library/argparse.html">argparse</a> standard library module.</p>
+<div class="section" id="how-parameters-handle-their-values">
+<h2>How parameters handle their values<a class="headerlink" href="#how-parameters-handle-their-values" title="Permalink to this headline">¶</a></h2>
+<p>First, you need to decide how your parameter is going to behave when fed with multiple values.</p>
+<p>If you construct the parameter with the <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.store" title="configpile.arg.Param.store"><code class="xref py py-meth docutils literal notranslate"><span class="pre">store()</span></code></a> static method, the
+parameter value will be the last value provided. See <a class="reference internal" href="overview.html#concepts-overview"><span class="std std-ref">Overview of the process</span></a> for the standard
+order of processing.</p>
+<p>If you construct the parameter with the <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.append1" title="configpile.arg.Param.append1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append1()</span></code></a> static method, you
+provide a parser (see <a class="reference internal" href="parsers.html#concepts-parsers"><span class="std std-ref">Parsers</span></a>) that parses single values, and the provided values
+are all appended in a sequence.</p>
+<p>If you construct the parameter with the <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.append" title="configpile.arg.Param.append"><code class="xref py py-meth docutils literal notranslate"><span class="pre">append()</span></code></a> static method, you
+provide a parser that parses a sequence of values (for example, comma-separated), and the
+parameter value with correspond to all the provided sequences, joined together.</p>
+<p>Finally, the special construction provided by <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param.config" title="configpile.arg.Param.config"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configpile.arg.Param.config()</span></code></a> handles
+INI configuration files. Here, not only the INI file paths are returned in a parameter, but
+each time an INI file is provided, the files are parsed so that their content can influence the
+configuration.</p>
+<p>Here is an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="c1"># or `from typing import Annotated` if Python &gt;= 3.9</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">HandlingValues</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Empty description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: Here is a parameter with a single value</span>
+    <span class="n">radius</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">)]</span>
+
+    <span class="c1">#: Here is a parameter that accumulates</span>
+    <span class="n">files</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">Param</span><span class="o">.</span><span class="n">append1</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">path_parser</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">HandlingValues</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;--radius&#39;</span><span class="p">,</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span> <span class="s1">&#39;--files&#39;</span><span class="p">,</span> <span class="s1">&#39;input1.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;--files&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;input2.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;--radius&#39;</span><span class="p">,</span> <span class="s1">&#39;0.2&#39;</span><span class="p">,</span> <span class="s1">&#39;--files&#39;</span><span class="p">,</span> <span class="s1">&#39;input3.dat&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HandlingValues(radius=0.2, files=[PosixPath(&#39;input1.dat&#39;), PosixPath(&#39;input2.dat&#39;), PosixPath(&#39;input3.dat&#39;)])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="how-parameters-are-described-help">
+<h2>How parameters are described (help)<a class="headerlink" href="#how-parameters-are-described-help" title="Permalink to this headline">¶</a></h2>
+<p>Normally, parameters are described using a <code class="docutils literal notranslate"><span class="pre">#:</span></code> Sphinx autodoc-style comment.</p>
+<p>One can override this behavior by specifying a <code class="docutils literal notranslate"><span class="pre">help</span></code> keyword argument.</p>
+<p>In particular, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> cannot retrieve autodoc-style comments when the class is not defined
+in a regular <code class="docutils literal notranslate"><span class="pre">.py</span></code> file. See example below, where the <code class="docutils literal notranslate"><span class="pre">radius</span></code> help string is not recognized
+because we are in a Jupyter notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Description</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example of handling parameter help</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="c1">#: Here is a parameter with a single value</span>
+    <span class="n">radius</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">)]</span>
+
+    <span class="n">files</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">Param</span><span class="o">.</span><span class="n">append1</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">path_parser</span><span class="p">,</span> 
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Here is a parameter that accumulates&quot;</span><span class="p">)]</span>
+    <span class="n">prog_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Description&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Description</span><span class="o">.</span><span class="n">get_argument_parser_</span><span class="p">()</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>usage: Description [--radius RADIUS] [--files FILES]
+
+    Example of handling parameter help
+    
+
+optional arguments:
+  --files FILES    Here is a parameter that accumulates
+
+required arguments:
+  --radius RADIUS
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="where-parameter-values-are-taken">
+<h2>Where parameter values are taken<a class="headerlink" href="#where-parameter-values-are-taken" title="Permalink to this headline">¶</a></h2>
+<p>Parameter values can come from:</p>
+<ul class="simple">
+<li><p>environment variables, if <code class="docutils literal notranslate"><span class="pre">env_var_name</span></code> is set (it is not, by default),</p></li>
+<li><p>INI configuration files, if <code class="docutils literal notranslate"><span class="pre">config_key_name</span></code>
+(it is set to <code class="xref py py-attr docutils literal notranslate"><span class="pre">KEBAB_CASE</span></code>, by default)</p></li>
+<li><p>command-line arguments, after a long flag (i.e. <code class="docutils literal notranslate"><span class="pre">--flag</span></code>),
+if <code class="docutils literal notranslate"><span class="pre">long_flag_name</span> <span class="pre">is</span> <span class="pre">set</span> <span class="pre">(it</span> <span class="pre">is</span> <span class="pre">set</span> <span class="pre">to</span> <span class="pre">{attr}</span></code>~configpile.arg.Derive.KEBAB_CASE`, by default)</p></li>
+<li><p>command-line arguments, after a short flag (i.e. <code class="docutils literal notranslate"><span class="pre">-f</span></code>), if <code class="docutils literal notranslate"><span class="pre">short_flag_name</span></code> is set (it is
+not, by default),</p></li>
+<li><p>positional command-line arguments, if <code class="docutils literal notranslate"><span class="pre">positional</span></code> is not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> (it is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> by
+default).</p></li>
+</ul>
+<div class="section" id="environment-variables">
+<h3>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h3>
+<p>Here we demonstrate how to fill the <code class="docutils literal notranslate"><span class="pre">radius</span></code> and <code class="docutils literal notranslate"><span class="pre">shift</span></code> parameters using environment variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">EnvVarDemo</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">env_prefix_</span> <span class="o">=</span> <span class="s2">&quot;DEMO_&quot;</span>
+
+    <span class="n">radius</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> 
+        <span class="n">env_var_name</span><span class="o">=</span><span class="n">Derived</span><span class="o">.</span><span class="n">SNAKE_CASE_UPPER_CASE</span><span class="p">)]</span>
+
+    <span class="n">shift</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> <span class="n">env_var_name</span><span class="o">=</span><span class="s2">&quot;SHIFT&quot;</span><span class="p">)]</span>
+
+    <span class="n">scale</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> 
+        <span class="n">env_var_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)]</span> <span class="c1"># or leave env_var_name out as None is the default</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EnvVarDemo</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span><span class="o">.</span><span class="n">env_handlers</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;DEMO_RADIUS&#39;, &#39;SHIFT&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EnvVarDemo</span><span class="o">.</span><span class="n">parse_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;--scale&quot;</span><span class="p">,</span> <span class="s2">&quot;0.3&quot;</span><span class="p">],</span> <span class="n">env</span> <span class="o">=</span><span class="p">{</span><span class="s2">&quot;SHIFT&quot;</span><span class="p">:</span> <span class="s2">&quot;0.5&quot;</span><span class="p">,</span> <span class="s2">&quot;DEMO_RADIUS&quot;</span><span class="p">:</span> <span class="s2">&quot;0.7&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>EnvVarDemo(radius=0.7, shift=0.5, scale=0.3)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="ini-configuration-files">
+<h3>INI configuration files<a class="headerlink" href="#ini-configuration-files" title="Permalink to this headline">¶</a></h3>
+<p>Here is an example. The <code class="docutils literal notranslate"><span class="pre">config_key_name</span></code> keyword argument can be set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> to forbid its
+presence in INI files. This part is not demonstrated below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">INIDemo</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+
+    <span class="n">radius</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> <span class="n">config_key_name</span><span class="o">=</span><span class="s2">&quot;rad&quot;</span><span class="p">)]</span>
+
+    <span class="n">shift</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span>
+        <span class="n">config_key_name</span><span class="o">=</span><span class="n">Derived</span><span class="o">.</span><span class="n">KEBAB_CASE</span><span class="p">)]</span> <span class="c1"># or leave config_key_name out as this is the default</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">INIDemo</span><span class="o">.</span><span class="n">parse_ini_contents_</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[common]</span>
+<span class="s2">rad = 0.3</span>
+<span class="s2">shift = 0.5</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INIDemo(radius=0.3, shift=0.5)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="command-line-arguments-using-flags">
+<h3>Command-line arguments using flags<a class="headerlink" href="#command-line-arguments-using-flags" title="Permalink to this headline">¶</a></h3>
+<p>Command-line argument, by default, are triggered by a long-style flag starting with two hyphens,
+followed by the argument name in kebab-case (example: <code class="docutils literal notranslate"><span class="pre">--radius</span></code>). The short flag variant is
+disabled by default (example: <code class="docutils literal notranslate"><span class="pre">-R</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">FlagDemo</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">env_prefix_</span> <span class="o">=</span> <span class="s2">&quot;DEMO_&quot;</span>
+
+    <span class="n">radius</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> <span class="n">short_flag_name</span><span class="o">=</span><span class="s1">&#39;-R&#39;</span><span class="p">,</span>
+        <span class="n">long_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)]</span>
+
+    <span class="n">shift</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">)]</span>
+
+    <span class="n">scale</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span>
+        <span class="n">long_flag_name</span> <span class="o">=</span> <span class="n">Derived</span><span class="o">.</span><span class="n">KEBAB_CASE</span><span class="p">)]</span> <span class="c1"># or long_flag_name out as this is the default</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">FlagDemo</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span><span class="o">.</span><span class="n">cl_handler</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;-R&#39;, &#39;--shift&#39;, &#39;--scale&#39;, &#39;-h&#39;, &#39;--help&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="positional-arguments">
+<h3>Positional arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this headline">¶</a></h3>
+<p>Positional arguments are command-line arguments that are not prefixed by a <code class="docutils literal notranslate"><span class="pre">--flag</span></code> or <code class="docutils literal notranslate"><span class="pre">-f</span></code> short
+flag.</p>
+<p>There can be more than one positional argument present. They are filled in order by the command-line
+strings that are <em>not</em> recognized as flags for other parameters.</p>
+<p>Their order is given by the order of declaration in the dataclass.</p>
+<p>We advise setting <code class="docutils literal notranslate"><span class="pre">long_flag_name</span></code> to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> as using a parameter both in a positional manner
+and with flags can lead to counter-intuitive behavior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">PositionalDemo</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="n">shift</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> <span class="n">positional</span><span class="o">=</span><span class="n">Positional</span><span class="o">.</span><span class="n">ONCE</span><span class="p">,</span> 
+        <span class="n">long_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)]</span>
+    <span class="n">radii</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Param</span><span class="o">.</span><span class="n">append1</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> 
+        <span class="n">positional</span><span class="o">=</span><span class="n">Positional</span><span class="o">.</span><span class="n">ONE_OR_MORE</span><span class="p">,</span> <span class="n">long_flag_name</span><span class="o">=</span><span class="kc">None</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PositionalDemo</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1.0&quot;</span><span class="p">,</span> <span class="s2">&quot;0.2&quot;</span><span class="p">,</span> <span class="s2">&quot;0.4&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PositionalDemo(shift=1.0, radii=[0.2, 0.4])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -596,10 +968,10 @@
             <p class="prev-next-title">Parsers</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="config.html" title="next page">
+    <a class='right-next' id="next-link" href="validation.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Configurations</p>
+        <p class="prev-next-title">Parameter and configuration validation</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

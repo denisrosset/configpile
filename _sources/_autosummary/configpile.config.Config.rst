@@ -37,6 +37,8 @@ Config
       ~Config.get_argument_parser_
       ~Config.ini_sections_
       ~Config.parse_command_line_
+      ~Config.parse_ini_contents_
+      ~Config.parse_ini_file_
       ~Config.processor_
       ~Config.validators_
       ~Config.version_

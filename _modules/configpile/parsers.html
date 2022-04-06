@@ -141,6 +141,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -161,13 +166,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -181,7 +186,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -425,6 +430,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -635,7 +645,10 @@
 <span class="p">)</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">parsy</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">parsy</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">userr</span>
 <span class="kn">from</span> <span class="nn">.userr</span> <span class="kn">import</span> <span class="n">Err</span><span class="p">,</span> <span class="n">Res</span><span class="p">,</span> <span class="n">collect_seq</span>
@@ -678,7 +691,7 @@
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; user_input = &quot;invalid&quot;</span>
 <span class="sd">            &gt;&gt;&gt; float_parser.parse(user_input)</span>
-<span class="sd">            Err1(&quot;Error &#39;could not convert string to float: &#39;invalid&#39;&#39; in &#39;invalid&#39;&quot;)</span>
+<span class="sd">            Err1(msg=&quot;Error &#39;could not convert string to float: &#39;invalid&#39;&#39; in &#39;invalid&#39;&quot;, contexts=[])</span>
 <span class="sd">            &gt;&gt;&gt; user_input = 2.0</span>
 <span class="sd">            &gt;&gt;&gt; float_parser.parse(user_input)</span>
 <span class="sd">            2.0</span>
@@ -710,29 +723,41 @@
 <span class="sd">            f: Function to map the result through</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Updated parameter type</span>
+<span class="sd">            Updated parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_Mapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Parser.as_sequence_of_one"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.as_sequence_of_one">[docs]</a>    <span class="k">def</span> <span class="nf">as_sequence_of_one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
+<div class="viewcode-block" id="Parser.flat_map"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.flat_map">[docs]</a>    <span class="k">def</span> <span class="nf">flat_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Item</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Item</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a parameter type, that returns a sequence of a single value on success</span>
+<span class="sd">        Maps successful results of the parser through the given function that may fail</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            f: Function to map the result through, may return an error</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Updated parameter type</span>
+<span class="sd">            Updated parser</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_FlatMapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Parser.as_sequence_of_one"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.as_sequence_of_one">[docs]</a>    <span class="k">def</span> <span class="nf">as_sequence_of_one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a parser, that returns a sequence of a single value on success</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Updated parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_I</span><span class="p">],</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">_I</span><span class="p">]]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Parser.empty_means_none"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.empty_means_none">[docs]</a>    <span class="k">def</span> <span class="nf">empty_means_none</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a new parameter type where the empty string means None</span>
+<span class="sd">        Returns a new parser where the empty string means None</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            strip: Whether to strip whitespace</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new parameter type</span>
+<span class="sd">            A new parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_EmptyMeansNone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strip</span><span class="p">)</span></div>
 
@@ -740,7 +765,7 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">strip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">remove_empty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a new parameter type that parses values separated by a string</span>
+<span class="sd">        Returns a new parser that parses values separated by a string</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sep: Separator</span>
@@ -748,7 +773,7 @@
 <span class="sd">            remove_empty: Whether to remove empty strings before parsing them</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new parameter type</span>
+<span class="sd">            A new parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_SeparatedBy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">strip</span><span class="p">,</span> <span class="n">remove_empty</span><span class="p">)</span></div>
 
@@ -756,7 +781,7 @@
         <span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Validated</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a parameter type that verifies a predicate after successful parse</span>
+<span class="sd">        Returns a parser that verifies a predicate after successful parse</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            predicate: Predicate to check</span>
@@ -764,7 +789,7 @@
 <span class="sd">                 and the result</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new parameter type</span>
+<span class="sd">            A new parser</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">c</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">msg</span>
@@ -779,7 +804,7 @@
 <div class="viewcode-block" id="Parser.from_parsy_parser"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_parsy_parser">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_parsy_parser</span><span class="p">(</span><span class="n">type_</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a parameter type from a parsy parser</span>
+<span class="sd">        Creates a parser from a parsy parser</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            type_: PEP 484 type, used to type the return argument</span>
@@ -788,6 +813,28 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Parameter type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">parsy</span>
+
+        <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">class</span> <span class="nc">_Parsy</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Wraps a parser from the parsy library</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span>
+
+            <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">&lt;&lt;</span> <span class="n">parsy</span><span class="o">.</span><span class="n">eof</span><span class="p">)(</span><span class="n">arg</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Inspired by Parser.parse</span>
+                <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">_Value</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">furthest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Parse error &#39;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">expected</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&#39; at position &#39;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">furthest</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse error &#39;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">expected</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">_Parsy</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Parser.from_function_that_raises"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function_that_raises">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -795,11 +842,12 @@
         <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">_Value</span><span class="p">],</span> <span class="o">*</span><span class="n">catch</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a parameter type from a function that raises exceptions on parse errors</span>
+<span class="sd">        Creates a parser from a function that raises exceptions on parse errors</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            f: Function that parses the string</span>
-<span class="sd">            catch: Exception types to catch</span>
+<span class="sd">            catch: Exception types to catch; if no types are provided, all exceptions will be</span>
+<span class="sd">                   caught</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Parameter type</span>
@@ -809,7 +857,7 @@
 <div class="viewcode-block" id="Parser.from_function"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_function">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_function</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a parameter type from a function that returns a value or an error</span>
+<span class="sd">        Creates a parser from a function that returns a value or an error</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            f: Function that parses the string</span>
@@ -823,11 +871,11 @@
 <div class="viewcode-block" id="Parser.invalid"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.invalid">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">invalid</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a parameter type that always return errors</span>
+<span class="sd">        Creates a parser that always return errors</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">invalid_fun</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NoReturn</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Invalid parameter type&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Invalid parser&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Parser</span><span class="o">.</span><span class="n">from_function_that_raises</span><span class="p">(</span><span class="n">invalid_fun</span><span class="p">)</span></div>
 
@@ -838,7 +886,7 @@
         <span class="n">force_case</span><span class="p">:</span> <span class="n">ForceCase</span> <span class="o">=</span> <span class="n">ForceCase</span><span class="o">.</span><span class="n">NO_CHANGE</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a parameter type whose values are chosen from a set of strings</span>
+<span class="sd">        Creates a parser whose values are chosen from a set of strings</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            values: Set of values</span>
@@ -858,7 +906,7 @@
         <span class="n">aliases</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a parameter type whose strings correspond to keys in a dictionary</span>
+<span class="sd">        Creates a parser whose strings correspond to keys in a dictionary</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            mapping: Dictionary mapping strings to values</span>
@@ -875,7 +923,7 @@
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">_Choices</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Describes a multiple choice parameter type</span>
+<span class="sd">    Describes a multiple choice parser</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">mapping</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_Value</span><span class="p">]</span>
@@ -940,30 +988,9 @@
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">_Parsy</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wraps a parser from the parsy library</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span>
-
-    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">&lt;&lt;</span> <span class="n">parsy</span><span class="o">.</span><span class="n">eof</span><span class="p">)(</span><span class="n">arg</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Inspired by Parser.parse</span>
-        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">_Value</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">furthest</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Parse error &#39;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">expected</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&#39; at position &#39;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">furthest</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse error &#39;</span><span class="si">{</span><span class="n">res</span><span class="o">.</span><span class="n">expected</span><span class="si">}</span><span class="s2">&#39; in &#39;</span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-
-
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">_EmptyMeansNone</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">_Item</span><span class="p">]]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wraps an existing parameter type so that &quot;empty means none&quot;</span>
+<span class="sd">    Wraps an existing parser so that &quot;empty means none&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">wrapped</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Item</span><span class="p">]</span>  <span class="c1">#: Wrapped ParamType called if value is not empty</span>
@@ -976,6 +1003,28 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_FlatMapped</span><span class="p">(</span><span class="n">Parser</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">],</span> <span class="n">Generic</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">,</span> <span class="n">_ReturnType</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wraps an existing parser and applies a function to its successful result</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">wrapped</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">]</span>  <span class="c1">#: Wrapped parser</span>
+
+    <span class="c1">#: Mapping function, made optional as a hack</span>
+    <span class="n">f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Parameter</span><span class="p">],</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]]]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]:</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">res</span><span class="p">:</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Err</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">res</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">choices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped</span><span class="o">.</span><span class="n">choices</span><span class="p">()</span>
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

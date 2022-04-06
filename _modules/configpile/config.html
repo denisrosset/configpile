@@ -141,6 +141,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -161,13 +166,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -181,7 +186,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -425,6 +430,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -602,23 +612,8 @@
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">ClassVar</span><span class="p">,</span>
-    <span class="n">List</span><span class="p">,</span>
-    <span class="n">Mapping</span><span class="p">,</span>
-    <span class="n">Optional</span><span class="p">,</span>
-    <span class="n">Sequence</span><span class="p">,</span>
-    <span class="n">Type</span><span class="p">,</span>
-    <span class="n">TypeVar</span><span class="p">,</span>
-    <span class="n">Union</span><span class="p">,</span>
-    <span class="n">get_args</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_type_hints</span>
-
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">parsers</span>
-<span class="kn">from</span> <span class="nn">.arg</span> <span class="kn">import</span> <span class="n">Param</span>
 <span class="kn">from</span> <span class="nn">.processor</span> <span class="kn">import</span> <span class="n">Processor</span><span class="p">,</span> <span class="n">SpecialAction</span>
 <span class="kn">from</span> <span class="nn">.userr</span> <span class="kn">import</span> <span class="n">Err</span><span class="p">,</span> <span class="n">Res</span>
 
@@ -652,6 +647,8 @@
 <span class="sd">            res.x + res.y</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># region Config: INI section processing</span>
+
     <span class="c1">#: Names of sections to parse in configuration files, with unknown keys ignored</span>
     <span class="n">ini_relaxed_sections_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Common&quot;</span><span class="p">,</span> <span class="s2">&quot;COMMON&quot;</span><span class="p">,</span> <span class="s2">&quot;common&quot;</span><span class="p">]</span>
 
@@ -665,34 +662,23 @@
 
 <span class="sd">        By default, this parses first the relaxed sections and then the strict ones.</span>
 
-<span class="sd">        This method can be overridden.</span>
+<span class="sd">        First, try to replace the contents of :attr:`.ini_relaxed_sections_`</span>
+<span class="sd">        and :attr:`.ini_strict_sections_`. Otherwise, override this method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">relaxed</span> <span class="o">=</span> <span class="p">[</span><span class="n">IniSection</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ini_relaxed_sections_</span><span class="p">]</span>
         <span class="n">strict</span> <span class="o">=</span> <span class="p">[</span><span class="n">IniSection</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ini_strict_sections_</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">relaxed</span> <span class="o">+</span> <span class="n">strict</span></div>
 
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Config: general information about the program being configured</span>
+
     <span class="n">prog_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Program name</span>
-    <span class="n">description_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: Text to display before the argument help</span>
 
-    <span class="c1">#: Prefix for automatically derived environment variable names</span>
-    <span class="n">env_prefix_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
-<div class="viewcode-block" id="Config.validators_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.validators_">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">validators_</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]]]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns all validators present in the given subclass of this class</span>
-
-<span class="sd">        Validators are methods that take no arguments (except self) and return an optional error.</span>
-<span class="sd">        Their name starts with ``validate_`` and ends with an underscore.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A sequence of all validators</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">res</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">meth</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isroutine</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;validate_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
-                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">res</span></div>
+    <span class="c1">#: Text to display before the argument help</span>
+    <span class="c1">#:</span>
+    <span class="c1">#: If not present, taken from the Config subclass docstring.</span>
+    <span class="n">description_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Config.version_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.version_">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">version_</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -702,9 +688,37 @@
 <span class="sd">        Designed to be overridden by a subclass</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Version</span>
+<span class="sd">            Version number as a string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Config: environment variable processing</span>
+
+    <span class="c1">#: Prefix for automatically derived environment variable names</span>
+    <span class="n">env_prefix_</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Config: information constructed by configpile</span>
+
+<div class="viewcode-block" id="Config.validators_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.validators_">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validators_</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all validators present in the given subclass of this class</span>
+
+<span class="sd">        Validators are methods that take no arguments (except self) and return an optional error.</span>
+<span class="sd">        Their name starts with ``validate_``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A sequence of all validators</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">meth</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isroutine</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;validate_&quot;</span><span class="p">):</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span></div>
 
 <div class="viewcode-block" id="Config.processor_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.processor_">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">processor_</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Processor</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
@@ -712,6 +726,42 @@
 <span class="sd">        Returns a processor for this configuration</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Processor</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span></div>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Config: configuration construction</span>
+
+<div class="viewcode-block" id="Config.parse_ini_contents_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.parse_ini_contents_">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_ini_contents_</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">ini_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses the contents of an INI file into a configuration</span>
+
+<span class="sd">        This method skips the processing of environment variables and command-line parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ini_contents: Multiline string describing the configuration contents</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A parsed configuration or an error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">processor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">processor</span><span class="o">.</span><span class="n">process_ini_contents</span><span class="p">(</span><span class="n">ini_contents</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Config.parse_ini_file_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.parse_ini_file_">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_ini_file_</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">ini_file_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parses an INI file into a configuration</span>
+
+<span class="sd">        This method skips the processing of environment variables and command-line parameters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ini_file_path: Path to an INI file</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A parsed configuration or an error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">processor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">processor</span><span class="o">.</span><span class="n">process_ini_file</span><span class="p">(</span><span class="n">ini_file_path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Config.parse_command_line_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.parse_command_line_">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">parse_command_line_</span><span class="p">(</span>
@@ -741,7 +791,7 @@
         <span class="k">if</span> <span class="n">env</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span>
         <span class="n">processor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">processor</span><span class="o">.</span><span class="n">process_command_line</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Config.from_command_line_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_command_line_</span><span class="p">(</span>
@@ -795,12 +845,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown special action </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Config: argparse fallback for documentation purposes</span>
+
 <div class="viewcode-block" id="Config.get_argument_parser_"><a class="viewcode-back" href="../../_autosummary/configpile.config.Config.html#configpile.config.Config.get_argument_parser_">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_argument_parser_</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an :class:`argparse.ArgumentParser` for documentation purposes</span>
+
+<span class="sd">        This may be removed or deprecated in later versions of configpile, if we write our</span>
+<span class="sd">        own help/usage display function, and propose a Sphinx extension.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">processor_</span><span class="p">()</span><span class="o">.</span><span class="n">argument_parser</span></div></div>
+
+    <span class="c1"># endregion</span>
 </pre></div>
 
               </div>

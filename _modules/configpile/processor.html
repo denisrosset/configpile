@@ -141,6 +141,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -161,13 +166,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -181,7 +186,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -425,6 +430,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -607,6 +617,7 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">configparser</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
@@ -962,7 +973,64 @@
     <span class="n">section_strict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>  <span class="c1">#: Sections and their strictness</span>
     <span class="n">kv_handlers</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">KVHandler</span><span class="p">]</span>  <span class="c1">#: Handler for key/value pairs</span>
 
-<div class="viewcode-block" id="IniProcessor.process"><a class="viewcode-back" href="../../_autosummary/configpile.processor.IniProcessor.html#configpile.processor.IniProcessor.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ini_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">:</span> <span class="n">ConfigParser</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes a filled ConfigParser</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parser: INI data to parse</span>
+<span class="sd">            state: Mutable state to update</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Errors that occurred, if any</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">section_name</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">section_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_strict</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">[</span><span class="n">section_name</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">err</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kv_handlers</span><span class="p">:</span>
+                            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kv_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Err</span><span class="p">):</span>
+                                <span class="n">err</span> <span class="o">=</span> <span class="n">res</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_strict</span><span class="p">[</span><span class="n">section_name</span><span class="p">]:</span>
+                                <span class="n">err</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">ini_section</span><span class="o">=</span><span class="n">section_name</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse error&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IO Error&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">errors</span>
+
+<div class="viewcode-block" id="IniProcessor.process_string"><a class="viewcode-back" href="../../_autosummary/configpile.processor.IniProcessor.html#configpile.processor.IniProcessor.process_string">[docs]</a>    <span class="k">def</span> <span class="nf">process_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ini_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes a configuration file given as a string</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ini_contents: Contents of the INI file</span>
+<span class="sd">            state: Mutable state to update</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An optional error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">read_string</span><span class="p">(</span><span class="n">ini_contents</span><span class="p">)</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">state</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse error&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IO Error&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="IniProcessor.process"><a class="viewcode-back" href="../../_autosummary/configpile.processor.IniProcessor.html#configpile.processor.IniProcessor.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ini_file_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Processes a configuration file</span>
 
@@ -974,27 +1042,15 @@
 <span class="sd">            An optional error</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ini_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Config file </span><span class="si">{</span><span class="n">ini_path</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ini_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path </span><span class="si">{</span><span class="n">ini_path</span><span class="si">}</span><span class="s2"> is not a file&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ini_file_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Config file </span><span class="si">{</span><span class="n">ini_file_path</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ini_file_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path </span><span class="si">{</span><span class="n">ini_file_path</span><span class="si">}</span><span class="s2"> is not a file&quot;</span><span class="p">)</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ini_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ini_file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
                 <span class="n">parser</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">section_name</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="n">section_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_strict</span><span class="p">:</span>
-                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">[</span><span class="n">section_name</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="n">err</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kv_handlers</span><span class="p">:</span>
-                                <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kv_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Err</span><span class="p">):</span>
-                                    <span class="n">err</span> <span class="o">=</span> <span class="n">res</span>
-                            <span class="k">else</span><span class="p">:</span>
-                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">section_strict</span><span class="p">[</span><span class="n">section_name</span><span class="p">]:</span>
-                                    <span class="n">err</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">ini_section</span><span class="o">=</span><span class="n">section_name</span><span class="p">))</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">state</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">configparser</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parse error&quot;</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1107,7 +1163,7 @@
     <span class="n">ini_processor</span><span class="p">:</span> <span class="n">IniProcessor</span>
 
     <span class="c1">#: Command line arguments handler</span>
-    <span class="n">cl_handler</span><span class="p">:</span> <span class="n">CLHandler</span>
+    <span class="n">cl_handler</span><span class="p">:</span> <span class="n">CLStdHandler</span>
 
     <span class="c1">#: Dictionnary of parameters by field name</span>
     <span class="n">params_by_name</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Param</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span>
@@ -1160,6 +1216,9 @@
         <span class="n">pf</span> <span class="o">=</span> <span class="n">ProcessorFactory</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">config_type</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">Processor</span><span class="o">.</span><span class="n">process_fields</span><span class="p">(</span><span class="n">config_type</span><span class="p">):</span>
             <span class="n">arg</span><span class="o">.</span><span class="n">update_processor</span><span class="p">(</span><span class="n">pf</span><span class="p">)</span>
+
+        <span class="c1"># if these flags are no longer provided by default, update the overview concept notebook</span>
+        <span class="c1"># in the documentation</span>
         <span class="n">pf</span><span class="o">.</span><span class="n">cl_flag_handlers</span><span class="p">[</span><span class="s2">&quot;-h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLSpecialAction</span><span class="p">(</span><span class="n">SpecialAction</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
         <span class="n">pf</span><span class="o">.</span><span class="n">cl_flag_handlers</span><span class="p">[</span><span class="s2">&quot;--help&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLSpecialAction</span><span class="p">(</span><span class="n">SpecialAction</span><span class="o">.</span><span class="n">HELP</span><span class="p">)</span>
 
@@ -1173,7 +1232,7 @@
             <span class="n">validators</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">validators</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Processor.process_config"><a class="viewcode-back" href="../../_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_config">[docs]</a>    <span class="k">def</span> <span class="nf">process_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_process_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwd</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Processes configuration files if such processing was requested by a handler</span>
 
@@ -1191,9 +1250,101 @@
             <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ini_processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">cwd</span> <span class="o">/</span> <span class="n">p</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">ini_file</span><span class="o">=</span><span class="n">p</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Processor.process_ini_contents"><a class="viewcode-back" href="../../_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_ini_contents">[docs]</a>    <span class="k">def</span> <span class="nf">process_ini_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ini_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes the configuration in INI format contained in a string</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ini_contents: Multiline string containing information in INI format</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The parsed configuration or an error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_with_default_values</span><span class="p">()</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ini_processor</span><span class="o">.</span><span class="n">process_string</span><span class="p">(</span><span class="n">ini_contents</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">err</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finish_processing_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Processor.process_ini_file"><a class="viewcode-back" href="../../_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_ini_file">[docs]</a>    <span class="k">def</span> <span class="nf">process_ini_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ini_file_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes the configuration contained in an INI file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ini_file_path: Path to the file to parse</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The parsed configuration or an error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_with_default_values</span><span class="p">()</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ini_processor</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">ini_file_path</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">err</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finish_processing_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Processor.process"><a class="viewcode-back" href="../../_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">cwd</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">env</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">_Config</span><span class="p">,</span> <span class="n">SpecialAction</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes command-line arguments (deprecated)</span>
+
+<span class="sd">        See also: :meth:`.process_command_line`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;process has been deprecated, use process_command_line instead&quot;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_command_line</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_finish_processing_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finishes the processing of the state</span>
+
+<span class="sd">        This method performs:</span>
+
+<span class="sd">        - the collection of parameter values</span>
+<span class="sd">        - the final validation using validation methods</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state: State after parsing all elements, must have :attr:`.State.special_action` set</span>
+<span class="sd">                   to :data:`None`</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The parsed configuration or an error</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">state</span><span class="o">.</span><span class="n">special_action</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">collected</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_by_name</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">instances</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Err</span><span class="p">):</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">collected</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
+
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect1</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span>
+        <span class="n">c</span><span class="p">:</span> <span class="n">_Config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_type</span><span class="p">(</span><span class="o">**</span><span class="n">collected</span><span class="p">)</span>
+        <span class="n">validation_error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">validators</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">validation_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">validation_error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">c</span>
+
+    <span class="k">def</span> <span class="nf">_state_with_default_values</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a new state instance with default values populated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">State</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params_by_name</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Processor.process_command_line"><a class="viewcode-back" href="../../_autosummary/configpile.processor.Processor.html#configpile.processor.Processor.process_command_line">[docs]</a>    <span class="k">def</span> <span class="nf">process_command_line</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">cwd</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
         <span class="n">args</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -1211,7 +1362,7 @@
 <span class="sd">            Either a parsed configuration, a special action to execute, or (a list of) errors</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params_by_name</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_with_default_values</span><span class="p">()</span>
         <span class="c1"># process environment variables</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_handlers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -1219,7 +1370,7 @@
                 <span class="n">err</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">environment_variable</span><span class="o">=</span><span class="n">key</span><span class="p">))</span>
-            <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_config</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_config</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">environment_variable</span><span class="o">=</span><span class="n">key</span><span class="p">))</span>
         <span class="c1"># process command line arguments</span>
@@ -1228,7 +1379,7 @@
             <span class="n">rest_args</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cl_handler</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">rest_args</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-            <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_config</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_config</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">err</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 
@@ -1237,23 +1388,8 @@
 
         <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect1</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span>
-        <span class="n">collected</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_by_name</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">instances</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">collector</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Err</span><span class="p">):</span>
-                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">in_context</span><span class="p">(</span><span class="n">param</span><span class="o">=</span><span class="n">name</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">collected</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span>
 
-        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect1</span><span class="p">(</span><span class="o">*</span><span class="n">errors</span><span class="p">)</span>
-        <span class="n">c</span><span class="p">:</span> <span class="n">_Config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config_type</span><span class="p">(</span><span class="o">**</span><span class="n">collected</span><span class="p">)</span>
-        <span class="n">validation_error</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">validators</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">validation_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">validation_error</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">c</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finish_processing_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div></div>
 </pre></div>
 
               </div>

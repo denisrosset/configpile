@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Parsers" href="parsers.html" />
-    <link rel="prev" title="Concepts" href="index.html" />
+    <link rel="prev" title="Overview of the process" href="overview.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -142,6 +142,11 @@
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="overview.html">
+     Overview of the process
+    </a>
+   </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      Error handling in
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="config.html">
-     Configurations
+    <a class="reference internal" href="validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="nav bd-sidenav">
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.in_context.html">
        in_context
       </a>
@@ -561,6 +571,29 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#errors">
+   Errors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#results">
+   Results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-results-and-errors">
+   Combining results and errors
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -573,6 +606,29 @@
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#errors">
+   Errors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#results">
+   Results
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#combining-results-and-errors">
+   Combining results and errors
+  </a>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -580,7 +636,284 @@
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="error-handling-in-configpile">
-<h1>Error handling in <code class="docutils literal notranslate"><span class="pre">configpile</span></code><a class="headerlink" href="#error-handling-in-configpile" title="Permalink to this headline">¶</a></h1>
+<span id="concepts-errors"></span><h1>Error handling in <code class="docutils literal notranslate"><span class="pre">configpile</span></code><a class="headerlink" href="#error-handling-in-configpile" title="Permalink to this headline">¶</a></h1>
+<p>The goal behind <code class="docutils literal notranslate"><span class="pre">configpile</span></code> error reporting is to provide helpful error messages to the user. In
+particular:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">configpile</span></code> does not rely on Python exceptions, rather implements its own error class</p></li>
+<li><p>The error class is designed to be used in a
+<a class="reference external" href="https://en.wikipedia.org/wiki/Result_type">result type</a> that follows existing Python usage
+patterns. (To be pedantic, it is not monadic.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">configpile</span></code> accumulate errors instead of stopping at the first error</p></li>
+<li><p>Instead of relying on stack traces to convey contextual information, <code class="docutils literal notranslate"><span class="pre">configpile</span></code> errors
+store context information that is manually added when results are processed.</p></li>
+</ul>
+<div class="section" id="errors">
+<h2>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h2>
+<p>The base error type is <code class="docutils literal notranslate"><span class="pre">Err</span></code>, which contains either a single error or a sequence of errors.</p>
+<p>A single error is constructed through the <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err.make" title="configpile.userr.Err.make"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make()</span></code></a> static method.</p>
+<p>Errors can be pretty-printed. If the <a class="reference external" href="https://github.com/Textualize/rich">Rich</a> library is available, some light formatting will be applied.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="n">Err</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;First error&quot;</span><span class="p">,</span> <span class="n">context_info</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">other_info</span> <span class="o">=</span> <span class="s2">&quot;bla&quot;</span><span class="p">)</span>
+<span class="n">e1</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">In other_info: bla                                                                           
+
+In context_info: 1                                                                           
+
+<span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">First error</span>                                                                                  
+</pre>
+</div></div>
+</div>
+<p>Errors can be collected in a single <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a> instance, and pretty-printing will collect errors occurring in the same context.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e1</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;First error&quot;</span><span class="p">,</span> <span class="n">context_info</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">other_info</span> <span class="o">=</span> <span class="s2">&quot;blub&quot;</span><span class="p">)</span>
+<span class="n">e2</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;Second error&quot;</span><span class="p">,</span> <span class="n">context_info</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">e12</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">collect1</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+<span class="n">e12</span><span class="o">.</span><span class="n">pretty_print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold"> • </span>In context_info: 1                                                                        
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">    0 </span>In other_info: blub                                                                    
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">      </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">First error</span>                                                                            
+<span style="color: #808000; text-decoration-color: #808000; font-weight: bold">    1 </span><span style="color: #ffffff; text-decoration-color: #ffffff; background-color: #000000">Second error</span>                                                                           
+</pre>
+</div></div>
+</div>
+<p>A sequence of single errors can always be recovered:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e12</span><span class="o">.</span><span class="n">errors</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Err1(msg=&#39;First error&#39;, contexts=[(&#39;context_info&#39;, 1), (&#39;other_info&#39;, &#39;blub&#39;)]),
+ Err1(msg=&#39;Second error&#39;, contexts=[(&#39;context_info&#39;, 1)])]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h2>
+<p>The error type is designed to be used in functions that either return a valid value, or an error.
+Such functions return a result, or a <a class="reference internal" href="../_autosummary/configpile.userr.html#configpile.userr.Res" title="configpile.userr.Res"><code class="xref py py-data docutils literal notranslate"><span class="pre">configpile.userr.Res</span></code></a> type.</p>
+<p>Note that the <a class="reference internal" href="../_autosummary/configpile.userr.html#configpile.userr.Res" title="configpile.userr.Res"><code class="xref py py-data docutils literal notranslate"><span class="pre">configpile.userr.Res</span></code></a> type is parameterized by the valid value type:
+in the example below, it is <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>.</p>
+<p>An example of such a function would be:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile.userr</span> <span class="kn">import</span> <span class="n">Res</span>
+
+<span class="k">def</span> <span class="nf">parse_int</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>and would give the following results:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;invalid literal for int() with base 10: &#39;invalid&#39;&quot;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parse_int</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1234
+</pre></div>
+</div>
+</div>
+</div>
+<p>Results can be processed further. For example, the function that squares the value contained in a
+result, while leaving any error untouched, can be written:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">square_result</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">Res</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">Err</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">*</span><span class="n">res</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>… or, using the <a class="reference internal" href="../_autosummary/configpile.userr.map.html#configpile.userr.map" title="configpile.userr.map"><code class="xref py py-func docutils literal notranslate"><span class="pre">map()</span></code></a> helper:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="n">userr</span>
+
+<span class="k">def</span> <span class="nf">square_result1</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">Res</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">userr</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>and we have, unsurprisingly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">square_result</span><span class="p">(</span><span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;invalid literal for int() with base 10: &#39;invalid&#39;&quot;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">square_result1</span><span class="p">(</span><span class="n">parse_int</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <a class="reference internal" href="../_autosummary/configpile.userr.flat_map.html#configpile.userr.flat_map" title="configpile.userr.flat_map"><code class="xref py py-func docutils literal notranslate"><span class="pre">flat_map()</span></code></a> function is useful to chain processing where each step can fail.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">square_root</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot take square root of negative number </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userr</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span><span class="n">square_root</span><span class="p">,</span> <span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;valid&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;invalid literal for int() with base 10: &#39;valid&#39;&quot;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userr</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span><span class="n">square_root</span><span class="p">,</span> <span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.4142135623730951
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userr</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span><span class="n">square_root</span><span class="p">,</span> <span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;-2&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;Cannot take square root of negative number -2&#39;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="combining-results-and-errors">
+<h2>Combining results and errors<a class="headerlink" href="#combining-results-and-errors" title="Permalink to this headline">¶</a></h2>
+<p>Finally, the <a class="reference internal" href="../_autosummary/configpile.userr.html#module-configpile.userr" title="configpile.userr"><code class="xref py py-mod docutils literal notranslate"><span class="pre">userr</span></code></a> module offers ways to combine results.</p>
+<p>For example, if one parses several integers, one can collect the results in a tuple using the
+<a class="reference internal" href="../_autosummary/configpile.userr.collect.html#configpile.userr.collect" title="configpile.userr.collect"><code class="xref py py-func docutils literal notranslate"><span class="pre">configpile.userr.collect()</span></code></a> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userr</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">parse_int</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">parse_int</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(2, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userr</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">parse_int</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&quot;invalid literal for int() with base 10: &#39;invalid&#39;&quot;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">userr</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">),</span> <span class="n">parse_int</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ManyErr(errs=[Err1(msg=&quot;invalid literal for int() with base 10: &#39;invalid&#39;&quot;, contexts=[]), Err1(msg=&quot;invalid literal for int() with base 10: &#39;invalid&#39;&quot;, contexts=[])])
+</pre></div>
+</div>
+</div>
+</div>
+<p>See also <a class="reference internal" href="../_autosummary/configpile.userr.collect_seq.html#configpile.userr.collect_seq" title="configpile.userr.collect_seq"><code class="xref py py-func docutils literal notranslate"><span class="pre">configpile.userr.collect_seq()</span></code></a>  when dealing with sequences.</p>
+<p>Errors can be collected and combined too. The <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err.collect1" title="configpile.userr.Err.collect1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configpile.userr.Err.collect1()</span></code></a> method expect
+at least one argument and returns an <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>, while
+<a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err.collect" title="configpile.userr.Err.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configpile.userr.Err.collect()</span></code></a> can deal with no argument being passed, or with optional
+arguments.</p>
+<p>In particular, optional errors, of type <code class="docutils literal notranslate"><span class="pre">Optional[Err]</span></code>, are great for validation: a <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>
+value indicates no error, while an error indicates that one or several problems are present.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">check_a</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;a must be positive&quot;</span><span class="p">)</span>
+<span class="n">check_b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">b</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;b must be positive&quot;</span><span class="p">)</span>
+<span class="n">Err</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">check_a</span><span class="p">,</span> <span class="n">check_b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Err1(msg=&#39;a must be positive&#39;, contexts=[])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -589,11 +922,11 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="overview.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Concepts</p>
+            <p class="prev-next-title">Overview of the process</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="parsers.html" title="next page">

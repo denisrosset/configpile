@@ -41,7 +41,7 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="in_context" href="configpile.userr.in_context.html" />
+    <link rel="next" title="flat_map" href="configpile.userr.flat_map.html" />
     <link rel="prev" title="collect_seq" href="configpile.userr.collect_seq.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -143,6 +143,11 @@
   </label>
   <ul>
    <li class="toctree-l2">
+    <a class="reference internal" href="../concepts/overview.html">
+     Overview of the process
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../concepts/errors.html">
      Error handling in
      <code class="docutils literal notranslate">
@@ -163,13 +168,13 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/config.html">
-     Configurations
+    <a class="reference internal" href="../concepts/validation.html">
+     Parameter and configuration validation
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../concepts/validation.html">
-     Parameter and configuration validation
+    <a class="reference internal" href="../concepts/config.html">
+     Configurations
     </a>
    </li>
   </ul>
@@ -183,7 +188,7 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="../api.html">
-   configpile
+   API
   </a>
   <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
@@ -427,6 +432,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.userr.flat_map.html">
+       flat_map
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.in_context.html">
        in_context
       </a>
@@ -584,44 +594,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="configpile.userr.flatMap">
 <span class="sig-name descname"><span class="pre">flatMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/userr.html#flatMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.userr.flatMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enables the chaining computations that can error</p>
-<div class="admonition-example admonition">
-<p class="admonition-title">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nd">@wrap</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nd">@wrap</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">def</span> <span class="nf">my_sqrt</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flatMap</span><span class="p">(</span><span class="n">my_sqrt</span><span class="p">,</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">))</span>
-<span class="go">1.414...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flatMap</span><span class="p">(</span><span class="n">my_sqrt</span><span class="p">,</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;-1&quot;</span><span class="p">))</span>
-<span class="go">Err1(&#39;ValueError thrown: math domain error&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">flatMap</span><span class="p">(</span><span class="n">my_sqrt</span><span class="p">,</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;invalid&quot;</span><span class="p">))</span>
-<span class="go">Err1(&quot;ValueError thrown: could not convert string to float: &#39;invalid&#39;&quot;)</span>
-</pre></div>
-</div>
-</div>
+<dd><p>Enables the chaining computations that can error (deprecated)</p>
+<p>See also: <a class="reference internal" href="configpile.userr.flat_map.html#configpile.userr.flat_map" title="configpile.userr.flat_map"><code class="xref py py-func docutils literal notranslate"><span class="pre">flat_map()</span></code></a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>, covariant=True)], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_ReturnType</span></code>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]]) – Function that takes a result parameterized by type <cite>_Value</cite> and returns a result
-parameterized by type <cite>_ReturnType</cite></p></li>
-<li><p><strong>r</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value</span></code>, covariant=True), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]) – Result parameterized by type <cite>_Value</cite></p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_ReturnType</span></code>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Result parameterized by type <cite>_ReturnType</cite></p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_ReturnType</span></code>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="configpile.userr.map.html#configpile.userr.map" title="configpile.userr.map"><code class="xref py py-func docutils literal notranslate"><span class="pre">map()</span></code></a></p>
-</div>
 </dd></dl>
 
 </div>
@@ -639,10 +618,10 @@ parameterized by type <cite>_ReturnType</cite></p></li>
             <p class="prev-next-title">collect_seq</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="configpile.userr.in_context.html" title="next page">
+    <a class='right-next' id="next-link" href="configpile.userr.flat_map.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">in_context</p>
+        <p class="prev-next-title">flat_map</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
