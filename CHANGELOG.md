@@ -20,7 +20,6 @@
 
 ### BREAKING CHANGE
 
-- This is a breaking change as we make a public method private, but it should not break any code as there is no reason to call this method from outside the Processor class.
 - Methods in a Config subclass that start with "validate_", do not end with an underscore, and are not validators must be renamed so that their name no longer starts with the "validate_" string.
 - configpile.types -> configpile.parsers, ParamType -> Parser, float_ -> float_parser etc
 
