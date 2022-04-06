@@ -18,8 +18,8 @@ class Calculator(Config):
     #: Values to sum or multiply
     values: Annotated[
         Sequence[float],
-        Param.append(
-            parsers.float_parser.as_sequence_of_one(),
+        Param.append1(
+            parsers.float_parser,
             positional=Positional.ONE_OR_MORE,
             long_flag_name=None,
         ),
