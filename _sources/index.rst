@@ -17,14 +17,29 @@ It processes configuration settings coming from a variety of sources:
 
 Its best selling points are:
 
-* Code compactness; from the same dataclass declaration, we derive a
+* **Code compactness**; from the same dataclass declaration, we derive a
   configuration parser, a command-line usage description and a Sphinx
   documentation block.
 
-* Compatibility with IDEs
+* Compatibility with **IDEs** (due to typed dataclasses as configuration results)
 
-* Error reporting: Instead of crashing at the first parse error, configpile
+* **Error reporting**: Instead of crashing at the first parse error, configpile
   collects all the errors encountered and reports all of them.
+
+Code example
+------------
+
+(taken from :ref:`tutorial_step2`)
+
+.. literalinclude:: ../../examples/calculator2.py
+
+Execution result
+----------------
+
+.. command-output:: python ../../examples/calculator2.py --help
+
+.. command-output:: python ../../examples/calculator2.py -x 1 -y 2
+
 
 .. toctree::
     :hidden:

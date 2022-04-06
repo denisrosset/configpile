@@ -570,6 +570,26 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-example">
+   Code example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#execution-result">
+   Execution result
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -582,6 +602,26 @@
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-example">
+   Code example
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#execution-result">
+   Execution result
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -602,16 +642,62 @@ standard library.</p>
 </ul>
 <p>Its best selling points are:</p>
 <ul class="simple">
-<li><p>Code compactness; from the same dataclass declaration, we derive a
+<li><p><strong>Code compactness</strong>; from the same dataclass declaration, we derive a
 configuration parser, a command-line usage description and a Sphinx
 documentation block.</p></li>
-<li><p>Compatibility with IDEs</p></li>
-<li><p>Error reporting: Instead of crashing at the first parse error, configpile
+<li><p>Compatibility with <strong>IDEs</strong> (due to typed dataclasses as configuration results)</p></li>
+<li><p><strong>Error reporting</strong>: Instead of crashing at the first parse error, configpile
 collects all the errors encountered and reports all of them.</p></li>
 </ul>
+<div class="section" id="code-example">
+<h2>Code example<a class="headerlink" href="#code-example" title="Permalink to this headline">¶</a></h2>
+<p>(taken from <a class="reference internal" href="tutorial/step2.html#tutorial-step2"><span class="std std-ref">Step 2: Reuse defaults, short flags</span></a>)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Annotated</span>
+
+<span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Calc</span><span class="p">(</span><span class="n">Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Command-line tool that sums two floating point numbers</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#: First argument</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> <span class="n">short_flag_name</span><span class="o">=</span><span class="s2">&quot;-x&quot;</span><span class="p">)]</span>
+
+    <span class="c1">#: Second argument</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Param</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">float_parser</span><span class="p">,</span> <span class="n">short_flag_name</span><span class="o">=</span><span class="s2">&quot;-y&quot;</span><span class="p">)]</span>
+
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">Calc</span><span class="o">.</span><span class="n">from_command_line_</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">c</span><span class="o">.</span><span class="n">x</span><span class="o">+</span><span class="n">c</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="execution-result">
+<h2>Execution result<a class="headerlink" href="#execution-result" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python ../../examples/calculator2.py --help
+usage: ../../examples/calculator2.py [-x X] [-y Y]
+
+    Command-line tool that sums two floating point numbers
+    
+
+required arguments:
+  -x X, --x X  First argument
+  -y Y, --y Y  Second argument
+</pre></div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python ../../examples/calculator2.py -x 1 -y 2
+1.0 + 2.0 = 3.0
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 
