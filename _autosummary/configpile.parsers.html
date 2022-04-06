@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="path_parser" href="configpile.parsers.path_parser.html" />
-    <link rel="prev" title="IniSection" href="configpile.config.IniSection.html" />
+    <link rel="prev" title="KVParam" href="configpile.handlers.KVParam.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -130,6 +130,11 @@
      Step 5: Additional features
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../tutorial/step6.html">
+     Step 6: Final calculator script
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -212,11 +217,6 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Derived.html">
-       Derived
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="configpile.arg.Expander.html">
        Expander
       </a>
@@ -224,11 +224,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.arg.Param.html">
        Param
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.arg.Positional.html">
-       Positional
       </a>
      </li>
     </ul>
@@ -272,12 +267,106 @@
      </li>
     </ul>
    </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.enums.html">
+     enums
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.enums.Derived.html">
+       Derived
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.enums.ForceCase.html">
+       ForceCase
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.enums.Positional.html">
+       Positional
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.enums.SpecialAction.html">
+       SpecialAction
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="configpile.handlers.html">
+     handlers
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLConfigParam.html">
+       CLConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLHandler.html">
+       CLHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLInserter.html">
+       CLInserter
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLParam.html">
+       CLParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLPos.html">
+       CLPos
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
+       CLSpecialAction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLStdHandler.html">
+       CLStdHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVConfigParam.html">
+       KVConfigParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVHandler.html">
+       KVHandler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVParam.html">
+       KVParam
+      </a>
+     </li>
+    </ul>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="current reference internal" href="#">
      parsers
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-    <label for="toctree-checkbox-7">
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -308,13 +397,18 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.parsers.ForceCase.html">
-       ForceCase
+      <a class="reference internal" href="configpile.parsers.ErrorMessageProvider.html">
+       ErrorMessageProvider
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.parsers.Parser.html">
        Parser
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.parsers.Predicate.html">
+       Predicate
       </a>
      </li>
     </ul>
@@ -323,65 +417,15 @@
     <a class="reference internal" href="configpile.processor.html">
      processor
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
      <i class="fas fa-chevron-down">
      </i>
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLConfigParam.html">
-       CLConfigParam
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLHandler.html">
-       CLHandler
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLInserter.html">
-       CLInserter
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLParam.html">
-       CLParam
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLPos.html">
-       CLPos
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLSpecialAction.html">
-       CLSpecialAction
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.CLStdHandler.html">
-       CLStdHandler
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="configpile.processor.IniProcessor.html">
        IniProcessor
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.KVConfigParam.html">
-       KVConfigParam
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.KVHandler.html">
-       KVHandler
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.KVParam.html">
-       KVParam
       </a>
      </li>
      <li class="toctree-l3">
@@ -395,11 +439,6 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="configpile.processor.SpecialAction.html">
-       SpecialAction
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="configpile.processor.State.html">
        State
       </a>
@@ -410,8 +449,8 @@
     <a class="reference internal" href="configpile.userr.html">
      userr
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -472,8 +511,8 @@
     <a class="reference internal" href="configpile.util.html">
      util
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-    <label for="toctree-checkbox-10">
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
      <i class="fas fa-chevron-down">
      </i>
     </label>
@@ -592,7 +631,7 @@
   <div class="section" id="module-configpile.parsers">
 <span id="parsers"></span><h1>parsers<a class="headerlink" href="#module-configpile.parsers" title="Permalink to this headline">¶</a></h1>
 <p>Argument value parsing</p>
-<p>This module is mostly self-contained, and provides ways to construct <code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code> instances
+<p>This module is mostly self-contained, and provides ways to construct <a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a> instances
 which parse string arguments into values.</p>
 <p>During the configuration building, the parsed values are collected by a
 <a class="reference internal" href="configpile.collector.Collector.html#configpile.collector.Collector" title="configpile.collector.Collector"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.collector.Collector</span></code></a> instance.</p>
@@ -601,7 +640,7 @@ which parse string arguments into values.</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="configpile.parsers._Value">
 <span class="sig-name descname"><span class="pre">_Value</span></span><a class="headerlink" href="#configpile.parsers._Value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value being parsed by a <code class="xref py py-class docutils literal notranslate"><span class="pre">ParamType</span></code></p>
+<dd><p>Value being parsed by a <a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a></p>
 </dd></dl>
 
 <dl class="py data">
@@ -653,11 +692,14 @@ which parse string arguments into values.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.ForceCase.html#configpile.parsers.ForceCase" title="configpile.parsers.ForceCase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ForceCase</span></code></a></p></td>
-<td><p>Describes whether a string is normalized to lower or upper case before processing</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.ErrorMessageProvider.html#configpile.parsers.ErrorMessageProvider" title="configpile.parsers.ErrorMessageProvider"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ErrorMessageProvider</span></code></a></p></td>
+<td><p>Generates formatted error messages when values are invalid</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parser</span></code></a></p></td>
 <td><p>Describes a parser, that takes a string and returns either a value or an error</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="configpile.parsers.Predicate.html#configpile.parsers.Predicate" title="configpile.parsers.Predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Predicate</span></code></a></p></td>
+<td><p>Defines a function or callable that takes a value and returns whether it is valid</p></td>
 </tr>
 </tbody>
 </table>
@@ -669,11 +711,11 @@ which parse string arguments into values.</p>
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="configpile.config.IniSection.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="configpile.handlers.KVParam.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">IniSection</p>
+            <p class="prev-next-title">KVParam</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="configpile.parsers.path_parser.html" title="next page">
@@ -690,7 +732,7 @@ which parse string arguments into values.</p>
     <footer class="footer">
   <p>
     
-        &copy; Copyright 2022, Denis Rosset.<br/>
+        &copy; Copyright .<br/>
   </p>
 </footer>
 </main>

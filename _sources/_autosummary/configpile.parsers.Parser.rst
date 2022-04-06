@@ -30,7 +30,6 @@ Parser
       ~Parser.from_function_that_raises
       ~Parser.from_mapping
       ~Parser.from_parsy_parser
-      ~Parser.invalid
       ~Parser.map
       ~Parser.parse
       ~Parser.separated_by

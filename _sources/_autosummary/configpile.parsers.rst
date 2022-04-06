@@ -30,8 +30,9 @@
       :toctree:
       :nosignatures:
    
-      ForceCase
+      ErrorMessageProvider
       Parser
+      Predicate
    
    
 

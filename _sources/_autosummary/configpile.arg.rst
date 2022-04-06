@@ -20,10 +20,8 @@
       :nosignatures:
    
       Arg
-      Derived
       Expander
       Param
-      Positional
    
    
 

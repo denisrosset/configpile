@@ -25,7 +25,6 @@ Collector
       ~Collector.arg_required
       ~Collector.argparse_argument_kwargs
       ~Collector.collect
-      ~Collector.invalid
       ~Collector.keep_last
    
    
