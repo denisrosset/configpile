@@ -580,6 +580,9 @@ class Processor(Generic[_Config]):
         pf = ProcessorFactory.make(config_type)
         for arg in Processor.process_fields(config_type):
             arg.update_processor(pf)
+
+        # if these flags are no longer provided by default, update the overview concept notebook
+        # in the documentation
         pf.cl_flag_handlers["-h"] = CLSpecialAction(SpecialAction.HELP)
         pf.cl_flag_handlers["--help"] = CLSpecialAction(SpecialAction.HELP)
 
