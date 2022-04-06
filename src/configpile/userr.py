@@ -248,12 +248,6 @@ class Err1(Err):
     def in_context(self, **contexts: Any) -> Err1:
         return Err1(self.msg, [*contexts.items(), *self.contexts])
 
-    def __repr__(self) -> str:
-        if self.contexts:
-            return super().__repr__()
-        else:
-            return f"Err1({self.msg!r})"
-
 
 @dataclass(frozen=True)
 class _GroupedErrors:
