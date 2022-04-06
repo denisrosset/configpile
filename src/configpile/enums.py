@@ -1,7 +1,7 @@
 """
 This module defines enumerations that are used by the library.
 
-We collect them in this module to solve the circular import problem.    
+We collect them in this module to solve the circular import problem.
 """
 
 from enum import Enum

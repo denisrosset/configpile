@@ -5,7 +5,7 @@ In this step, we add a function that returns a legacy :class:`argparse.ArgumentP
 
 We put the script under a ``if __name__ == "__main__":`` guard.
 
-We also had to move the 
+We also had to move the
 `sphinx-autodoc <https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html>`_
 style parameter documentation strings to the ``help`` keyword argument to avoid problems with the
 Sphinx import style (which happens when using the ``:filename:`` directive). In standard projects,

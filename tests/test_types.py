@@ -1,6 +1,7 @@
+# pylint: disable=missing-class-docstring,missing-function-docstring,missing-module-docstring
 from __future__ import annotations
 
-from configpile import *
+from configpile import Err, parsers
 
 
 def test_integer() -> None:

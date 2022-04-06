@@ -5,7 +5,7 @@ This tutorial develops a simple calculator application using Configpile.
 
 Step-by-step, we walk through the concepts of configpile.
 
-The corresponding code examples are available in the 
+The corresponding code examples are available in the
 `/examples <https://github.com/denisrosset/configpile/tree/main/examples>`_ folder of the project.
 
 .. toctree::
@@ -19,4 +19,3 @@ The corresponding code examples are available in the
     step4
     step5
     step6
-    

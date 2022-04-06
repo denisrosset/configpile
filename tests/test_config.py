@@ -1,3 +1,4 @@
+# pylint: disable=missing-class-docstring,missing-function-docstring,missing-module-docstring
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -6,7 +7,7 @@ from typing import Sequence
 
 from typing_extensions import Annotated
 
-from configpile import *
+from configpile import Config, Param, parsers
 from configpile.processor import SpecialAction
 
 
@@ -26,7 +27,7 @@ class MyApp(Config):
 
 
 def test_construct() -> None:
-    res = MyApp.parse_command_line_(args=[], env={})
+    MyApp.parse_command_line_(args=[], env={})
 
 
 def test_cmd() -> None:
@@ -53,8 +54,8 @@ def test_default_values() -> None:
 
 
 def test_config_files() -> None:
-    dir = Path.cwd() / "tests"  # configpile root directory
-    res = B.parse_command_line_(cwd=dir, args=["--config", "example_config.ini"], env={})
+    directory = Path.cwd() / "tests"  # configpile root directory
+    res = B.parse_command_line_(cwd=directory, args=["--config", "example_config.ini"], env={})
     assert isinstance(res, B)
     assert res.a == 4
     assert res.b == 5

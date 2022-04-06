@@ -1,3 +1,4 @@
+# pylint: disable=missing-class-docstring,missing-function-docstring,missing-module-docstring
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -5,7 +6,7 @@ from typing import ClassVar
 
 from typing_extensions import Annotated
 
-from configpile import *
+from configpile import Config, Expander, Param, parsers
 
 
 @dataclass(frozen=True)

@@ -1,3 +1,4 @@
+# pylint: disable=missing-class-docstring,missing-function-docstring,missing-module-docstring
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -5,7 +6,7 @@ from typing import Sequence
 
 from typing_extensions import Annotated
 
-from configpile import *
+from configpile import Config, Param, Positional, parsers
 
 
 @dataclass(frozen=True)
@@ -34,4 +35,4 @@ def test_positional() -> None:
 
 
 def test_argparse() -> None:
-    res = WithPositional.processor_().argument_parser
+    WithPositional.processor_().argument_parser  # pylint: disable=expression-not-assigned

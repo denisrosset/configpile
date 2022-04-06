@@ -1,6 +1,7 @@
+# pylint: disable=missing-class-docstring,missing-function-docstring,missing-module-docstring
 import pytest
 
-from configpile import *
+from configpile import Err
 from configpile.userr import wrap
 
 
@@ -15,7 +16,7 @@ def test_wrap_exceptions() -> None:
             return i
 
     with pytest.raises(ValueError):
-        res = test(2)
+        test(2)
 
     assert isinstance(test(1), Err)
     assert not isinstance(test(0), Err)
