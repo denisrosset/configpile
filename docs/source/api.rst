@@ -7,14 +7,14 @@ the current scope by ``from configpile import *``.
 Those identifiers are:
 
 - :class:`~configpile.config.Config`
-- :class:`~configpile.arg.Derived`
+- :class:`~configpile.enums.Derived`
 - :class:`~configpile.userr.Err`
 - :class:`~configpile.arg.Expander`
-- :class:`~configpile.parsers.ForceCase`
+- :class:`~configpile.enums.ForceCase`
 - :class:`~configpile.arg.Param`
 - :mod:`~configpile.parsers`
 - :class:`~configpile.parsers.Parser`
-- :class:`~configpile.arg.Positional`
+- :class:`~configpile.enums.Positional`
 - :class:`~configpile.userr.Res`
 
 .. toctree::
