@@ -22,23 +22,8 @@ import sys
 from abc import ABC
 from dataclasses import dataclass
 from pathlib import Path
-from typing import (
-    Callable,
-    ClassVar,
-    List,
-    Mapping,
-    Optional,
-    Sequence,
-    Type,
-    TypeVar,
-    Union,
-    get_args,
-)
+from typing import Callable, ClassVar, List, Mapping, Optional, Sequence, Type, TypeVar, Union
 
-from typing_extensions import Annotated, get_origin, get_type_hints
-
-from . import parsers
-from .arg import Param
 from .processor import Processor, SpecialAction
 from .userr import Err, Res
 
@@ -72,6 +57,8 @@ class Config(ABC):
             res.x + res.y
     """
 
+    # region Config: INI section processing
+
     #: Names of sections to parse in configuration files, with unknown keys ignored
     ini_relaxed_sections_: ClassVar[Sequence[str]] = ["Common", "COMMON", "common"]
 
@@ -85,17 +72,46 @@ class Config(ABC):
 
         By default, this parses first the relaxed sections and then the strict ones.
 
-        This method can be overridden.
+        First, try to replace the contents of :attr:`.ini_relaxed_sections_`
+        and :attr:`.ini_strict_sections_`. Otherwise, override this method.
         """
         relaxed = [IniSection(name, False) for name in cls.ini_relaxed_sections_]
         strict = [IniSection(name, True) for name in cls.ini_strict_sections_]
         return relaxed + strict
 
+    # endregion
+
+    # region Config: general information about the program being configured
+
     prog_: ClassVar[Optional[str]] = None  #: Program name
-    description_: ClassVar[Optional[str]] = None  #: Text to display before the argument help
+
+    #: Text to display before the argument help
+    #:
+    #: If not present, taken from the Config subclass docstring.
+    description_: ClassVar[Optional[str]] = None
+
+    @classmethod
+    def version_(cls) -> Optional[str]:
+        """
+        Returns the version number of this script
+
+        Designed to be overridden by a subclass
+
+        Returns:
+            Version number as a string
+        """
+        return None
+
+    # endregion
+
+    # region Config: environment variable processing
 
     #: Prefix for automatically derived environment variable names
     env_prefix_: ClassVar[str] = ""
+
+    # endregion
+
+    # region Config: information constructed by configpile
 
     @classmethod
     def validators_(cls: Type[_Config]) -> Sequence[Callable[[_Config], Optional[Err]]]:
@@ -115,23 +131,47 @@ class Config(ABC):
         return res
 
     @classmethod
-    def version_(cls) -> Optional[str]:
-        """
-        Returns the version number of this script
-
-        Designed to be overridden by a subclass
-
-        Returns:
-            Version
-        """
-        return None
-
-    @classmethod
     def processor_(cls: Type[_Config]) -> Processor[_Config]:
         """
         Returns a processor for this configuration
         """
         return Processor.make(cls)
+
+    # endregion
+
+    # region Config: configuration construction
+
+    @classmethod
+    def parse_ini_contents_(cls: Type[_Config], ini_contents: str) -> Res[_Config]:
+        """
+        Parses the contents of an INI file into a configuration
+
+        This method skips the processing of environment variables and command-line parameters.
+
+        Args:
+            ini_contents: Multiline string describing the configuration contents
+
+        Returns:
+            A parsed configuration or an error
+        """
+        processor = cls.processor_()
+        return processor.process_ini_contents(ini_contents)
+
+    @classmethod
+    def parse_ini_file_(cls: Type[_Config], ini_file_path: Path) -> Res[_Config]:
+        """
+        Parses an INI file into a configuration
+
+        This method skips the processing of environment variables and command-line parameters.
+
+        Args:
+            ini_file_path: Path to an INI file
+
+        Returns:
+            A parsed configuration or an error
+        """
+        processor = cls.processor_()
+        return processor.process_ini_file(ini_file_path)
 
     @classmethod
     def parse_command_line_(
@@ -215,9 +255,18 @@ class Config(ABC):
         else:
             raise NotImplementedError(f"Unknown special action {res}")
 
+    # endregion
+
+    # region Config: argparse fallback for documentation purposes
+
     @classmethod
     def get_argument_parser_(cls: Type[_Config]) -> argparse.ArgumentParser:
         """
         Returns an :class:`argparse.ArgumentParser` for documentation purposes
+
+        This may be removed or deprecated in later versions of configpile, if we write our
+        own help/usage display function, and propose a Sphinx extension.
         """
         return cls.processor_().argument_parser
+
+    # endregion

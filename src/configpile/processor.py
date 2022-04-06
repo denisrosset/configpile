@@ -440,7 +440,7 @@ class IniProcessor:
         else:
             return None
 
-    def process(self, ini_path: Path, state: State) -> Optional[Err]:
+    def process(self, ini_file_path: Path, state: State) -> Optional[Err]:
         """
         Processes a configuration file
 
@@ -452,13 +452,13 @@ class IniProcessor:
             An optional error
         """
         errors: List[Err] = []
-        if not ini_path.exists():
-            return Err.make(f"Config file {ini_path} does not exist")
-        if not ini_path.is_file():
-            return Err.make(f"Path {ini_path} is not a file")
+        if not ini_file_path.exists():
+            return Err.make(f"Config file {ini_file_path} does not exist")
+        if not ini_file_path.is_file():
+            return Err.make(f"Path {ini_file_path} is not a file")
         parser = ConfigParser()
         try:
-            with open(ini_path, "r") as file:
+            with open(ini_file_path, "r") as file:
                 parser.read_file(file)
                 errors.extend(self._process(parser, state))
         except configparser.Error as e:
@@ -573,7 +573,7 @@ class Processor(Generic[_Config]):
     ini_processor: IniProcessor
 
     #: Command line arguments handler
-    cl_handler: CLHandler
+    cl_handler: CLStdHandler
 
     #: Dictionnary of parameters by field name
     params_by_name: Mapping[str, Param[Any]]
@@ -662,6 +662,38 @@ class Processor(Generic[_Config]):
                 errors.append(err.in_context(ini_file=p))
         return Err.collect(*errors)
 
+    def process_ini_contents(self, ini_contents: str) -> Res[_Config]:
+        """
+        Processes the configuration in INI format contained in a string
+
+        Args:
+            ini_contents: Multiline string containing information in INI format
+
+        Returns:
+            The parsed configuration or an error
+        """
+        state = self._state_with_default_values()
+        err = self.ini_processor.process_string(ini_contents, state)
+        if err is not None:
+            return err
+        return self._finish_processing_state(state)
+
+    def process_ini_file(self, ini_file_path: Path) -> Res[_Config]:
+        """
+        Processes the configuration contained in an INI file
+
+        Args:
+            ini_file_path: Path to the file to parse
+
+        Returns:
+            The parsed configuration or an error
+        """
+        state = self._state_with_default_values()
+        err = self.ini_processor.process(ini_file_path, state)
+        if err is not None:
+            return err
+        return self._finish_processing_state(state)
+
     def process(
         self,
         cwd: Path,
@@ -679,6 +711,48 @@ class Processor(Generic[_Config]):
             stacklevel=2,
         )
         return self.process_command_line(cwd, args, env)
+
+    def _finish_processing_state(self, state: State) -> Res[_Config]:
+        """
+        Finishes the processing of the state
+
+        This method performs:
+
+        - the collection of parameter values
+        - the final validation using validation methods
+
+        Args:
+            state: State after parsing all elements, must have :attr:`.State.special_action` set
+                   to :data:`None`
+
+        Returns:
+            The parsed configuration or an error
+        """
+        assert state.special_action is None
+        errors: List[Err] = []
+        collected: Dict[str, Any] = {}
+        for name, param in self.params_by_name.items():
+            instances = state.instances[name]
+            res = param.collector.collect(instances)
+            if isinstance(res, Err):
+                errors.append(res.in_context(param=name))
+            else:
+                collected[name] = res
+
+        if errors:
+            return Err.collect1(*errors)
+        c: _Config = self.config_type(**collected)
+        validation_error: Optional[Err] = Err.collect(*[f(c) for f in self.validators])
+        if validation_error is not None:
+            return validation_error
+        else:
+            return c
+
+    def _state_with_default_values(self) -> State:
+        """
+        Returns a new state instance with default values populated
+        """
+        return State.make(self.params_by_name.values())
 
     def process_command_line(
         self,
@@ -698,7 +772,7 @@ class Processor(Generic[_Config]):
             Either a parsed configuration, a special action to execute, or (a list of) errors
         """
         errors: List[Err] = []
-        state = State.make(self.params_by_name.values())
+        state = self._state_with_default_values()
         # process environment variables
         for key, value in env.items():
             handler = self.env_handlers.get(key)
@@ -724,20 +798,5 @@ class Processor(Generic[_Config]):
 
         if errors:
             return Err.collect1(*errors)
-        collected: Dict[str, Any] = {}
-        for name, param in self.params_by_name.items():
-            instances = state.instances[name]
-            res = param.collector.collect(instances)
-            if isinstance(res, Err):
-                errors.append(res.in_context(param=name))
-            else:
-                collected[name] = res
 
-        if errors:
-            return Err.collect1(*errors)
-        c: _Config = self.config_type(**collected)
-        validation_error: Optional[Err] = Err.collect(*[f(c) for f in self.validators])
-        if validation_error is not None:
-            return validation_error
-        else:
-            return c
+        return self._finish_processing_state(state)
