@@ -103,14 +103,14 @@ class Config(ABC):
         Returns all validators present in the given subclass of this class
 
         Validators are methods that take no arguments (except self) and return an optional error.
-        Their name starts with ``validate_`` and ends with an underscore.
+        Their name starts with ``validate_``.
 
         Returns:
             A sequence of all validators
         """
         res: List[Callable[[_Config], Optional[Err]]] = []
         for name, meth in inspect.getmembers(cls, inspect.isroutine):
-            if name.startswith("validate_") and name.endswith("_"):
+            if name.startswith("validate_"):
                 res.append(getattr(cls, name))
         return res
 

@@ -27,6 +27,6 @@
     },
     "esbonio.server.enabled": true,
     "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build/html",
-    "esbonio.sphinx.confDir": "/home/denis/w/configpile/docs/source",
+    "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source",
     "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/source",
 }
