@@ -4,6 +4,7 @@
     "python.linting.pylintEnabled": true,
     "cSpell.words": [
         "argparse",
+        "autodoc",
         "autosummary",
         "bysource",
         "configpile",
