@@ -8,23 +8,5 @@
             "program": "${file}",
             "console": "integratedTerminal"
         },
-        {
-            "justMyCode": false,
-            "name": "Run test command line",
-            "type": "python",
-            "request": "launch",
-            "program": "test_configpile.py",
-            "console": "integratedTerminal",
-            "args": [
-                "--instrument",
-                "HARPS",
-                "--dace-file",
-                "test.csv",
-                "--input-folder",
-                "data/",
-                "--info-file",
-                "test.h5"
-            ]
-        }
     ]
 }
