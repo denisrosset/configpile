@@ -26,6 +26,25 @@ Its best selling points are:
 * **Error reporting**: Instead of crashing at the first parse error, configpile
   collects all the errors encountered and reports all of them.
 
+
+How to use
+----------
+
+``configpile`` is easily installed through ``pip``::
+
+  pip install configpile
+
+It supports Python >= 3.8, depends only on
+`class-doc <https://github.com/danields761/class-doc>`_ and ``typing_extensions``.
+
+Optionally, it supports `parsy <https://github.com/python-parsy/parsy>`_ (to define more
+complicated parsers) and `rich <https://github.com/Textualize/rich>`_ (for pretty-printing
+error information).
+
+You can do::
+
+  pip install configpile[parsy,rich]
+
 Code example
 ------------
 
