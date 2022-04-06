@@ -101,7 +101,7 @@ class Parser(ABC, Generic[_Value]):
         Example:
             >>> user_input = "invalid"
             >>> float_parser.parse(user_input)
-            Err1("Error 'could not convert string to float: 'invalid'' in 'invalid'")
+            Err1(msg="Error 'could not convert string to float: 'invalid'' in 'invalid'", contexts=[])
             >>> user_input = 2.0
             >>> float_parser.parse(user_input)
             2.0

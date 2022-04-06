@@ -183,7 +183,7 @@ class Err(ABC):
 
         Example:
             >>> Err.make("test error")
-            Err1('test error')
+            Err1(msg='test error', contexts=[])
 
         Args:
             msg: Error message
@@ -203,7 +203,7 @@ class Err(ABC):
             >>> a = -1
             >>> b = 2
             >>> Err.collect(Err.check(a >= 0, "a < 0"), Err.check(b >= 0, "b < 0"))
-            Err1('a < 0')
+            Err1(msg='a < 0', contexts=[])
 
         Args:
             predicate: Predicate to check
@@ -385,7 +385,7 @@ def wrap(
         >>> parse("2")
         2
         >>> parse("should error")
-        Err1("ValueError thrown: invalid literal for int() with base 10: 'should error'")
+        Err1(msg="ValueError thrown: invalid literal for int() with base 10: 'should error'", contexts=[])
     """
 
     def decorator(
@@ -495,7 +495,7 @@ def map(f: Callable[[_Value], _ReturnType], r: Res[_Value]) -> Res[_ReturnType]:
         >>> map(square, parse("-1"))
         1.0
         >>> flat_map(square, parse("invalid"))
-        Err1("ValueError thrown: could not convert string to float: 'invalid'")
+        Err1(msg="ValueError thrown: could not convert string to float: 'invalid'", contexts=[])
 
     Args:
         f: Function that takes a value of type `._Value` and returns a value of type `._ReturnType`
@@ -529,9 +529,9 @@ def flat_map(f: Callable[[_Value], Res[_ReturnType]], r: Res[_Value]) -> Res[_Re
         >>> flat_map(my_sqrt, parse("2"))
         1.414...
         >>> flat_map(my_sqrt, parse("-1"))
-        Err1('ValueError thrown: math domain error')
+        Err1(msg='ValueError thrown: math domain error', contexts=[])
         >>> flat_map(my_sqrt, parse("invalid"))
-        Err1("ValueError thrown: could not convert string to float: 'invalid'")
+        Err1(msg="ValueError thrown: could not convert string to float: 'invalid'", contexts=[])
 
     Args:
         f: Function that takes a result parameterized by type `_Value` and returns a result
