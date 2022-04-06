@@ -864,12 +864,11 @@
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Parser.from_parsy_parser"><a class="viewcode-back" href="../../_autosummary/configpile.parsers.Parser.html#configpile.parsers.Parser.from_parsy_parser">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_parsy_parser</span><span class="p">(</span><span class="n">type_</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">from_parsy_parser</span><span class="p">(</span><span class="n">parser</span><span class="p">:</span> <span class="n">parsy</span><span class="o">.</span><span class="n">Parser</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a parser from a parsy parser</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            type_: PEP 484 type, used to type the return argument</span>
 <span class="sd">            parser: Parser returning a value of type ``t``</span>
 
 <span class="sd">        Returns:</span>
