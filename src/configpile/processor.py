@@ -383,6 +383,63 @@ class IniProcessor:
     section_strict: Mapping[str, bool]  #: Sections and their strictness
     kv_handlers: Mapping[str, KVHandler]  #: Handler for key/value pairs
 
+    def _process(self, parser: ConfigParser, state: State) -> Sequence[Err]:
+        """
+        Processes a filled ConfigParser
+
+        Args:
+            parser: INI data to parse
+            state: Mutable state to update
+
+        Returns:
+            Errors that occurred, if any
+        """
+        errors: List[Err] = []
+        try:
+            for section_name in parser.sections():
+                if section_name in self.section_strict:
+                    for key, value in parser[section_name].items():
+                        err: Optional[Err] = None
+                        if key in self.kv_handlers:
+                            res = self.kv_handlers[key].handle(value, state)
+                            if isinstance(res, Err):
+                                err = res
+                        else:
+                            if self.section_strict[section_name]:
+                                err = Err.make(f"Unknown key {key}")
+                        if err is not None:
+                            errors.append(err.in_context(ini_section=section_name))
+        except configparser.Error as e:
+            errors.append(Err.make(f"Parse error"))
+        except IOError as e:
+            errors.append(Err.make(f"IO Error"))
+        return errors
+
+    def process_string(self, ini_contents: str, state: State) -> Optional[Err]:
+        """
+        Processes a configuration file given as a string
+
+        Args:
+            ini_contents: Contents of the INI file
+            state: Mutable state to update
+
+        Returns:
+            An optional error
+        """
+        errors: List[Err] = []
+        parser = ConfigParser()
+        try:
+            parser.read_string(ini_contents)
+            errors.extend(self._process(parser, state))
+        except configparser.Error as e:
+            errors.append(Err.make(f"Parse error"))
+        except IOError as e:
+            errors.append(Err.make(f"IO Error"))
+        if errors:
+            return Err.collect(*errors)
+        else:
+            return None
+
     def process(self, ini_path: Path, state: State) -> Optional[Err]:
         """
         Processes a configuration file
@@ -403,19 +460,7 @@ class IniProcessor:
         try:
             with open(ini_path, "r") as file:
                 parser.read_file(file)
-                for section_name in parser.sections():
-                    if section_name in self.section_strict:
-                        for key, value in parser[section_name].items():
-                            err: Optional[Err] = None
-                            if key in self.kv_handlers:
-                                res = self.kv_handlers[key].handle(value, state)
-                                if isinstance(res, Err):
-                                    err = res
-                            else:
-                                if self.section_strict[section_name]:
-                                    err = Err.make(f"Unknown key {key}")
-                            if err is not None:
-                                errors.append(err.in_context(ini_section=section_name))
+                errors.extend(self._process(parser, state))
         except configparser.Error as e:
             errors.append(Err.make(f"Parse error"))
         except IOError as e:
