@@ -235,12 +235,11 @@ class Parser(ABC, Generic[_Value]):
             )
 
     @staticmethod
-    def from_parsy_parser(type_: Type[_Value], parser: parsy.Parser) -> Parser[_Value]:
+    def from_parsy_parser(parser: parsy.Parser) -> Parser[_Value]:
         """
         Creates a parser from a parsy parser
 
         Args:
-            type_: PEP 484 type, used to type the return argument
             parser: Parser returning a value of type ``t``
 
         Returns:
