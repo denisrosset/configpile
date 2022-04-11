@@ -60,7 +60,6 @@ disable = [
   "assignment-from-none", # this is caught by mypy and has false positives
   "no-value-for-parameter", # this is caught by mypy and has false positives
   "unused-argument", # happens quite often in OOP hierarchies
-  "invalid-name", # we like our single letter argument names
 ]
 
 [tool.mypy]
