@@ -310,7 +310,7 @@ class Processor(Generic[_Config]):
     #: Command line arguments handler
     cl_handler: CLStdHandler
 
-    #: Dictionnary of parameters by field name
+    #: Dictionary of parameters by field name
     params_by_name: Mapping[str, Param[Any]]
 
     validators: Sequence[Callable[[_Config], Optional[Err]]]
