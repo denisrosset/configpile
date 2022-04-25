@@ -269,7 +269,7 @@ class Param(Arg, Generic[_Value_co]):
 
     #: Whether this parameter can appear as a positional parameter and how
     #:
-    #: A positional parameter is a paramater that appears without a preceding flag
+    #: A positional parameter is a parameter that appears without a preceding flag
     positional: Optional[Positional]
 
     #: Configuration key name used in INI files
