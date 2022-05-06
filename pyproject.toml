@@ -53,7 +53,10 @@ tomli = "^2.0.1"
 
 [tool.pylint.BASIC]
 
-variable-rgx = "[a-z_][a-z0-9_]{1,30}$"
+argument-rgx = "[a-z_][a-z0-9_]{0,30}$"
+attr-rgx = "[a-z_][a-z0-9_]{0,30}$"
+class-attribute-rgx = "[a-z_][a-z0-9_]{0,30}$"
+variable-rgx = "[a-z_][a-z0-9_]{0,30}$"
 
 [tool.pylint.messages_control]
 disable = [
