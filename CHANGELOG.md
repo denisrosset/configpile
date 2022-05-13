@@ -1,3 +1,9 @@
+## v10.0.2 (2022-05-13)
+
+### Fix
+
+- **processor**: Respects case in INI files
+
 ## v10.0.1 (2022-04-06)
 
 ### Fix
