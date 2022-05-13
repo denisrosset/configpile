@@ -192,6 +192,7 @@ class IniProcessor:
         if not ini_file_path.is_file():
             return Err.make(f"Path {ini_file_path} is not a file")
         parser = ConfigParser()
+        parser.optionxform = str  # disable conversion to lower-case
         try:
             with open(ini_file_path, "r", encoding="utf-8") as file:
                 parser.read_file(file)
