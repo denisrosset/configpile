@@ -1,38 +1,9 @@
-"""
-Argument value parsing
-
-This module is mostly self-contained, and provides ways to construct :class:`.Parser` instances
-which parse string arguments into values.
-
-During the configuration building, the parsed values are collected by a
-:class:`configpile.collector.Collector` instance.
-
-.. rubric:: Types
-
-This module uses the following types.
-
-.. py:data:: _Value
-
-    Value being parsed by a :class:`.Parser`
-
-.. py:data:: _Parameter
-
-    Type received by a mapping function
-
-.. py:data:: _ReturnType
-
-    Type returned by a mapping function
-
-.. py:data:: _Item
-
-    Item in a sequence
-"""
-
+"""This module describes and implements the Parser class"""
 from __future__ import annotations
 
-import pathlib
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from enum import Enum
 from typing import (
     TYPE_CHECKING,
     Callable,
@@ -49,9 +20,8 @@ from typing import (
 
 from typing_extensions import Protocol, runtime_checkable
 
-from .enums import ForceCase
-from .userr import Err, Res, collect_seq
-from .util import assert_never
+from ..userr import Err, Res, collect_seq
+from ..util import assert_never
 
 if TYPE_CHECKING:
     try:
@@ -71,7 +41,15 @@ _Item = TypeVar("_Item")
 
 _Parameter = TypeVar("_Parameter")
 
-_ReturnType = TypeVar("_ReturnType")
+_Returned = TypeVar("_Returned")
+
+
+class ForceCase(Enum):
+    """Describes whether a string is normalized to lower or upper case before processing"""
+
+    NO_CHANGE = 0  #: Keep case
+    UPPER = 1  #: Change to uppercase
+    LOWER = 2  #: Change to lowercase
 
 
 @runtime_checkable
@@ -429,7 +407,7 @@ class _EmptyMeansNone(Parser[Optional[_Item]]):
 
 
 @dataclass(frozen=True)
-class _FlatMapped(Parser[_ReturnType], Generic[_Parameter, _ReturnType]):
+class _FlatMapped(Parser[_Returned], Generic[_Parameter, _Returned]):
     """
     Wraps an existing parser and applies a function to its successful result
     """
@@ -437,9 +415,9 @@ class _FlatMapped(Parser[_ReturnType], Generic[_Parameter, _ReturnType]):
     wrapped: Parser[_Parameter]  #: Wrapped parser
 
     #: Mapping function, made optional as a hack
-    f: Optional[Callable[[_Parameter], Res[_ReturnType]]]
+    f: Optional[Callable[[_Parameter], Res[_Returned]]]
 
-    def parse(self, arg: str) -> Res[_ReturnType]:
+    def parse(self, arg: str) -> Res[_Returned]:
         assert self.f is not None
         res: Res[_Parameter] = self.wrapped.parse(arg)
         if isinstance(res, Err):
@@ -451,15 +429,15 @@ class _FlatMapped(Parser[_ReturnType], Generic[_Parameter, _ReturnType]):
 
 
 @dataclass(frozen=True)
-class _Mapped(Parser[_ReturnType], Generic[_Parameter, _ReturnType]):
+class _Mapped(Parser[_Returned], Generic[_Parameter, _Returned]):
     """
     Wraps an existing parser and applies a function to its successful result
     """
 
     wrapped: Parser[_Parameter]  #: Wrapped parser
-    f: Optional[Callable[[_Parameter], _ReturnType]]  #: Mapping function, made optional as a hack
+    f: Optional[Callable[[_Parameter], _Returned]]  #: Mapping function, made optional as a hack
 
-    def parse(self, arg: str) -> Res[_ReturnType]:
+    def parse(self, arg: str) -> Res[_Returned]:
         assert self.f is not None
         res: Res[_Parameter] = self.wrapped.parse(arg)
         if isinstance(res, Err):
@@ -513,25 +491,3 @@ class _Validated(Parser[_Value]):
 
     def choices(self) -> Optional[Sequence[str]]:
         return self.wrapped.choices()
-
-
-#: Parses a path
-path_parser: Parser[pathlib.Path] = Parser.from_function_that_raises(pathlib.Path)
-
-#: Parses an integer
-int_parser: Parser[int] = Parser.from_function_that_raises(int)
-
-#: Parses a string, preserves whitespace
-str_parser: Parser[str] = Parser.from_function(lambda s: s)
-
-#: Parses a string, stripping whitespace left and right
-stripped_str_parser: Parser[str] = Parser.from_function(lambda s: s.strip())
-
-#: Parses a float
-float_parser: Parser[float] = Parser.from_function_that_raises(float)
-
-bool_parser: Parser[bool] = Parser.from_mapping(
-    {"true": True, "false": False},
-    force_case=ForceCase.LOWER,
-    aliases={"t": True, "f": False, "1": True, "0": False},
-)

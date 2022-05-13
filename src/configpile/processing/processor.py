@@ -23,7 +23,6 @@ from __future__ import annotations
 import argparse
 import configparser
 import sys
-import warnings
 from configparser import ConfigParser
 from dataclasses import dataclass
 from pathlib import Path
@@ -34,11 +33,11 @@ from typing import (
     ClassVar,
     Dict,
     Generic,
-    Iterable,
     List,
     Mapping,
     Optional,
     Sequence,
+    Tuple,
     Type,
     TypeVar,
     Union,
@@ -46,67 +45,135 @@ from typing import (
 
 from typing_extensions import Annotated, get_args, get_origin, get_type_hints
 
-from .arg import Arg, Expander, Param
-from .enums import SpecialAction
-from .handlers import CLHandler, CLPos, CLSpecialAction, CLStdHandler, KVHandler
-from .userr import Err, Res
-from .util import ClassDoc, filter_types_single
+from ..arg import Arg, Expander, Param
+from ..misc import Auto, SpecialAction
+from ..userr import Err, Res, collect_seq
+from ..util import ClassDoc, filter_types_single
+from .cli_handlers import CLHandler, CLRestIsPositional, CLSpecialAction
+from .kv_handlers import KVHandler
+from .state import State
 
 if TYPE_CHECKING:
-    from .config import Config
+    from ..config import Config
 
 _Config = TypeVar("_Config", bound="Config")
 
 
-@dataclass
-class State:
-    """
-    Describes the (mutable) state of a configuration being parsed
-    """
+@dataclass(frozen=True)
+class PositionalsProcessor:
+    """Processor for positional arguments"""
 
-    instances: Dict[str, List[Any]]  #: Contains the sequence of values for each parameter
-    config_files_to_process: List[Path]  #: Contains a list of configuration files to process
-    special_action: Optional[SpecialAction]  #: Contains a special action if flag was encountered
+    #: Sequence of positional parameters
+    positionals: Sequence[Param[Any]]
 
-    def append(self, key: str, value: Any) -> None:
-        """
-        Appends a value to a parameter
+    def _parse_and_insert_all(
+        self, values: Sequence[str], state: State, param: Param[Any]
+    ) -> Optional[Err]:
+        """Parses and inserts all the values for the given positional parameter
 
-        No type checking is performed, be careful.
+        This method does not check the number of values parsed and inserted.
 
         Args:
-            key: Parameter name
-            value: Value to append
-        """
-        assert key in self.instances, f"{key} is not a Param name"
-        self.instances[key] = [*self.instances[key], value]
-
-    @staticmethod
-    def make(params: Iterable[Param[Any]]) -> State:
-        """
-        Creates the initial state, populated with the default values when present
-
-        Args:
-            params: Sequence of parameters
-
-        Raises:
-            ValueError: If a default value cannot be parsed correctly
+            values: Values to parse
+            state: State to update
+            param: Positional parameter to handle
 
         Returns:
-            The initial mutable state
+            An error when relevant
         """
-        instances: Dict[str, List[Any]] = {}
+        assert not isinstance(param.name, Auto)
+        assert not isinstance(param.parser, Auto)
+        res: Res[Sequence[Any]] = collect_seq([param.parser.parse(v) for v in values])
+        if isinstance(res, Err):
+            return res.in_context(param=param.name)
+        else:
+            state.instances[param.name].extend(res)
+            return None
 
-        for p in params:
-            assert p.name is not None, "Arguments have names after initialization"
-            if p.default_value is not None:
-                res = p.parser.parse(p.default_value)
-                if isinstance(res, Err):
-                    raise ValueError(f"Invalid default {p.default_value} for parameter {p.name}")
-                instances[p.name] = [res]
+    def _process_positional(
+        self, values: Sequence[str], state: State, param: Param[Any], from_front: bool
+    ) -> Tuple[Sequence[str], Optional[Err]]:
+        """Handles a single positional parameter, taking care of the number of parsed values
+
+        Args:
+            values: Remaining positional values to handle
+            state: State to update
+            param: Positional parameter to handle
+            from_front: Whether to take strings from the front or back of the sequence
+
+        Returns:
+            A tuple (remaining_values, err) where err contains an optional error
+        """
+        assert param.positional is not None
+        n = param.positional.fixed_number()
+        v = len(values)
+        if n is None:
+            mn = param.positional.min
+            if v < mn:
+                return (values, Err.make(f"Number of values {v} is less than the minimum {mn}"))
+            mx = param.positional.max
+            if mx is not None:
+                if v > mx:
+                    return (
+                        values,
+                        Err.make(f"Number of values {v} is greater than the maximum {mx}"),
+                    )
+            res = self._parse_and_insert_all(values, state, param)
+            return ([], res)
+        else:
+            # n is integer
+            if v < n:
+                return (values, Err.make(f"Number of values {v} is less than required {n}"))
+            if from_front:
+                take = values[:n]
+                rest = values[n:]
             else:
-                instances[p.name] = []
-        return State(instances, config_files_to_process=[], special_action=None)
+                take = values[-n:]
+                rest = values[:-n]
+            res = self._parse_and_insert_all(take, state, param)
+            return (rest, res)
+
+    def handle(self, positional_arguments: Sequence[str], state: State) -> Optional[Err]:
+        """Handles a sequence of positional values
+
+
+        Args:
+            values: Positional command-line arguments to handle
+            state: State ot update
+
+        Returns:
+            An optional error
+        """
+        fixed = [
+            i
+            for i, p in enumerate(self.positionals)
+            if p.positional is not None and p.positional.fixed_number is not None
+        ]
+        n = len(self.positionals)
+        if len(fixed) == 1:
+            f = fixed[0]
+            before = [*self.positionals[0:f]]
+            flex: Optional[Param[Any]] = self.positionals[f]
+            after = [*self.positionals[f + 1 : n]]
+        else:
+            before = [*self.positionals]
+            flex = None
+            after = []
+        remains: Sequence[str] = positional_arguments
+        errors: List[Err] = []
+        for param in before:
+            remains, err = self._process_positional(remains, state, param, True)
+            if err is not None:
+                errors.append(err.in_context(param=param.name))
+        for param in reversed(after):
+            remains, err = self._process_positional(remains, state, param, False)
+            if err is not None:
+                errors.append(err.in_context(param=param.name))
+        if flex is not None:
+            remains, err = self._process_positional(remains, state, flex, True)
+            if err is not None:
+                errors.append(err.in_context(param=flex.name))
+        return Err.collect(*errors)
 
 
 @dataclass(frozen=True)
@@ -116,7 +183,7 @@ class IniProcessor:
     """
 
     section_strict: Mapping[str, bool]  #: Sections and their strictness
-    kv_handlers: Mapping[str, KVHandler]  #: Handler for key/value pairs
+    handlers: Mapping[str, KVHandler]  #: Handler for key/value pairs
 
     def _process(self, parser: ConfigParser, state: State) -> Sequence[Err]:
         """
@@ -135,8 +202,8 @@ class IniProcessor:
                 if section_name in self.section_strict:
                     for key, value in parser[section_name].items():
                         err: Optional[Err] = None
-                        if key in self.kv_handlers:
-                            res = self.kv_handlers[key].handle(value, state)
+                        if key in self.handlers:
+                            res = self.handlers[key].handle(value, state)
                             if isinstance(res, Err):
                                 err = res
                         else:
@@ -206,6 +273,41 @@ class IniProcessor:
             return None
 
 
+def _processed_fields(config_type: Type[_Config]) -> Sequence[Arg]:
+    """
+    Returns a sequence of the arguments present in a configuration, with updated data
+
+    Args:
+        config_type: Configuration to process
+
+    Returns:
+        Sequence of arguments
+    """
+    args: List[Arg] = []
+    docs: ClassDoc[_Config] = ClassDoc.make(config_type)
+    th = get_type_hints(config_type, include_extras=True)
+    for name, typ in th.items():
+        arg: Optional[Arg] = None
+        if get_origin(typ) is ClassVar:
+            a = getattr(config_type, name)
+            if isinstance(a, Arg):
+                assert isinstance(a, Expander), "Only commands (Cmd) can be class attributes"
+                arg = a
+        if get_origin(typ) is Annotated:
+            param = filter_types_single(Param, get_args(typ))
+            if param is not None:
+                arg = param
+        if arg is not None:
+            help_lines = docs[name]
+            if help_lines is None:
+                hlp = ""
+            else:
+                hlp = "\n".join(help_lines)
+            arg = arg.updated(name, hlp, config_type.env_prefix_)
+            args.append(arg)
+    return args
+
+
 @dataclass
 class ProcessorFactory(Generic[_Config]):
     """
@@ -213,6 +315,9 @@ class ProcessorFactory(Generic[_Config]):
 
     This factory is passed to the different arguments present in the configuration.
     """
+
+    #: Configuration dataclass
+    config_type: Type[_Config]
 
     #: List of parameters indexed by their field name
     params_by_name: Dict[str, Param[Any]]
@@ -244,12 +349,13 @@ class ProcessorFactory(Generic[_Config]):
     #: List of positional arguments
     cl_positionals: List[Param[Any]]
 
+    #: List of validators
     validators: List[Callable[[_Config], Optional[Err]]]
 
     @staticmethod
     def make(config_type: Type[_Config]) -> ProcessorFactory[_Config]:
         """
-        Constructs an empty processor factory
+        Constructs and populates a processor factory
 
         Args:
             config_type: Configuration to process
@@ -274,7 +380,9 @@ class ProcessorFactory(Generic[_Config]):
             add_help=False,
         )
         argument_parser._action_groups.pop()  # pylint: disable=protected-access
-        return ProcessorFactory(
+
+        pf = ProcessorFactory(
+            config_type=config_type,
             params_by_name={},
             argument_parser=argument_parser,
             ap_commands=argument_parser.add_argument_group("commands"),
@@ -287,13 +395,34 @@ class ProcessorFactory(Generic[_Config]):
             cl_positionals=[],
             validators=[*config_type.validators_()],
         )
+        for arg in _processed_fields(pf.config_type):
+            arg.update_processor(pf)
+
+        # if these flags are no longer provided by default, update the overview concept notebook
+        # in the documentation
+        pf.cl_flag_handlers["-h"] = CLSpecialAction(SpecialAction.HELP)
+        pf.cl_flag_handlers["--help"] = CLSpecialAction(SpecialAction.HELP)
+        pf.cl_flag_handlers["--"] = CLRestIsPositional()
+
+        return pf
+
+    def build(self) -> Processor[_Config]:
+        """Creates the processor corresponding to a configuration"""
+        return Processor(
+            config_type=self.config_type,
+            argument_parser=self.argument_parser,
+            env_handlers=self.env_handlers,
+            ini_processor=IniProcessor(self.ini_section_strict, self.ini_handlers),
+            cl_flag_handlers=self.cl_flag_handlers,
+            positional_processor=PositionalsProcessor(self.cl_positionals),
+            params_by_name=self.params_by_name,
+            validators=self.validators,
+        )
 
 
 @dataclass(frozen=True)
 class Processor(Generic[_Config]):
-    """
-    Configuration processor
-    """
+    """Configuration processor"""
 
     #: Configuration to parse
     config_type: Type[_Config]
@@ -307,75 +436,17 @@ class Processor(Generic[_Config]):
     #: INI file processor
     ini_processor: IniProcessor
 
-    #: Command line arguments handler
-    cl_handler: CLStdHandler
+    #: Command line flag handlers
+    cl_flag_handlers: Mapping[str, CLHandler]
 
-    #: Dictionary of parameters by field name
+    #: Positional arguments processor
+    positional_processor: PositionalsProcessor
+
+    #: Mapping of parameters by field name
     params_by_name: Mapping[str, Param[Any]]
 
+    #: Validators
     validators: Sequence[Callable[[_Config], Optional[Err]]]
-
-    @staticmethod
-    def process_fields(config_type: Type[_Config]) -> Sequence[Arg]:
-        """
-        Returns a sequence of the arguments present in a configuration, with updated data
-
-        Args:
-            config_type: Configuration to process
-
-        Returns:
-            Sequence of arguments
-        """
-        args: List[Arg] = []
-        docs: ClassDoc[_Config] = ClassDoc.make(config_type)
-        th = get_type_hints(config_type, include_extras=True)
-        for name, typ in th.items():
-            arg: Optional[Arg] = None
-            if get_origin(typ) is ClassVar:
-                a = getattr(config_type, name)
-                if isinstance(a, Arg):
-                    assert isinstance(a, Expander), "Only commands (Cmd) can be class attributes"
-                    arg = a
-            if get_origin(typ) is Annotated:
-                param = filter_types_single(Param, get_args(typ))
-                if param is not None:
-                    arg = param
-            if arg is not None:
-                help_lines = docs[name]
-                if help_lines is None:
-                    hlp = ""
-                else:
-                    hlp = "\n".join(help_lines)
-                arg = arg.updated(name, hlp, config_type.env_prefix_)
-                args.append(arg)
-        return args
-
-    @staticmethod
-    def make(
-        config_type: Type[_Config],
-    ) -> Processor[_Config]:
-        """
-        Creates the processor corresponding to a configuration
-        """
-
-        pf = ProcessorFactory.make(config_type)
-        for arg in Processor.process_fields(config_type):
-            arg.update_processor(pf)
-
-        # if these flags are no longer provided by default, update the overview concept notebook
-        # in the documentation
-        pf.cl_flag_handlers["-h"] = CLSpecialAction(SpecialAction.HELP)
-        pf.cl_flag_handlers["--help"] = CLSpecialAction(SpecialAction.HELP)
-
-        return Processor(
-            config_type=config_type,
-            argument_parser=pf.argument_parser,
-            env_handlers=pf.env_handlers,
-            ini_processor=IniProcessor(pf.ini_section_strict, pf.ini_handlers),
-            cl_handler=CLStdHandler(pf.cl_flag_handlers, CLPos(pf.cl_positionals)),
-            params_by_name=pf.params_by_name,
-            validators=pf.validators,
-        )
 
     def _process_config(self, cwd: Path, state: State) -> Optional[Err]:
         """
@@ -429,24 +500,6 @@ class Processor(Generic[_Config]):
             return err
         return self._finish_processing_state(state)
 
-    def process(
-        self,
-        cwd: Path,
-        args: Sequence[str],
-        env: Mapping[str, str],
-    ) -> Res[Union[_Config, SpecialAction]]:
-        """
-        Processes command-line arguments (deprecated)
-
-        See also: :meth:`.process_command_line`
-        """
-        warnings.warn(
-            "process has been deprecated, use process_command_line instead",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.process_command_line(cwd, args, env)
-
     def _finish_processing_state(self, state: State) -> Res[_Config]:
         """
         Finishes the processing of the state
@@ -467,6 +520,7 @@ class Processor(Generic[_Config]):
         errors: List[Err] = []
         collected: Dict[str, Any] = {}
         for name, param in self.params_by_name.items():
+            assert not isinstance(param.collector, Auto)
             instances = state.instances[name]
             res = param.collector.collect(instances)
             if isinstance(res, Err):
@@ -484,9 +538,7 @@ class Processor(Generic[_Config]):
             return c
 
     def _state_with_default_values(self) -> State:
-        """
-        Returns a new state instance with default values populated
-        """
+        """Returns a new state instance with default values populated"""
         return State.make(self.params_by_name.values())
 
     def process_command_line(
@@ -506,8 +558,12 @@ class Processor(Generic[_Config]):
         Returns:
             Either a parsed configuration, a special action to execute, or (a list of) errors
         """
+
         errors: List[Err] = []
+
         state = self._state_with_default_values()
+        positionals: List[str] = []
+
         # process environment variables
         for key, value in env.items():
             handler = self.env_handlers.get(key)
@@ -518,15 +574,26 @@ class Processor(Generic[_Config]):
             err = self._process_config(cwd, state)
             if err is not None:
                 errors.append(err.in_context(environment_variable=key))
+
         # process command line arguments
         rest_args: Sequence[str] = args
         while rest_args:
-            rest_args, err = self.cl_handler.handle(rest_args, state)
-            if err is not None:
-                errors.append(err)
+            arg = rest_args[0]
+            rest_args = rest_args[1:]
+            if arg in self.cl_flag_handlers:
+                rest_args, err = self.cl_flag_handlers[arg].handle(rest_args, state)
+                if err is not None:
+                    errors.append(err)
+            else:
+                positionals.append(arg)
             err = self._process_config(cwd, state)
             if err is not None:
                 errors.append(err)
+
+        # process positionals
+        err = self.positional_processor.handle(positionals, state)
+        if err is not None:
+            errors.append(err)
 
         if state.special_action is not None:
             return state.special_action

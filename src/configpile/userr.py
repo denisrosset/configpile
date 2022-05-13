@@ -561,18 +561,6 @@ def flat_map(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> R
         return f(r)
 
 
-def flatMap(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> Res[_ReturnType]:
-    """
-    Enables the chaining computations that can error (deprecated)
-
-    See also: :func:`.flat_map`
-    """
-    warnings.warn(
-        "flatMap has been deprecated, use flat_map instead", DeprecationWarning, stacklevel=2
-    )
-    return flat_map(f, r)
-
-
 def collect_seq(seq: Sequence[Res[_Value_co]]) -> Res[Sequence[_Value_co]]:
     """
     Collects a sequence of results

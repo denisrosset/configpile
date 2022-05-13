@@ -1,3 +1,6 @@
+"""
+Main configpile module
+"""
 __version__ = "10.0.1"
 
 from . import parsers
@@ -19,5 +22,4 @@ __all__ = [
     "Positional",
     "parsers",
     "ForceCase",
-    "fun",
 ]

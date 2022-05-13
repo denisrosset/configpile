@@ -19,7 +19,7 @@ class WithPositional(Config):
 
     strings: Annotated[
         Sequence[str],
-        Param.append1(
+        Param.append_one(
             parsers.stripped_str_parser,
             positional=Positional.ONE_OR_MORE,
             long_flag_name=None,

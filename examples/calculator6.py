@@ -22,7 +22,7 @@ class Calc(Config):
 
     values: Annotated[
         Sequence[float],
-        Param.append1(
+        Param.append_one(
             parsers.float_parser,
             positional=Positional.ZERO_OR_MORE,
             short_flag_name=None,

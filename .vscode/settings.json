@@ -2,14 +2,20 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.linting.pylintEnabled": true,
+    "python.linting.mypyEnabled": true,
     "python.analysis.indexing": true,
     "editor.formatOnSave": true,
+    "editor.rulers": [
+        99
+    ],
     "python.formatting.provider": "black",
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         }
     },
+    "autoDocstring.guessTypes": false,
+    "autoDocstring.docstringFormat": "google-notypes",
     "cSpell.words": [
         "argparse",
         "autodoc",
@@ -39,7 +45,7 @@
         "**/dist": true,
         "docs/source/_autosummary": true
     },
-    "esbonio.server.enabled": true,
+    "esbonio.server.enabled": false,
     "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build/html",
     "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source",
     "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/source",

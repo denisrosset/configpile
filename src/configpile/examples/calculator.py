@@ -24,9 +24,9 @@ class Calc(Config):
 
     values: Annotated[
         Sequence[float],
-        Param.append1(
+        Param.append_one(
             parsers.float_parser,
-            positional=Positional.ZERO_OR_MORE,
+            positional=Positional(0, None),
             short_flag_name=None,
             long_flag_name=None,
             help="Values to sum",

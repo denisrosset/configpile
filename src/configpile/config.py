@@ -24,7 +24,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, ClassVar, List, Mapping, Optional, Sequence, Type, TypeVar, Union
 
-from .processor import Processor, SpecialAction
+from .misc import SpecialAction
+from .processing.processor import Processor, ProcessorFactory
 from .userr import Err, Res
 
 _Config = TypeVar("_Config", bound="Config")
@@ -135,7 +136,7 @@ class Config(ABC):
         """
         Returns a processor for this configuration
         """
-        return Processor.make(cls)
+        return ProcessorFactory.make(cls).build()
 
     # endregion
 

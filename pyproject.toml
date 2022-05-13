@@ -42,7 +42,7 @@ rich = ["rich"]
 black = "^22.1.0"
 commitizen = "^2.21.2"
 doc8 = "^0.10.1"
-esbonio = "^0.10.2"
+esbonio = "^0.11.1"
 isort = "^5.10.1"
 mypy = "0.941"
 pylint = "^2.13.4"
@@ -53,9 +53,16 @@ tomli = "^2.0.1"
 
 [tool.pylint.BASIC]
 
+# Arguments to any function type, including lambdas.
 argument-rgx = "[a-z_][a-z0-9_]{0,30}$"
+
+# Attributes created on class instances inside methods.
 attr-rgx = "[a-z_][a-z0-9_]{0,30}$"
+
+# Attributes defined in class bodies.
 class-attribute-rgx = "[a-z_][a-z0-9_]{0,30}$"
+
+# Local variables in function scopes.
 variable-rgx = "[a-z_][a-z0-9_]{0,30}$"
 
 [tool.pylint.messages_control]

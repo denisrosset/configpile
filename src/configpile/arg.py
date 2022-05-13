@@ -43,6 +43,7 @@ from __future__ import annotations
 
 import dataclasses
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
@@ -59,9 +60,10 @@ from typing import (
 )
 
 from .collector import Collector
-from .enums import Derived, Positional
-from .handlers import CLConfigParam, CLInserter, CLParam, KVConfigParam, KVParam
+from .misc import Auto
 from .parsers import Parser, path_parser
+from .processing.cli_handlers import CLConfigParam, CLInserter, CLParam
+from .processing.kv_handlers import KVConfigParam, KVParam
 
 # documented in the module docstring
 
@@ -71,11 +73,63 @@ _Item_co = TypeVar("_Item_co", covariant=True)
 
 if TYPE_CHECKING:
     from .config import Config
-    from .processor import ProcessorFactory
+    from .processing.processor import ProcessorFactory
 
 
 _Arg = TypeVar("_Arg", bound="Arg")
 _Config = TypeVar("_Config", bound="Config")
+
+
+@dataclass(frozen=True)
+class Positional:
+    """Describes how many values a positional parameters collects"""
+
+    #: Minimal number of values, >= 0
+    min: int
+
+    #: Maximal number of values, :py:`None` means unlimited
+    max: Optional[int]
+
+    def __post_init__(self) -> None:
+        assert self.min >= 0
+        assert self.max is None or self.max >= self.min
+
+    def fixed_number(self) -> Optional[int]:
+        """Returns, when relevant, the fixed number of values that this parameter collects"""
+        if self.max is None or self.min != self.max:
+            return None
+        else:
+            return self.min
+
+
+class Derived(Enum):
+    """Describes automatic handling of an argument name"""
+
+    #: Derives the name/key using snake_case
+    SNAKE_CASE = 1
+
+    #: Derives the name/key using SNAKE_CASE (and sets uppercase, default for env. variables)
+    SNAKE_CASE_UPPER_CASE = 2
+
+    #: Derives the argument name using kebab-case (default for INI file keys and cmd line flags)
+    KEBAB_CASE = 3
+
+    def derive(self, name: str) -> str:
+        """
+        Returns a derived name from a field name
+
+        Args:
+            name: Field name in Python identifier format
+        """
+        assert str.isidentifier(name)
+        if self == Derived.SNAKE_CASE:
+            return name
+        elif self == Derived.SNAKE_CASE_UPPER_CASE:
+            return name.upper()
+        elif self == Derived.KEBAB_CASE:
+            return name.replace("_", "-")
+        else:
+            raise NotImplementedError
 
 
 @dataclass(frozen=True)
@@ -84,8 +138,8 @@ class Arg:
     Base class for all kinds of arguments
     """
 
-    #: Help for the argument
-    help: Optional[str]
+    #: Doc for the argument, if Auto, taken from a Sphinx autodoc comment
+    doc: Union[str, Auto, None]
 
     #: Short option name, used in command line parsing, prefixed by a single hyphen
     short_flag_name: Optional[str]
@@ -116,7 +170,7 @@ class Arg:
     def update_dict_(
         self,
         name: str,
-        help: Optional[str],  # pylint: disable=redefined-builtin
+        doc: Optional[str],
         env_prefix: Optional[str],
     ) -> Mapping[str, Any]:
         """
@@ -124,15 +178,15 @@ class Arg:
 
         Args:
             name: Argument field name
-            help: Argument docstring which describes the argument role
+            doc: Argument docstring which describes the argument role
             env_prefix: Uppercase prefix for all environment variables
 
         Returns:
 
         """
         res: Dict[str, Any] = {}
-        if self.help is None:
-            res = {"help": help}
+        if isinstance(self.doc, Auto):
+            res = {"doc": doc}
         if isinstance(self.long_flag_name, Derived):
             res["long_flag_name"] = "--" + self.long_flag_name.derive(name)
         return res
@@ -140,7 +194,7 @@ class Arg:
     def updated(
         self: _Arg,
         name: str,
-        help: str,  # pylint: disable=redefined-builtin
+        doc: str,
         env_prefix: Optional[str],
     ) -> _Arg:
         """
@@ -149,13 +203,13 @@ class Arg:
         Args:
             self:
             name: Identifier name
-            help: Help string (derived from autodoc syntax)
+            doc: Documentation string (derived from autodoc syntax)
             env_prefix: Environment prefix
 
         Returns:
             Updated argument
         """
-        return dataclasses.replace(self, **self.update_dict_(name, help, env_prefix))
+        return dataclasses.replace(self, **self.update_dict_(name, doc, env_prefix))
 
     def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
         """
@@ -202,7 +256,7 @@ class Expander(Arg):
         new_flag: str,
         new_value: str,
         *,
-        help: Optional[str] = None,  # pylint: disable=redefined-builtin
+        doc: Optional[str] = None,
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
     ) -> Expander:
@@ -216,12 +270,12 @@ class Expander(Arg):
             new_value: String value to insert following the flag
 
         Keyword Args:
-            help: Help description (autodoc/docstring is used otherwise)
+            doc: Usage description (autodoc/docstring is used otherwise)
             short_flag_name: Short flag name of this command flag
             long_flag_name: Long flag name of this command flag
         """
         res = Expander(
-            help=help,
+            doc=doc,
             new_flag=new_flag,
             new_value=new_value,
             short_flag_name=short_flag_name,
@@ -230,7 +284,7 @@ class Expander(Arg):
         return res
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
-        return {"help": self.help}
+        return {"help": self.doc}
 
 
 @dataclass(frozen=True)
@@ -254,18 +308,20 @@ class Param(Arg, Generic[_Value_co]):
     - :meth:`~.Param.config` returns a parameter that parses configuration files.
     """
 
-    #: Argument type, parser from string to value
-    parser: Parser[_Value_co]  # type: ignore
+    #: Python field identifier for this parameter in :class:`~configpile.config.Config`
+    name: Union[str, Auto]  #: Python identifier representing the argument
 
-    is_config: bool  #: Whether this represent a list of config files
+    #: Argument type, parser from string to value
+    parser: Union[Parser[_Value_co], Auto]
+
+    #: Whether this represent a list of config files
+    is_config: bool
 
     #: Argument collector
-    collector: Collector[_Value_co]  # type: ignore
+    collector: Union[Collector[_Value_co], Auto]
 
-    default_value: Optional[str]  #: Default value inserted as instance
-
-    #: Python field identifier for this parameter in :class:`~configpile.config.Config`
-    name: Optional[str]  #: Python identifier representing the argument
+    #: Default value inserted as instance
+    default_value: Optional[str]
 
     #: Whether this parameter can appear as a positional parameter and how
     #:
@@ -288,10 +344,10 @@ class Param(Arg, Generic[_Value_co]):
     def update_dict_(
         self,
         name: str,
-        help: Optional[str],  # pylint: disable=redefined-builtin
+        doc: Optional[str],
         env_prefix: Optional[str],
     ) -> Mapping[str, Any]:
-        r = {"name": name, **super().update_dict_(name, help, env_prefix)}
+        r = {"name": name, **super().update_dict_(name, doc, env_prefix)}
         if isinstance(self.config_key_name, Derived):
             r["config_key_name"] = self.config_key_name.derive(name)
         if isinstance(self.env_var_name, Derived) and env_prefix is not None:
@@ -326,10 +382,14 @@ class Param(Arg, Generic[_Value_co]):
         """
         Returns whether the argument is required
         """
+        assert not isinstance(self.collector, Auto)
         return self.default_value is None and self.collector.arg_required()
 
     def argparse_argument_kwargs(self) -> Mapping[str, Any]:
-        res: Dict[str, Any] = {"help": self.help}
+        assert not isinstance(self.collector, Auto)
+        assert not isinstance(self.parser, Auto)
+
+        res: Dict[str, Any] = {"help": self.doc}
         choices = self.parser.choices()
         if choices is not None:
             res = {**res, "choices": choices, "type": str}
@@ -339,8 +399,7 @@ class Param(Arg, Generic[_Value_co]):
         }
 
     def update_processor(self, pf: ProcessorFactory[_Config]) -> None:
-
-        assert self.name is not None
+        assert not isinstance(self.name, Auto)
         pf.params_by_name[self.name] = self
         if self.positional is not None:
             pf.cl_positionals.append(self)
@@ -368,7 +427,7 @@ class Param(Arg, Generic[_Value_co]):
     def store(
         parser: Parser[_Value_co],
         *,
-        help: Optional[str] = None,  # pylint: disable=redefined-builtin
+        doc: Union[str, Auto] = Auto(),
         default_value: Optional[str] = None,
         positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
@@ -376,8 +435,7 @@ class Param(Arg, Generic[_Value_co]):
         config_key_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         env_var_name: Union[str, Derived, None] = None,
     ) -> Param[_Value_co]:
-        """
-        Creates a parameter that stores the last provided value
+        """Creates a parameter that stores the last provided value
 
         If a default value is provided, the argument can be omitted. However,
         if the default_value ``None`` is given (default), then
@@ -387,7 +445,7 @@ class Param(Arg, Generic[_Value_co]):
             parser: Parser that transforms a string into a value
 
         Keyword Args:
-            help: Help description (autodoc/docstring is used otherwise)
+            doc: Help description (autodoc/docstring is used otherwise)
             default_value: Default value
             positional: Whether this parameter is present in positional arguments
             short_flag_name: Short option name (optional)
@@ -400,8 +458,8 @@ class Param(Arg, Generic[_Value_co]):
         """
 
         return Param(
-            name=None,
-            help=help,
+            name=Auto(),
+            doc=doc,
             parser=parser,
             collector=Collector.keep_last(),
             default_value=default_value,
@@ -416,7 +474,7 @@ class Param(Arg, Generic[_Value_co]):
     @staticmethod
     def config(
         *,
-        help: Optional[str] = None,  # pylint: disable=redefined-builtin
+        doc: Union[str, Auto] = Auto(),
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
         env_var_name: Union[str, Derived, None] = None,
@@ -425,7 +483,7 @@ class Param(Arg, Generic[_Value_co]):
         Creates a parameter that parses configuration files and stores their names
 
         Keyword Args:
-            help: Help description (autodoc/docstring is used otherwise)
+            doc: Help description (autodoc/docstring is used otherwise)
             short_flag_name: Short option name (optional)
             long_flag_name: Long option name (auto. derived from fieldname by default)
             env_var_name: Environment variable name (forbidden by default)
@@ -434,8 +492,8 @@ class Param(Arg, Generic[_Value_co]):
             A configuration files parameter
         """
         return Param(
-            name=None,
-            help=help,
+            name=Auto(),
+            doc=doc,
             parser=path_parser.separated_by(",", strip=True, remove_empty=True),
             collector=Collector.append(),  # type: ignore
             positional=None,
@@ -448,10 +506,10 @@ class Param(Arg, Generic[_Value_co]):
         )
 
     @staticmethod
-    def append1(
+    def append_one(
         parser: Parser[_Item_co],
         *,
-        help: Optional[str] = None,  # pylint: disable=redefined-builtin
+        doc: Union[str, Auto] = Auto(),
         positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
@@ -468,7 +526,7 @@ class Param(Arg, Generic[_Value_co]):
             parser: Parser that transforms a string into a single value item
 
         Keyword Args:
-            help: Help description (autodoc/docstring is used otherwise)
+            doc: Help description (autodoc/docstring is used otherwise)
             positional: Whether this argument is present in positional arguments
             short_flag_name: Short option name (optional)
             long_flag_name: Long option name (auto. derived from fieldname by default)
@@ -476,8 +534,8 @@ class Param(Arg, Generic[_Value_co]):
             env_var_name: Environment variable name (forbidden by default)
         """
         return Param(
-            name=None,
-            help=help,
+            name=Auto(),
+            doc=doc,
             parser=parser.as_sequence_of_one(),
             collector=Collector.append(),  # type: ignore
             default_value=None,
@@ -490,10 +548,10 @@ class Param(Arg, Generic[_Value_co]):
         )
 
     @staticmethod
-    def append(
+    def append_many(
         parser: Parser[Sequence[_Item_co]],
         *,
-        help: Optional[str] = None,  # pylint: disable=redefined-builtin
+        doc: Union[str, Auto] = Auto(),
         positional: Optional[Positional] = None,
         short_flag_name: Optional[str] = None,
         long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
@@ -507,7 +565,7 @@ class Param(Arg, Generic[_Value_co]):
             parser: Parser that transforms a string into a sequence of values
 
         Keyword Args:
-            help: Help description (autodoc/docstring is used otherwise)
+            doc: Help description (autodoc/docstring is used otherwise)
             positional: Whether this argument is present in positional arguments
             short_flag_name: Short option name (optional)
             long_flag_name: Long option name (auto. derived from fieldname by default)
@@ -515,8 +573,8 @@ class Param(Arg, Generic[_Value_co]):
             env_var_name: Environment variable name (forbidden by default)
         """
         return Param(
-            name=None,
-            help=help,
+            name=Auto(),
+            doc=doc,
             parser=parser,
             collector=Collector.append(),  # type: ignore
             default_value=None,
