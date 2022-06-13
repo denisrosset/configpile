@@ -21,7 +21,7 @@ from typing import Any, Callable, Dict, Generic, List, Mapping, NoReturn, Option
 from typing import OrderedDict as OrderedDictT
 from typing import Sequence, Tuple, Type, TypeVar
 
-from class_doc import extract_docs_from_cls_obj
+from class_doc import extract_docs_from_cls_obj  # type: ignore
 
 _Key = TypeVar("_Key")
 _Value = TypeVar("_Value")
@@ -106,7 +106,7 @@ def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[_Key], _Value]]) -> D
 
 
 def filter_ordered_dict_by_value_type(
-    w: Type[_Type], od: OrderedDictT[_Key, _Value]
+    w: Type[_Type], od: OrderedDictT[_Key, _Value]  # pyright: reportInvalidTypeVarUse=false
 ) -> OrderedDictT[_Key, _Type]:
     """
     Filters values of an ordered dictionary that correspond to a given type
@@ -150,7 +150,7 @@ def filter_sequence_by_value_type(
         The filtered sequence
     """
     if predicate is None:
-        predicate = lambda w: True
+        predicate = lambda w: True  # pylint: disable=C3001
     return [v for v in seq if isinstance(v, w) if predicate(v)]
 
 

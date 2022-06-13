@@ -34,7 +34,6 @@ from typing import (
     ClassVar,
     Dict,
     Generic,
-    Iterable,
     List,
     Mapping,
     Optional,
@@ -49,6 +48,7 @@ from typing_extensions import Annotated, get_args, get_origin, get_type_hints
 from .arg import Arg, Expander, Param
 from .enums import SpecialAction
 from .handlers import CLHandler, CLPos, CLSpecialAction, CLStdHandler, KVHandler
+from .state import State
 from .userr import Err, Res
 from .util import ClassDoc, filter_types_single
 
@@ -56,57 +56,6 @@ if TYPE_CHECKING:
     from .config import Config
 
 _Config = TypeVar("_Config", bound="Config")
-
-
-@dataclass
-class State:
-    """
-    Describes the (mutable) state of a configuration being parsed
-    """
-
-    instances: Dict[str, List[Any]]  #: Contains the sequence of values for each parameter
-    config_files_to_process: List[Path]  #: Contains a list of configuration files to process
-    special_action: Optional[SpecialAction]  #: Contains a special action if flag was encountered
-
-    def append(self, key: str, value: Any) -> None:
-        """
-        Appends a value to a parameter
-
-        No type checking is performed, be careful.
-
-        Args:
-            key: Parameter name
-            value: Value to append
-        """
-        assert key in self.instances, f"{key} is not a Param name"
-        self.instances[key] = [*self.instances[key], value]
-
-    @staticmethod
-    def make(params: Iterable[Param[Any]]) -> State:
-        """
-        Creates the initial state, populated with the default values when present
-
-        Args:
-            params: Sequence of parameters
-
-        Raises:
-            ValueError: If a default value cannot be parsed correctly
-
-        Returns:
-            The initial mutable state
-        """
-        instances: Dict[str, List[Any]] = {}
-
-        for p in params:
-            assert p.name is not None, "Arguments have names after initialization"
-            if p.default_value is not None:
-                res = p.parser.parse(p.default_value)
-                if isinstance(res, Err):
-                    raise ValueError(f"Invalid default {p.default_value} for parameter {p.name}")
-                instances[p.name] = [res]
-            else:
-                instances[p.name] = []
-        return State(instances, config_files_to_process=[], special_action=None)
 
 
 @dataclass(frozen=True)

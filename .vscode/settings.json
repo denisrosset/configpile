@@ -3,13 +3,20 @@
     "python.testing.pytestEnabled": true,
     "python.linting.pylintEnabled": true,
     "python.analysis.indexing": true,
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.analysis.typeCheckingMode": "strict",
     "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
     "[python]": {
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
-        }
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter",
     },
+    "editor.rulers": [
+        99
+    ],
+    "autoDocstring.guessTypes": false,
+    "autoDocstring.docstringFormat": "google-notypes",
     "cSpell.words": [
         "argparse",
         "autodoc",
@@ -43,6 +50,7 @@
     "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build/html",
     "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source",
     "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/source",
+    //    "esbonio.server.pythonPath": "${workspaceFolder}/.venv/bin/python",
     "restructuredtext.linter.doc8.extraArgs": [
         "--config",
         "${workspaceFolder}/doc8.ini"

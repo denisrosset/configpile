@@ -53,7 +53,6 @@ from __future__ import annotations
 
 import shutil
 import textwrap
-import warnings
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import (
@@ -101,7 +100,7 @@ class Err(ABC):
         Adds to this error information about the context in which it occurred
 
         Args:
-            contexts: Contexts (given as key/value pairs) to append to the context list
+            contexts: Contexts (given as key/value pairs) to prepend to the context list
 
         Returns:
             Updated error
@@ -307,7 +306,7 @@ class _GroupedErrors:
         for i, e in enumerate(errors):
             if index < len(e.contexts):
                 ctx = e.contexts[index]
-                if isinstance(ctx, Hashable):
+                if isinstance(ctx[1], Hashable):
                     if ctx not in grouped_pairs:
                         grouped_pairs[ctx] = [(i, e)]
                     else:
@@ -319,12 +318,12 @@ class _GroupedErrors:
             if len(v) == 1:
                 ungrouped_pairs.append((v[0]))
             else:
-                groups[k] = _GroupedErrors.make([e for i, e in v], index + 1)
+                groups[k] = _GroupedErrors.make([e for _, e in v], index + 1)
 
         def get_index(pair: Tuple[int, Err1]) -> int:
             return pair[0]
 
-        ungrouped: List[Err1] = [e for i, e in sorted(ungrouped_pairs, key=get_index)]
+        ungrouped: List[Err1] = [e for _, e in sorted(ungrouped_pairs, key=get_index)]
 
         return _GroupedErrors(groups, ungrouped)
 
@@ -397,7 +396,7 @@ def wrap(
     ) -> Callable[_Parameters, Res[_ReturnType]]:
         def wrapper(*args, **kwargs) -> Res[_ReturnType]:  # type: ignore
             try:
-                res: Res[_ReturnType] = func(*args, **kwargs)
+                res: Res[_ReturnType] = func(*args, **kwargs)  # type: ignore
             except Exception as e:  # pylint: disable=broad-except
                 if (not keep) or any([isinstance(e, t) for t in keep]):
                     res = Err.make(f"{type(e).__name__} thrown: {e}")
@@ -405,7 +404,7 @@ def wrap(
                     raise
             return res
 
-        return wrapper
+        return wrapper  # type: ignore
 
     return decorator
 
@@ -424,7 +423,7 @@ def in_context(
     result: Union[_Value_co, Err, None], **contexts: Any
 ) -> Union[_Value_co, Err, None]:
     """
-    Adds context to an error contained in a result type (when applicable)
+    Prepends context to an error contained in a result type (when applicable)
 
     This function has different signatures depending on the argument types.
 
@@ -465,7 +464,7 @@ def collect(
     pass
 
 
-def collect(*args):  # type: ignore[no-untyped-def]
+def collect(*args):  # type: ignore
     """
     Collects single results of various types into a tuple result
 
@@ -474,7 +473,7 @@ def collect(*args):  # type: ignore[no-untyped-def]
     """
     ok: List[Any] = []
     errs: List[Err1] = []
-    for arg in args:
+    for arg in args:  # type: ignore
         if isinstance(arg, Err):
             errs.extend(arg.errors())
         else:
@@ -559,18 +558,6 @@ def flat_map(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> R
         return r
     else:
         return f(r)
-
-
-def flatMap(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> Res[_ReturnType]:
-    """
-    Enables the chaining computations that can error (deprecated)
-
-    See also: :func:`.flat_map`
-    """
-    warnings.warn(
-        "flatMap has been deprecated, use flat_map instead", DeprecationWarning, stacklevel=2
-    )
-    return flat_map(f, r)
 
 
 def collect_seq(seq: Sequence[Res[_Value_co]]) -> Res[Sequence[_Value_co]]:

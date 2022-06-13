@@ -22,7 +22,7 @@ from .enums import SpecialAction
 from .userr import Err, in_context
 
 if TYPE_CHECKING:
-    from .arg import Expander, Param
+    from .arg import Param
     from .processor import State
 
 _Value = TypeVar("_Value")
@@ -34,7 +34,7 @@ class CLHandler(ABC):
     """
 
     @abstractmethod
-    def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
+    def handle(self, args: Sequence[str], state: State) -> Sequence[str]:
         """
         Processes arguments, possibly updating the state or returning errors
 
@@ -43,7 +43,7 @@ class CLHandler(ABC):
             state: (Mutable) state to possibly update
 
         Returns:
-            The updated command-line and an optional error
+            The updated command-line
         """
 
 
@@ -55,7 +55,7 @@ class CLSpecialAction(CLHandler):
 
     special_action: SpecialAction  #: Special action to set
 
-    def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
+    def handle(self, args: Sequence[str], state: State) -> Sequence[str]:
         if state.special_action is not None:
             before = state.special_action.name
             now = self.special_action.name
@@ -74,7 +74,7 @@ class CLInserter(CLHandler):
     #: Arguments inserted in the command-line
     inserted_args: Sequence[str]
 
-    def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
+    def handle(self, args: Sequence[str], state: State) -> Sequence[str]:
         return ([*self.inserted_args, *args], None)
 
 
@@ -105,8 +105,10 @@ class CLParam(CLHandler, Generic[_Value]):
         """
         return None
 
-    def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
+    def handle(self, args: Sequence[str], state: State) -> Sequence[str]:
         if args:
+            value = args[0]
+
             res = self.param.parser.parse(args[0])
             if isinstance(res, Err):
                 return (args[1:], res.in_context(param=self.param.name))
@@ -164,7 +166,7 @@ class CLPos(CLHandler):
         l = list(seq)  # makes a mutable copy
         return CLPos(l)
 
-    def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
+    def handle(self, args: Sequence[str], state: State) -> Sequence[str]:
         if not args:
             return (args, None)  # should not happen ,but let's not crash
         if not self.pos:
@@ -194,7 +196,7 @@ class CLStdHandler(CLHandler):
     flags: Mapping[str, CLHandler]
     fallback: CLHandler
 
-    def handle(self, args: Sequence[str], state: State) -> Tuple[Sequence[str], Optional[Err]]:
+    def handle(self, args: Sequence[str], state: State) -> Sequence[str]:
         if not args:
             return (args, None)
         flag = args[0]
@@ -215,16 +217,13 @@ class KVHandler(ABC):
     """
 
     @abstractmethod
-    def handle(self, value: str, state: State) -> Optional[Err]:
+    def handle(self, value: str, state: State) -> None:
         """
         Processes
 
         Args:
             value: Value to parse and process
             state: State to update
-
-        Returns:
-            An error if an error occurred
         """
 
 
@@ -252,7 +251,7 @@ class KVParam(KVHandler, Generic[_Value]):
         """
         return None
 
-    def handle(self, value: str, state: State) -> Optional[Err]:
+    def handle(self, value: str, state: State) -> None:
         res = self.param.parser.parse(value)
         if isinstance(res, Err):
             return res
