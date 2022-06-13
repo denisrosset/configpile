@@ -1,3 +1,9 @@
+## v10.0.3 (2022-06-13)
+
+### Fix
+
+- **config**: prefix ClassVar by typing.ClassVar and so on
+
 ## v10.0.2 (2022-05-13)
 
 ### Fix
