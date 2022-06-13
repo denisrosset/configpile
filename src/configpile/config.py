@@ -19,15 +19,15 @@ import argparse
 import inspect
 import os
 import sys
+import typing
 from abc import ABC
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, ClassVar, List, Mapping, Optional, Sequence, Type, TypeVar, Union
 
 from .processor import Processor, SpecialAction
 from .userr import Err, Res
 
-_Config = TypeVar("_Config", bound="Config")
+_Config = typing.TypeVar("_Config", bound="Config")
 
 
 @dataclass(frozen=True)
@@ -60,13 +60,13 @@ class Config(ABC):
     # region Config: INI section processing
 
     #: Names of sections to parse in configuration files, with unknown keys ignored
-    ini_relaxed_sections_: ClassVar[Sequence[str]] = ["Common", "COMMON", "common"]
+    ini_relaxed_sections_: typing.ClassVar[typing.Sequence[str]] = ["Common", "COMMON", "common"]
 
     #: Names of additional sections to parse in configuration files, unknown keys error
-    ini_strict_sections_: ClassVar[Sequence[str]] = []
+    ini_strict_sections_: typing.ClassVar[typing.Sequence[str]] = []
 
     @classmethod
-    def ini_sections_(cls) -> Sequence[IniSection]:
+    def ini_sections_(cls) -> typing.Sequence[IniSection]:
         """
         Returns a sequence of INI file sections to parse
 
@@ -83,15 +83,15 @@ class Config(ABC):
 
     # region Config: general information about the program being configured
 
-    prog_: ClassVar[Optional[str]] = None  #: Program name
+    prog_: typing.ClassVar[typing.Optional[str]] = None  #: Program name
 
     #: Text to display before the argument help
     #:
     #: If not present, taken from the Config subclass docstring.
-    description_: ClassVar[Optional[str]] = None
+    description_: typing.ClassVar[typing.Optional[str]] = None
 
     @classmethod
-    def version_(cls) -> Optional[str]:
+    def version_(cls) -> typing.Optional[str]:
         """
         Returns the version number of this script
 
@@ -107,14 +107,14 @@ class Config(ABC):
     # region Config: environment variable processing
 
     #: Prefix for automatically derived environment variable names
-    env_prefix_: ClassVar[str] = ""
+    env_prefix_: typing.ClassVar[str] = ""
 
     # endregion
 
     # region Config: information constructed by configpile
 
     @classmethod
-    def validators_(cls: Type[_Config]) -> Sequence[Callable[[_Config], Optional[Err]]]:
+    def validators_(cls: typing.Type[_Config]) -> typing.Sequence[typing.Callable[[_Config], typing.Optional[Err]]]:
         """
         Returns all validators present in the given subclass of this class
 
@@ -124,14 +124,14 @@ class Config(ABC):
         Returns:
             A sequence of all validators
         """
-        res: List[Callable[[_Config], Optional[Err]]] = []
+        res: typing.List[typing.Callable[[_Config], typing.Optional[Err]]] = []
         for name, _ in inspect.getmembers(cls, inspect.isroutine):
             if name.startswith("validate_"):
                 res.append(getattr(cls, name))
         return res
 
     @classmethod
-    def processor_(cls: Type[_Config]) -> Processor[_Config]:
+    def processor_(cls: typing.Type[_Config]) -> Processor[_Config]:
         """
         Returns a processor for this configuration
         """
@@ -142,7 +142,7 @@ class Config(ABC):
     # region Config: configuration construction
 
     @classmethod
-    def parse_ini_contents_(cls: Type[_Config], ini_contents: str) -> Res[_Config]:
+    def parse_ini_contents_(cls: typing.Type[_Config], ini_contents: str) -> Res[_Config]:
         """
         Parses the contents of an INI file into a configuration
 
@@ -158,7 +158,7 @@ class Config(ABC):
         return processor.process_ini_contents(ini_contents)
 
     @classmethod
-    def parse_ini_file_(cls: Type[_Config], ini_file_path: Path) -> Res[_Config]:
+    def parse_ini_file_(cls: typing.Type[_Config], ini_file_path: Path) -> Res[_Config]:
         """
         Parses an INI file into a configuration
 
@@ -175,11 +175,11 @@ class Config(ABC):
 
     @classmethod
     def parse_command_line_(
-        cls: Type[_Config],
-        cwd: Optional[Path] = None,
-        args: Optional[Sequence[str]] = None,
-        env: Optional[Mapping[str, str]] = None,
-    ) -> Res[Union[_Config, SpecialAction]]:
+        cls: typing.Type[_Config],
+        cwd: typing.Optional[Path] = None,
+        args: typing.Optional[typing.Sequence[str]] = None,
+        env: typing.Optional[typing.Mapping[str, str]] = None,
+    ) -> Res[typing.Union[_Config, SpecialAction]]:
         """
         Parses multiple information sources, returns a configuration, a command or an error
 
@@ -205,10 +205,10 @@ class Config(ABC):
 
     @classmethod
     def from_command_line_(
-        cls: Type[_Config],
-        cwd: Optional[Path] = None,
-        args: Optional[Sequence[str]] = None,
-        env: Optional[Mapping[str, str]] = None,
+        cls: typing.Type[_Config],
+        cwd: typing.Optional[Path] = None,
+        args: typing.Optional[typing.Sequence[str]] = None,
+        env: typing.Optional[typing.Mapping[str, str]] = None,
     ) -> _Config:
         """
         Parses multiple information sources into a configuration and display help on error
@@ -260,7 +260,7 @@ class Config(ABC):
     # region Config: argparse fallback for documentation purposes
 
     @classmethod
-    def get_argument_parser_(cls: Type[_Config]) -> argparse.ArgumentParser:
+    def get_argument_parser_(cls: typing.Type[_Config]) -> argparse.ArgumentParser:
         """
         Returns an :class:`argparse.ArgumentParser` for documentation purposes
 
