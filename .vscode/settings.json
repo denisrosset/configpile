@@ -3,12 +3,15 @@
     "python.testing.pytestEnabled": true,
     "python.linting.pylintEnabled": true,
     "python.analysis.indexing": true,
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
     "[python]": {
+        "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
-        }
+        },
+        "editor.rulers": [
+            99
+        ],
+        "editor.defaultFormatter": "ms-python.black-formatter",
     },
     "cSpell.words": [
         "argparse",
