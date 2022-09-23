@@ -36,26 +36,28 @@ def test_cmd() -> None:
 
 
 @dataclass(frozen=True)
-class A(Config):
+class ConfigA(Config):
     config: Annotated[Sequence[Path], Param.config()]
     a: Annotated[int, Param.store(parsers.int_parser, default_value="2")]
 
 
 @dataclass(frozen=True)
-class B(A):
+class ConfigB(ConfigA):
     ini_strict_sections_ = ["section"]
     b: Annotated[int, Param.store(parsers.int_parser, short_flag_name="-b")]
 
 
 def test_default_values() -> None:
-    res = B.parse_command_line_(args=["-b", "3"], env={})
-    assert isinstance(res, B)
+    res = ConfigB.parse_command_line_(args=["-b", "3"], env={})
+    assert isinstance(res, ConfigB)
     assert res.a == 2
 
 
 def test_config_files() -> None:
     directory = Path.cwd() / "tests"  # configpile root directory
-    res = B.parse_command_line_(cwd=directory, args=["--config", "example_config.ini"], env={})
-    assert isinstance(res, B)
+    res = ConfigB.parse_command_line_(
+        cwd=directory, args=["--config", "example_config.ini"], env={}
+    )
+    assert isinstance(res, ConfigB)
     assert res.a == 4
     assert res.b == 5

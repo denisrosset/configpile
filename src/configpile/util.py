@@ -106,7 +106,7 @@ def dict_from_multiple_keys(pairs: Sequence[Tuple[Sequence[_Key], _Value]]) -> D
 
 
 def filter_ordered_dict_by_value_type(
-    w: Type[_Type], od: OrderedDictT[_Key, _Value]
+    w: Type[_Type], od: OrderedDictT[_Key, Any]
 ) -> OrderedDictT[_Key, _Type]:
     """
     Filters values of an ordered dictionary that correspond to a given type
@@ -136,7 +136,7 @@ def filter_ordered_dict(
 
 
 def filter_sequence_by_value_type(
-    w: Type[_Type], seq: Sequence[_Value], predicate: Optional[Callable[[_Type], bool]]
+    w: Type[_Type], seq: Sequence[Any], predicate: Optional[Callable[[_Type], bool]]
 ) -> Sequence[_Type]:
     """
     Filter values using their type and an optional predicate
@@ -150,7 +150,8 @@ def filter_sequence_by_value_type(
         The filtered sequence
     """
     if predicate is None:
-        predicate = lambda w: True
+        predicate = lambda w: True  # pylint: disable=unnecessary-lambda-assignment
+
     return [v for v in seq if isinstance(v, w) if predicate(v)]
 
 

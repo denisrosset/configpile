@@ -53,7 +53,6 @@ from __future__ import annotations
 
 import shutil
 import textwrap
-import warnings
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import (
@@ -319,12 +318,12 @@ class _GroupedErrors:
             if len(v) == 1:
                 ungrouped_pairs.append((v[0]))
             else:
-                groups[k] = _GroupedErrors.make([e for i, e in v], index + 1)
+                groups[k] = _GroupedErrors.make([e for _, e in v], index + 1)
 
         def get_index(pair: Tuple[int, Err1]) -> int:
             return pair[0]
 
-        ungrouped: List[Err1] = [e for i, e in sorted(ungrouped_pairs, key=get_index)]
+        ungrouped: List[Err1] = [e for _, e in sorted(ungrouped_pairs, key=get_index)]
 
         return _GroupedErrors(groups, ungrouped)
 
