@@ -19,5 +19,4 @@ __all__ = [
     "Positional",
     "parsers",
     "ForceCase",
-    "fun",
 ]
