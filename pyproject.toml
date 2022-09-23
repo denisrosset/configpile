@@ -9,7 +9,7 @@ license = "MIT"
 name = "configpile"
 readme = "README.rst"
 repository = "https://github.com/denisrosset/configpile.git"
-version = "10.0.3"
+version = "10.1.0"
 
 [tool.poetry.dependencies]
 class-doc = "^0.2.6"
@@ -105,10 +105,10 @@ module = 'class_doc'
 addopts = [
   "--tb=short",
   "--doctest-modules",
-  "--cov=configpile",
-  "--cov=tests",
-  "--cov-report=term",
-  "--cov-report=xml",
+#  "--cov=configpile",
+#  "--cov=tests",
+#  "--cov-report=term",
+#  "--cov-report=xml",
 ]
 
 doctest_optionflags = ['NORMALIZE_WHITESPACE', 'IGNORE_EXCEPTION_DETAIL', 'ELLIPSIS']
@@ -147,7 +147,7 @@ style = [
 ]
 tag_format = "v$major.$minor.$patch$prerelease"
 update_changelog_on_bump = true
-version = "10.0.3"
+version = "10.1.0"
 version_files = [
   "src/configpile/__init__.py:version",
   "pyproject.toml:version",

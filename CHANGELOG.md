@@ -1,3 +1,13 @@
+## v10.1.0 (2022-09-23)
+
+### Feat
+
+- Added support for root path
+
+### Fix
+
+- Removed nonexistent reexport "configpile.fun"
+
 ## v10.0.3 (2022-06-13)
 
 ### Fix

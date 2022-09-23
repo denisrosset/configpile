@@ -1,4 +1,4 @@
-__version__ = "10.0.3"
+__version__ = "10.1.0"
 
 from . import parsers
 from .arg import Derived, Expander, Param, Positional
