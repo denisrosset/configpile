@@ -123,6 +123,19 @@ class CLParam(CLHandler, Generic[_Value]):
 
 
 @dataclass(frozen=True)
+class CLRootParam(CLParam[Path]):
+    """
+    A root path parameter handler
+
+    Changes the root path used to resolve configuration file relative paths
+    """
+
+    def action(self, value: Path, state: State) -> Optional[Err]:
+        state.root_path = value
+        return None
+
+
+@dataclass(frozen=True)
 class CLConfigParam(CLParam[Sequence[Path]]):
     """
     A configuration file parameter handler
@@ -271,4 +284,17 @@ class KVConfigParam(KVParam[Sequence[Path]]):
 
     def action(self, value: Sequence[Path], state: State) -> Optional[Err]:
         state.config_files_to_process.extend(value)
+        return None
+
+
+@dataclass(frozen=True)
+class KVRootParam(KVParam[Path]):
+    """
+    A root path parameter handler
+
+    Changes the root path used to resolve configuration file relative paths
+    """
+
+    def action(self, value: Path, state: State) -> Optional[Err]:
+        state.root_path = value
         return None

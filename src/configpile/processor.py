@@ -64,6 +64,7 @@ class State:
     Describes the (mutable) state of a configuration being parsed
     """
 
+    root_path: Optional[Path]  #: Base path to use to resolve relative config file paths
     instances: Dict[str, List[Any]]  #: Contains the sequence of values for each parameter
     config_files_to_process: List[Path]  #: Contains a list of configuration files to process
     special_action: Optional[SpecialAction]  #: Contains a special action if flag was encountered
@@ -82,7 +83,7 @@ class State:
         self.instances[key] = [*self.instances[key], value]
 
     @staticmethod
-    def make(params: Iterable[Param[Any]]) -> State:
+    def make(root_path: Optional[Path], params: Iterable[Param[Any]]) -> State:
         """
         Creates the initial state, populated with the default values when present
 
@@ -106,7 +107,7 @@ class State:
                 instances[p.name] = [res]
             else:
                 instances[p.name] = []
-        return State(instances, config_files_to_process=[], special_action=None)
+        return State(root_path, instances, config_files_to_process=[], special_action=None)
 
 
 @dataclass(frozen=True)
@@ -192,7 +193,8 @@ class IniProcessor:
         if not ini_file_path.is_file():
             return Err.make(f"Path {ini_file_path} is not a file")
         parser = ConfigParser()
-        parser.optionxform = str  # disable conversion to lower-case
+        # disable conversion to lower-case
+        parser.optionxform = str  # type: ignore
         try:
             with open(ini_file_path, "r", encoding="utf-8") as file:
                 parser.read_file(file)
@@ -378,12 +380,11 @@ class Processor(Generic[_Config]):
             validators=pf.validators,
         )
 
-    def _process_config(self, cwd: Path, state: State) -> Optional[Err]:
+    def _process_config(self, state: State) -> Optional[Err]:
         """
         Processes configuration files if such processing was requested by a handler
 
         Args:
-            cwd: Working directory, base path for relative paths of config files
             state: Mutable state to update
 
         Returns:
@@ -393,7 +394,19 @@ class Processor(Generic[_Config]):
         state.config_files_to_process = []
         errors: List[Err] = []
         for p in paths:
-            err = self.ini_processor.process(cwd / p, state)
+            err: Optional[Err] = None
+            config_path: Optional[Path] = None
+            if p.is_absolute():
+                config_path = p
+            else:
+                if state.root_path is None:
+                    err = Err.make(
+                        "Relative configuration file path given with no root path known"
+                    )
+                else:
+                    config_path = state.root_path / p
+            if config_path is not None:
+                err = self.ini_processor.process(config_path, state)
             if err is not None:
                 errors.append(err.in_context(ini_file=p))
         return Err.collect(*errors)
@@ -408,7 +421,7 @@ class Processor(Generic[_Config]):
         Returns:
             The parsed configuration or an error
         """
-        state = self._state_with_default_values()
+        state = self._state_with_default_values(None)
         err = self.ini_processor.process_string(ini_contents, state)
         if err is not None:
             return err
@@ -424,7 +437,7 @@ class Processor(Generic[_Config]):
         Returns:
             The parsed configuration or an error
         """
-        state = self._state_with_default_values()
+        state = self._state_with_default_values(None)
         err = self.ini_processor.process(ini_file_path, state)
         if err is not None:
             return err
@@ -484,11 +497,14 @@ class Processor(Generic[_Config]):
         else:
             return c
 
-    def _state_with_default_values(self) -> State:
+    def _state_with_default_values(self, root_path: Optional[Path]) -> State:
         """
         Returns a new state instance with default values populated
+
+        Args:
+            root_path: Optional root path used to resolve configuration file paths
         """
-        return State.make(self.params_by_name.values())
+        return State.make(root_path, self.params_by_name.values())
 
     def process_command_line(
         self,
@@ -508,7 +524,7 @@ class Processor(Generic[_Config]):
             Either a parsed configuration, a special action to execute, or (a list of) errors
         """
         errors: List[Err] = []
-        state = self._state_with_default_values()
+        state = self._state_with_default_values(cwd)
         # process environment variables
         for key, value in env.items():
             handler = self.env_handlers.get(key)
@@ -516,7 +532,7 @@ class Processor(Generic[_Config]):
                 err = handler.handle(value, state)
                 if err is not None:
                     errors.append(err.in_context(environment_variable=key))
-            err = self._process_config(cwd, state)
+            err = self._process_config(state)
             if err is not None:
                 errors.append(err.in_context(environment_variable=key))
         # process command line arguments
@@ -525,7 +541,7 @@ class Processor(Generic[_Config]):
             rest_args, err = self.cl_handler.handle(rest_args, state)
             if err is not None:
                 errors.append(err)
-            err = self._process_config(cwd, state)
+            err = self._process_config(state)
             if err is not None:
                 errors.append(err)
 

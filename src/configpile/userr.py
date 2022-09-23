@@ -396,7 +396,7 @@ def wrap(
     ) -> Callable[_Parameters, Res[_ReturnType]]:
         def wrapper(*args, **kwargs) -> Res[_ReturnType]:  # type: ignore
             try:
-                res: Res[_ReturnType] = func(*args, **kwargs)
+                res: Res[_ReturnType] = func(*args, **kwargs)  # type: ignore
             except Exception as e:  # pylint: disable=broad-except
                 if (not keep) or any([isinstance(e, t) for t in keep]):
                     res = Err.make(f"{type(e).__name__} thrown: {e}")
@@ -404,7 +404,7 @@ def wrap(
                     raise
             return res
 
-        return wrapper
+        return wrapper  # type: ignore
 
     return decorator
 
@@ -558,18 +558,6 @@ def flat_map(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> R
         return r
     else:
         return f(r)
-
-
-def flatMap(f: Callable[[_Value_co], Res[_ReturnType]], r: Res[_Value_co]) -> Res[_ReturnType]:
-    """
-    Enables the chaining computations that can error (deprecated)
-
-    See also: :func:`.flat_map`
-    """
-    warnings.warn(
-        "flatMap has been deprecated, use flat_map instead", DeprecationWarning, stacklevel=2
-    )
-    return flat_map(f, r)
 
 
 def collect_seq(seq: Sequence[Res[_Value_co]]) -> Res[Sequence[_Value_co]]:

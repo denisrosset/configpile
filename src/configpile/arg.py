@@ -56,11 +56,20 @@ from typing import (
     Tuple,
     TypeVar,
     Union,
+    cast,
 )
 
 from .collector import Collector
 from .enums import Derived, Positional
-from .handlers import CLConfigParam, CLInserter, CLParam, KVConfigParam, KVParam
+from .handlers import (
+    CLConfigParam,
+    CLInserter,
+    CLParam,
+    CLRootParam,
+    KVConfigParam,
+    KVParam,
+    KVRootParam,
+)
 from .parsers import Parser, path_parser
 
 # documented in the module docstring
@@ -257,7 +266,9 @@ class Param(Arg, Generic[_Value_co]):
     #: Argument type, parser from string to value
     parser: Parser[_Value_co]  # type: ignore
 
-    is_config: bool  #: Whether this represent a list of config files
+    is_config: bool  #: Whether this represents a list of config files
+
+    is_root_path: bool  #: Whether this represents a root path
 
     #: Argument collector
     collector: Collector[_Value_co]  # type: ignore
@@ -346,15 +357,20 @@ class Param(Arg, Generic[_Value_co]):
             pf.cl_positionals.append(self)
         for flag in self.all_flags():
             if self.is_config:
-                pf.cl_flag_handlers[flag] = CLConfigParam(self)
+                pf.cl_flag_handlers[flag] = CLConfigParam(cast(Param[Sequence[Path]], self))
+            elif self.is_root_path:
+                pf.cl_flag_handlers[flag] = CLRootParam(cast(Param[Path], self))
             else:
                 pf.cl_flag_handlers[flag] = CLParam(self)
 
         for key in self.all_config_key_names():
             pf.ini_handlers[key] = KVParam(self)
+
         for name in self.all_env_var_names():
             if self.is_config:
-                pf.env_handlers[name] = KVConfigParam(self)
+                pf.env_handlers[name] = KVConfigParam(cast(Param[Sequence[Path]], self))
+            elif self.is_root_path:
+                pf.env_handlers[name] = KVRootParam(cast(Param[Path], self))
             else:
                 pf.env_handlers[name] = KVParam(self)
 
@@ -390,7 +406,7 @@ class Param(Arg, Generic[_Value_co]):
             help: Help description (autodoc/docstring is used otherwise)
             default_value: Default value
             positional: Whether this parameter is present in positional arguments
-            short_flag_name: Short option name (optional)
+            short_flag_name:
             long_flag_name: Long option name (auto. derived from fieldname by default)
             config_key_name: Config key name (auto. derived from fieldname by default)
             env_var_name: Environment variable name (forbidden by default)
@@ -411,6 +427,42 @@ class Param(Arg, Generic[_Value_co]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
+            is_root_path=False,
+        )
+
+    @staticmethod
+    def root_path(
+        *,
+        help: Optional[str] = None,  # pylint: disable=redefined-builtin,
+        short_flag_name: Optional[str] = None,
+        long_flag_name: Union[str, Derived, None] = Derived.KEBAB_CASE,
+        env_var_name: Union[str, Derived, None] = None,
+    ) -> Param[Path]:
+        """
+        Creates a parameter that describes a root path
+
+        Keyword Args:
+            help: Help description (autodoc/docstring is used otherwise)
+            short_flag_name: Short option name (optional)
+            long_flag_name: Long option name (auto. derived from fieldname by default)
+            env_var_name: Environment variable name (forbidden by default)
+
+        Returns:
+            A root path parameter
+        """
+        return Param(
+            name=None,
+            help=help,
+            parser=path_parser,
+            collector=cast(Collector[Path], Collector.keep_last()),
+            positional=None,
+            short_flag_name=short_flag_name,
+            long_flag_name=long_flag_name,
+            config_key_name=None,
+            env_var_name=env_var_name,
+            is_config=False,
+            is_root_path=True,
+            default_value=None,
         )
 
     @staticmethod
@@ -437,13 +489,14 @@ class Param(Arg, Generic[_Value_co]):
             name=None,
             help=help,
             parser=path_parser.separated_by(",", strip=True, remove_empty=True),
-            collector=Collector.append(),  # type: ignore
+            collector=cast(Collector[Sequence[Path]], Collector.append()),
             positional=None,
             short_flag_name=short_flag_name,
             long_flag_name=long_flag_name,
             config_key_name=None,
             env_var_name=env_var_name,
             is_config=True,
+            is_root_path=False,
             default_value=None,
         )
 
@@ -487,6 +540,7 @@ class Param(Arg, Generic[_Value_co]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
+            is_root_path=False,
         )
 
     @staticmethod
@@ -526,4 +580,5 @@ class Param(Arg, Generic[_Value_co]):
             config_key_name=config_key_name,
             env_var_name=env_var_name,
             is_config=False,
+            is_root_path=False,
         )
