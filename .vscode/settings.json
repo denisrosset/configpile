@@ -46,5 +46,6 @@
     "restructuredtext.linter.doc8.extraArgs": [
         "--config",
         "${workspaceFolder}/doc8.ini"
-    ]
+    ],
+    "autoDocstring.docstringFormat": "google-notypes"
 }
