@@ -1,3 +1,10 @@
+## v10.1.1 (2022-11-27)
+
+### Fix
+
+- **processor**: Process docstrings according to PEP 257
+- Ignored a type warning
+
 ## v10.1.0 (2022-09-23)
 
 ### Feat
