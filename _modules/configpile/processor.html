@@ -883,6 +883,40 @@
 
     <span class="n">validators</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Config</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]]]</span>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_trim_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Trims a docstring</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            docstring: Docstring to trim according to PEP 257</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The trimmed docstring</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">docstring</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="c1"># Convert tabs to spaces (following the normal Python rules)</span>
+        <span class="c1"># and split into a list of lines:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">docstring</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="c1"># Determine minimum indentation (first line doesn&#39;t count):</span>
+        <span class="n">indent</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">stripped</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">stripped</span><span class="p">:</span>
+                <span class="n">indent</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">stripped</span><span class="p">))</span>
+        <span class="c1"># Remove indentation (first line is special):</span>
+        <span class="n">trimmed</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">indent</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">trimmed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">indent</span><span class="p">:]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+        <span class="c1"># Strip off trailing and leading blank lines:</span>
+        <span class="k">while</span> <span class="n">trimmed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trimmed</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">trimmed</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">trimmed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trimmed</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">trimmed</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Return a single string:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trimmed</span><span class="p">)</span>
+
 <div class="viewcode-block" id="ProcessorFactory.make"><a class="viewcode-back" href="../../_autosummary/configpile.processor.ProcessorFactory.html#configpile.processor.ProcessorFactory.make">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="n">config_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Config</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ProcessorFactory</span><span class="p">[</span><span class="n">_Config</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -903,6 +937,9 @@
         <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_type</span><span class="o">.</span><span class="n">description_</span>
         <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">description</span> <span class="o">=</span> <span class="n">config_type</span><span class="o">.</span><span class="vm">__doc__</span>
+
+        <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">ProcessorFactory</span><span class="o">.</span><span class="n">_trim_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
 
         <span class="n">argument_parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
             <span class="n">prog</span><span class="o">=</span><span class="n">prog</span><span class="p">,</span>
