@@ -114,7 +114,9 @@ class Config(ABC):
     # region Config: information constructed by configpile
 
     @classmethod
-    def validators_(cls: typing.Type[_Config]) -> typing.Sequence[typing.Callable[[_Config], typing.Optional[Err]]]:
+    def validators_(
+        cls: typing.Type[_Config],
+    ) -> typing.Sequence[typing.Callable[[_Config], typing.Optional[Err]]]:
         """
         Returns all validators present in the given subclass of this class
 
@@ -125,7 +127,7 @@ class Config(ABC):
             A sequence of all validators
         """
         res: typing.List[typing.Callable[[_Config], typing.Optional[Err]]] = []
-        for name, _ in inspect.getmembers(cls, inspect.isroutine):
+        for name, _ in inspect.getmembers(cls, inspect.isroutine):  # type: ignore
             if name.startswith("validate_"):
                 res.append(getattr(cls, name))
         return res
