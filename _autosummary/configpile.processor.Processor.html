@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -633,7 +638,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="configpile.processor.Processor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Processor</span></span><a class="reference internal" href="../_modules/configpile/processor.html#Processor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.Processor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.processor.html#configpile.processor._Config" title="configpile.processor._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.processor._Config</span></code></a>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.processor.html#configpile.processor._Config" title="configpile.processor._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.processor._Config</span></code></a>]</p>
 <p>Configuration processor</p>
 <p class="rubric">Attributes</p>
 <p><em>Note: attributes inherited from parent classes are not shown here, if any</em></p>
@@ -702,13 +707,13 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.Processor.argument_parser">
-<span class="sig-name descname"><span class="pre">argument_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><span class="pre">argparse.ArgumentParser</span></a></em><a class="headerlink" href="#configpile.processor.Processor.argument_parser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">argument_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.11)"><span class="pre">argparse.ArgumentParser</span></a></em><a class="headerlink" href="#configpile.processor.Processor.argument_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Completed argument parser, used only for documentation purposes (CLI and Sphinx)</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.Processor.env_handlers">
-<span class="sig-name descname"><span class="pre">env_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.KVHandler.html#configpile.handlers.KVHandler" title="configpile.handlers.KVHandler"><span class="pre">configpile.handlers.KVHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.Processor.env_handlers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">env_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.KVHandler.html#configpile.handlers.KVHandler" title="configpile.handlers.KVHandler"><span class="pre">configpile.handlers.KVHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.Processor.env_handlers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Environment variable handlers</p>
 </dd></dl>
 
@@ -726,7 +731,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.Processor.params_by_name">
-<span class="sig-name descname"><span class="pre">params_by_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><span class="pre">configpile.arg.Param</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.Processor.params_by_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">params_by_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><span class="pre">configpile.arg.Param</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.Processor.params_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary of parameters by field name</p>
 </dd></dl>
 
@@ -741,10 +746,10 @@
 <dd><p>Returns a sequence of the arguments present in a configuration, with updated data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]) – Configuration to process</p>
+<dd class="field-odd"><p><strong>config_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]) – Configuration to process</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arg</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arg</span></code></a>]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Sequence of arguments</p>
@@ -758,7 +763,7 @@
 <dd><p>Creates the processor corresponding to a configuration</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#configpile.processor.Processor" title="configpile.processor.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#configpile.processor.Processor" title="configpile.processor.Processor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Processor</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -769,10 +774,10 @@
 <dd><p>Processes the configuration in INI format contained in a string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ini_contents</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Multiline string containing information in INI format</p>
+<dd class="field-odd"><p><strong>ini_contents</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Multiline string containing information in INI format</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The parsed configuration or an error</p>
@@ -786,10 +791,10 @@
 <dd><p>Processes the configuration contained in an INI file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>ini_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Path to the file to parse</p>
+<dd class="field-odd"><p><strong>ini_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Path to the file to parse</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The parsed configuration or an error</p>
@@ -804,7 +809,7 @@
 <p>See also: <a class="reference internal" href="#configpile.processor.Processor.process_command_line" title="configpile.processor.Processor.process_command_line"><code class="xref py py-meth docutils literal notranslate"><span class="pre">process_command_line()</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.enums.SpecialAction.html#configpile.enums.SpecialAction" title="configpile.enums.SpecialAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecialAction</span></code></a>, <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.enums.SpecialAction.html#configpile.enums.SpecialAction" title="configpile.enums.SpecialAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecialAction</span></code></a>, <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -816,13 +821,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cwd</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Working directory, used as a base for configuration file relative paths</p></li>
-<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Command line arguments to parse</p></li>
-<li><p><strong>env</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Environment variables</p></li>
+<li><p><strong>cwd</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Working directory, used as a base for configuration file relative paths</p></li>
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Command line arguments to parse</p></li>
+<li><p><strong>env</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Environment variables</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.enums.SpecialAction.html#configpile.enums.SpecialAction" title="configpile.enums.SpecialAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecialAction</span></code></a>, <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>), <a class="reference internal" href="configpile.enums.SpecialAction.html#configpile.enums.SpecialAction" title="configpile.enums.SpecialAction"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpecialAction</span></code></a>, <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Either a parsed configuration, a special action to execute, or (a list of) errors</p>

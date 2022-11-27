@@ -333,6 +333,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -355,6 +360,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -461,11 +471,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -751,6 +756,19 @@
             <span class="p">)</span></div></div>
 
 
+<div class="viewcode-block" id="CLRootParam"><a class="viewcode-back" href="../../_autosummary/configpile.handlers.CLRootParam.html#configpile.handlers.CLRootParam">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CLRootParam</span><span class="p">(</span><span class="n">CLParam</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A root path parameter handler</span>
+
+<span class="sd">    Changes the root path used to resolve configuration file relative paths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CLRootParam.action"><a class="viewcode-back" href="../../_autosummary/configpile.handlers.CLRootParam.html#configpile.handlers.CLRootParam.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
 <div class="viewcode-block" id="CLConfigParam"><a class="viewcode-back" href="../../_autosummary/configpile.handlers.CLConfigParam.html#configpile.handlers.CLConfigParam">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CLConfigParam</span><span class="p">(</span><span class="n">CLParam</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">]]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -900,6 +918,19 @@
 
 <div class="viewcode-block" id="KVConfigParam.action"><a class="viewcode-back" href="../../_autosummary/configpile.handlers.KVConfigParam.html#configpile.handlers.KVConfigParam.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
         <span class="n">state</span><span class="o">.</span><span class="n">config_files_to_process</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="KVRootParam"><a class="viewcode-back" href="../../_autosummary/configpile.handlers.KVRootParam.html#configpile.handlers.KVRootParam">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">KVRootParam</span><span class="p">(</span><span class="n">KVParam</span><span class="p">[</span><span class="n">Path</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A root path parameter handler</span>
+
+<span class="sd">    Changes the root path used to resolve configuration file relative paths</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="KVRootParam.action"><a class="viewcode-back" href="../../_autosummary/configpile.handlers.KVRootParam.html#configpile.handlers.KVRootParam.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Err</span><span class="p">]:</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">return</span> <span class="kc">None</span></div></div>
 </pre></div>
 

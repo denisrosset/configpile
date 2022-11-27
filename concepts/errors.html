@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -748,7 +753,7 @@ In context_info: 1
 <p>The error type is designed to be used in functions that either return a valid value, or an error.
 Such functions return a result, or a <a class="reference internal" href="../_autosummary/configpile.userr.html#configpile.userr.Res" title="configpile.userr.Res"><code class="xref py py-data docutils literal notranslate"><span class="pre">configpile.userr.Res</span></code></a> type.</p>
 <p>Note that the <a class="reference internal" href="../_autosummary/configpile.userr.html#configpile.userr.Res" title="configpile.userr.Res"><code class="xref py py-data docutils literal notranslate"><span class="pre">configpile.userr.Res</span></code></a> type is parameterized by the valid value type:
-in the example below, it is <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>.</p>
+in the example below, it is <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>.</p>
 <p>An example of such a function would be:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -933,7 +938,7 @@ result, while leaving any error untouched, can be written:</p>
 at least one argument and returns an <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>, while
 <a class="reference internal" href="../_autosummary/configpile.userr.Err.html#configpile.userr.Err.collect" title="configpile.userr.Err.collect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configpile.userr.Err.collect()</span></code></a> can deal with no argument being passed, or with optional
 arguments.</p>
-<p>In particular, optional errors, of type <code class="docutils literal notranslate"><span class="pre">Optional[Err]</span></code>, are great for validation: a <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>
+<p>In particular, optional errors, of type <code class="docutils literal notranslate"><span class="pre">Optional[Err]</span></code>, are great for validation: a <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a>
 value indicates no error, while an error indicates that one or several problems are present.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

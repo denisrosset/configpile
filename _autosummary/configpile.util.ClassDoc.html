@@ -334,6 +334,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -356,6 +361,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -462,11 +472,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -632,7 +637,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="configpile.util.ClassDoc">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ClassDoc</span></span><a class="reference internal" href="../_modules/configpile/util.html#ClassDoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.util.ClassDoc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.util.html#configpile.util._Class" title="configpile.util._Class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.util._Class</span></code></a>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.util.html#configpile.util._Class" title="configpile.util._Class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.util._Class</span></code></a>]</p>
 <p>Stores information about Sphinx autodoc-style documentation for a class</p>
 <p>See <a class="reference external" href="https://pypi.org/project/class-doc/">https://pypi.org/project/class-doc/</a></p>
 <p class="rubric">Attributes</p>
@@ -666,7 +671,7 @@
 <p class="rubric">List of members of ClassDoc</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.util.ClassDoc.docs">
-<span class="sig-name descname"><span class="pre">docs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.util.ClassDoc.docs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">docs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.util.ClassDoc.docs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Documentation for the class and parents</p>
 </dd></dl>
 
@@ -678,10 +683,10 @@
 first string encountered.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>attribute_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Attribute name</p>
+<dd class="field-odd"><p><strong>attribute_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Attribute name</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -692,10 +697,10 @@ first string encountered.</p>
 <dd><p>Retrieves the documentation for the attributes of a class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Class</span></code>)]) – Class type to investigate</p>
+<dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Class</span></code>)]) – Class type to investigate</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.util.ClassDoc" title="configpile.util.ClassDoc"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassDoc</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Class</span></code>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.util.ClassDoc" title="configpile.util.ClassDoc"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassDoc</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Class</span></code>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A ClassDoc instance</p>

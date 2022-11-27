@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -633,7 +638,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProcessorFactory</span></span><a class="reference internal" href="../_modules/configpile/processor.html#ProcessorFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.ProcessorFactory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.processor.html#configpile.processor._Config" title="configpile.processor._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.processor._Config</span></code></a>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.processor.html#configpile.processor._Config" title="configpile.processor._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.processor._Config</span></code></a>]</p>
 <p>Describes a processor in construction</p>
 <p>This factory is passed to the different arguments present in the configuration.</p>
 <p class="rubric">Attributes</p>
@@ -694,13 +699,13 @@
 <p class="rubric">List of members of ProcessorFactory</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory.params_by_name">
-<span class="sig-name descname"><span class="pre">params_by_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><span class="pre">configpile.arg.Param</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.params_by_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">params_by_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><span class="pre">configpile.arg.Param</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.params_by_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of parameters indexed by their field name</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory.argument_parser">
-<span class="sig-name descname"><span class="pre">argument_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.10)"><span class="pre">argparse.ArgumentParser</span></a></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.argument_parser" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">argument_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.11)"><span class="pre">argparse.ArgumentParser</span></a></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.argument_parser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Argument parser to update, used to display help and for the Sphinx documentation</p>
 </dd></dl>
 
@@ -724,25 +729,25 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory.env_handlers">
-<span class="sig-name descname"><span class="pre">env_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.KVHandler.html#configpile.handlers.KVHandler" title="configpile.handlers.KVHandler"><span class="pre">configpile.handlers.KVHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.env_handlers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">env_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.KVHandler.html#configpile.handlers.KVHandler" title="configpile.handlers.KVHandler"><span class="pre">configpile.handlers.KVHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.env_handlers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handlers for environment variables</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory.ini_section_strict">
-<span class="sig-name descname"><span class="pre">ini_section_strict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.ini_section_strict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ini_section_strict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.ini_section_strict" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of INI sections with their corresponding strictness</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory.ini_handlers">
-<span class="sig-name descname"><span class="pre">ini_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.KVHandler.html#configpile.handlers.KVHandler" title="configpile.handlers.KVHandler"><span class="pre">configpile.handlers.KVHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.ini_handlers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ini_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.KVHandler.html#configpile.handlers.KVHandler" title="configpile.handlers.KVHandler"><span class="pre">configpile.handlers.KVHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.ini_handlers" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of handlers for key/value pairs present in INI files</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.ProcessorFactory.cl_flag_handlers">
-<span class="sig-name descname"><span class="pre">cl_flag_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.CLHandler.html#configpile.handlers.CLHandler" title="configpile.handlers.CLHandler"><span class="pre">configpile.handlers.CLHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.cl_flag_handlers" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cl_flag_handlers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.handlers.CLHandler.html#configpile.handlers.CLHandler" title="configpile.handlers.CLHandler"><span class="pre">configpile.handlers.CLHandler</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.ProcessorFactory.cl_flag_handlers" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of command line flag handlers</p>
 </dd></dl>
 
@@ -763,10 +768,10 @@
 <dd><p>Constructs an empty processor factory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>config_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]) – Configuration to process</p>
+<dd class="field-odd"><p><strong>config_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]) – Configuration to process</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.processor.ProcessorFactory" title="configpile.processor.ProcessorFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorFactory</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.processor.ProcessorFactory" title="configpile.processor.ProcessorFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorFactory</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A processor factory</p>

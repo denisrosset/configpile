@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -676,7 +681,7 @@ floating-point numbers.</p>
 <li><p>The most used <code class="docutils literal notranslate"><span class="pre">configpile</span></code> identifiers are imported when writing
 <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">configpile</span> <span class="pre">import</span> <span class="pre">*</span></code>; they are aliases of identifiers in subpackages
 (for example <code class="docutils literal notranslate"><span class="pre">configpile.Config</span></code> is an alias of <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.config.Config</span></code></a>).</p></li>
-<li><p>The “configuration” is a dataclass using <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a>. It should be frozen
+<li><p>The “configuration” is a dataclass using <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a>. It should be frozen
 because there is no reason not to.</p></li>
 <li><p>The “configuration” is also a subclass of <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.config.Config</span></code></a>.</p></li>
 <li><p>The script help is given in the class docstring; argument descriptions are written using
@@ -697,7 +702,7 @@ method.</p>
 calling <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">configpile.config.Config.from_command_line_()</span></code></a> using the information given
 in the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated">annotated</a>
 type annotation.</p></li>
-<li><p>The extra information provided in the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> wrapper is removed when
+<li><p>The extra information provided in the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> wrapper is removed when
 type checking, and is used only by <code class="docutils literal notranslate"><span class="pre">configpile</span></code> when it performs its introspection.
 For <a class="reference external" href="https://mypy.readthedocs.io/en/stable/">mypy</a>, the fields <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> have type
 <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p></li>

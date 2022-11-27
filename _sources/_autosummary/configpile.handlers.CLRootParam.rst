@@ -1,9 +1,9 @@
-State
-=====
+CLRootParam
+===========
 
-.. currentmodule:: configpile.processor
+.. currentmodule:: configpile.handlers
 
-.. autoclass:: State
+.. autoclass:: CLRootParam
    :show-inheritance:
    :members:
    :undoc-members:
@@ -18,10 +18,7 @@ State
 
    .. autosummary::
    
-      ~State.root_path
-      ~State.instances
-      ~State.config_files_to_process
-      ~State.special_action
+      ~CLRootParam.param
    
    
 
@@ -32,10 +29,10 @@ State
    .. autosummary::
       :nosignatures:
    
-      ~State.append
-      ~State.make
+      ~CLRootParam.action
+      ~CLRootParam.handle
    
    
 
 
-   .. rubric:: List of members of State
+   .. rubric:: List of members of CLRootParam

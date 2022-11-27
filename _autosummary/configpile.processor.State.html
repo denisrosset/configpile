@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -633,7 +638,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="configpile.processor.State">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">State</span></span><a class="reference internal" href="../_modules/configpile/processor.html#State"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.State" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Describes the (mutable) state of a configuration being parsed</p>
 <p class="rubric">Attributes</p>
 <p><em>Note: attributes inherited from parent classes are not shown here, if any</em></p>
@@ -643,13 +648,16 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.State.instances" title="configpile.processor.State.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.State.root_path" title="configpile.processor.State.root_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_path</span></code></a></p></td>
+<td><p>Base path to use to resolve relative config file paths</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.processor.State.instances" title="configpile.processor.State.instances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">instances</span></code></a></p></td>
 <td><p>Contains the sequence of values for each parameter</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.processor.State.config_files_to_process" title="configpile.processor.State.config_files_to_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_files_to_process</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.State.config_files_to_process" title="configpile.processor.State.config_files_to_process"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_files_to_process</span></code></a></p></td>
 <td><p>Contains a list of configuration files to process</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.processor.State.special_action" title="configpile.processor.State.special_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">special_action</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.processor.State.special_action" title="configpile.processor.State.special_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">special_action</span></code></a></p></td>
 <td><p>Contains a special action if flag was encountered</p></td>
 </tr>
 </tbody>
@@ -671,14 +679,20 @@
 </table>
 <p class="rubric">List of members of State</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.processor.State.root_path">
+<span class="sig-name descname"><span class="pre">root_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.State.root_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base path to use to resolve relative config file paths</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.State.instances">
-<span class="sig-name descname"><span class="pre">instances</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.State.instances" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">instances</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.State.instances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains the sequence of values for each parameter</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.processor.State.config_files_to_process">
-<span class="sig-name descname"><span class="pre">config_files_to_process</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.State.config_files_to_process" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">config_files_to_process</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">pathlib.Path</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.processor.State.config_files_to_process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains a list of configuration files to process</p>
 </dd></dl>
 
@@ -696,26 +710,26 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Parameter name</p></li>
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – Value to append</p></li>
+<li><p><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Parameter name</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>) – Value to append</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configpile.processor.State.make">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#State.make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.State.make" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/processor.html#State.make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.processor.State.make" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the initial state, populated with the default values when present</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]) – Sequence of parameters</p>
+<dd class="field-odd"><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]) – Sequence of parameters</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><strong>ValueError</strong></a> – If a default value cannot be parsed correctly</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If a default value cannot be parsed correctly</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#configpile.processor.State" title="configpile.processor.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a></p>
@@ -728,7 +742,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configpile.processor.State.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_files_to_process</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">special_action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.processor.State.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_files_to_process</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">special_action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.processor.State.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

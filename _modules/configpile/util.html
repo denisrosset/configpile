@@ -333,6 +333,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -355,6 +360,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -461,11 +471,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -735,7 +740,7 @@
 
 
 <div class="viewcode-block" id="filter_ordered_dict_by_value_type"><a class="viewcode-back" href="../../_autosummary/configpile.util.filter_ordered_dict_by_value_type.html#configpile.util.filter_ordered_dict_by_value_type">[docs]</a><span class="k">def</span> <span class="nf">filter_ordered_dict_by_value_type</span><span class="p">(</span>
-    <span class="n">w</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Type</span><span class="p">],</span> <span class="n">od</span><span class="p">:</span> <span class="n">OrderedDictT</span><span class="p">[</span><span class="n">_Key</span><span class="p">,</span> <span class="n">_Value</span><span class="p">]</span>
+    <span class="n">w</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Type</span><span class="p">],</span> <span class="n">od</span><span class="p">:</span> <span class="n">OrderedDictT</span><span class="p">[</span><span class="n">_Key</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderedDictT</span><span class="p">[</span><span class="n">_Key</span><span class="p">,</span> <span class="n">_Type</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Filters values of an ordered dictionary that correspond to a given type</span>
@@ -765,7 +770,7 @@
 
 
 <div class="viewcode-block" id="filter_sequence_by_value_type"><a class="viewcode-back" href="../../_autosummary/configpile.util.filter_sequence_by_value_type.html#configpile.util.filter_sequence_by_value_type">[docs]</a><span class="k">def</span> <span class="nf">filter_sequence_by_value_type</span><span class="p">(</span>
-    <span class="n">w</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Type</span><span class="p">],</span> <span class="n">seq</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">_Value</span><span class="p">],</span> <span class="n">predicate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Type</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span>
+    <span class="n">w</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_Type</span><span class="p">],</span> <span class="n">seq</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">predicate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_Type</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">_Type</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Filter values using their type and an optional predicate</span>
@@ -779,7 +784,8 @@
 <span class="sd">        The filtered sequence</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">predicate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">predicate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="n">predicate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1"># pylint: disable=unnecessary-lambda-assignment</span>
+
     <span class="k">return</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">predicate</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span></div>
 
 

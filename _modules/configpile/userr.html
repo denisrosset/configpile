@@ -333,6 +333,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -355,6 +360,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -461,11 +471,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -682,7 +687,6 @@
 
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">textwrap</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
@@ -948,12 +952,12 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">ungrouped_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">groups</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GroupedErrors</span><span class="o">.</span><span class="n">make</span><span class="p">([</span><span class="n">e</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="p">],</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">groups</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">_GroupedErrors</span><span class="o">.</span><span class="n">make</span><span class="p">([</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="p">],</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">get_index</span><span class="p">(</span><span class="n">pair</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Err1</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">ungrouped</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ungrouped_pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">get_index</span><span class="p">)]</span>
+        <span class="n">ungrouped</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Err1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">ungrouped_pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">get_index</span><span class="p">)]</span>
 
         <span class="k">return</span> <span class="n">_GroupedErrors</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="n">ungrouped</span><span class="p">)</span>
 
@@ -1026,7 +1030,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="n">_Parameters</span><span class="p">,</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]]:</span>
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">res</span><span class="p">:</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">res</span><span class="p">:</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
                 <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">keep</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">([</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">]):</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> thrown: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1034,7 +1038,7 @@
                     <span class="k">raise</span>
             <span class="k">return</span> <span class="n">res</span>
 
-        <span class="k">return</span> <span class="n">wrapper</span>
+        <span class="k">return</span> <span class="n">wrapper</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">return</span> <span class="n">decorator</span></div>
 
@@ -1188,18 +1192,6 @@
         <span class="k">return</span> <span class="n">r</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">r</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="flatMap"><a class="viewcode-back" href="../../_autosummary/configpile.userr.flatMap.html#configpile.userr.flatMap">[docs]</a><span class="k">def</span> <span class="nf">flatMap</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">_Value_co</span><span class="p">],</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]],</span> <span class="n">r</span><span class="p">:</span> <span class="n">Res</span><span class="p">[</span><span class="n">_Value_co</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">_ReturnType</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Enables the chaining computations that can error (deprecated)</span>
-
-<span class="sd">    See also: :func:`.flat_map`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-        <span class="s2">&quot;flatMap has been deprecated, use flat_map instead&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">flat_map</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="collect_seq"><a class="viewcode-back" href="../../_autosummary/configpile.userr.collect_seq.html#configpile.userr.collect_seq">[docs]</a><span class="k">def</span> <span class="nf">collect_seq</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Res</span><span class="p">[</span><span class="n">_Value_co</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Res</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_Value_co</span><span class="p">]]:</span>

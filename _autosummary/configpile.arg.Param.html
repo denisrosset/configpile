@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -633,7 +638,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="configpile.arg.Param">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Param</span></span><a class="reference internal" href="../_modules/configpile/arg.html#Param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.arg.Param" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.arg.Arg</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.arg.html#configpile.arg._Value_co" title="configpile.arg._Value_co"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.arg._Value_co</span></code></a>]</p>
+<dd><p>Bases: <a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.arg.Arg</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></a>[<a class="reference internal" href="configpile.arg.html#configpile.arg._Value_co" title="configpile.arg._Value_co"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configpile.arg._Value_co</span></code></a>]</p>
 <p>Describes an argument holding a value of a given type</p>
 <p>You’ll want to construct parameters using the static methods available:</p>
 <ul class="simple">
@@ -660,24 +665,27 @@ a sequence. The parsed value should not be a sequence.</p></li>
 <td><p>Argument type, parser from string to value</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.is_config" title="configpile.arg.Param.is_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_config</span></code></a></p></td>
-<td><p>Whether this represent a list of config files</p></td>
+<td><p>Whether this represents a list of config files</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.collector" title="configpile.arg.Param.collector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collector</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.is_root_path" title="configpile.arg.Param.is_root_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_root_path</span></code></a></p></td>
+<td><p>Whether this represents a root path</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.collector" title="configpile.arg.Param.collector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collector</span></code></a></p></td>
 <td><p>Argument collector</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.default_value" title="configpile.arg.Param.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.default_value" title="configpile.arg.Param.default_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_value</span></code></a></p></td>
 <td><p>Default value inserted as instance</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.name" title="configpile.arg.Param.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.name" title="configpile.arg.Param.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Python identifier representing the argument</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.positional" title="configpile.arg.Param.positional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">positional</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.positional" title="configpile.arg.Param.positional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">positional</span></code></a></p></td>
 <td><p>Whether this parameter can appear as a positional parameter and how</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.config_key_name" title="configpile.arg.Param.config_key_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_key_name</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.config_key_name" title="configpile.arg.Param.config_key_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_key_name</span></code></a></p></td>
 <td><p>Configuration key name used in INI files</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.env_var_name" title="configpile.arg.Param.env_var_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env_var_name</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.env_var_name" title="configpile.arg.Param.env_var_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">env_var_name</span></code></a></p></td>
 <td><p>Environment variable name</p></td>
 </tr>
 </tbody>
@@ -713,16 +721,19 @@ a sequence. The parsed value should not be a sequence.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.is_required" title="configpile.arg.Param.is_required"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_required</span></code></a></p></td>
 <td><p>Returns whether the argument is required</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.store" title="configpile.arg.Param.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.root_path" title="configpile.arg.Param.root_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_path</span></code></a></p></td>
+<td><p>Creates a parameter that describes a root path</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.store" title="configpile.arg.Param.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a></p></td>
 <td><p>Creates a parameter that stores the last provided value</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.update_dict_" title="configpile.arg.Param.update_dict_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dict_</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.update_dict_" title="configpile.arg.Param.update_dict_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dict_</span></code></a></p></td>
 <td><p>Returns updated values for this argument, used during <code class="xref py py-class docutils literal notranslate"><span class="pre">App</span></code> construction</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.update_processor" title="configpile.arg.Param.update_processor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_processor</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.update_processor" title="configpile.arg.Param.update_processor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_processor</span></code></a></p></td>
 <td><p>Updates a config processor with the processing required by this argument</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#configpile.arg.Param.updated" title="configpile.arg.Param.updated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updated</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.arg.Param.updated" title="configpile.arg.Param.updated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">updated</span></code></a></p></td>
 <td><p>Returns a copy of this argument with some data updated from its declaration context</p></td>
 </tr>
 </tbody>
@@ -736,8 +747,14 @@ a sequence. The parsed value should not be a sequence.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.is_config">
-<span class="sig-name descname"><span class="pre">is_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></em><a class="headerlink" href="#configpile.arg.Param.is_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether this represent a list of config files</p>
+<span class="sig-name descname"><span class="pre">is_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#configpile.arg.Param.is_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this represents a list of config files</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.arg.Param.is_root_path">
+<span class="sig-name descname"><span class="pre">is_root_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#configpile.arg.Param.is_root_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this represents a root path</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -748,13 +765,13 @@ a sequence. The parsed value should not be a sequence.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.default_value">
-<span class="sig-name descname"><span class="pre">default_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.default_value" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">default_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.default_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Default value inserted as instance</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Python identifier representing the argument</p>
 </dd></dl>
 
@@ -767,14 +784,14 @@ a sequence. The parsed value should not be a sequence.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.config_key_name">
-<span class="sig-name descname"><span class="pre">config_key_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.enums.Derived.html#configpile.enums.Derived" title="configpile.enums.Derived"><span class="pre">configpile.enums.Derived</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.config_key_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">config_key_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.enums.Derived.html#configpile.enums.Derived" title="configpile.enums.Derived"><span class="pre">configpile.enums.Derived</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.config_key_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configuration key name used in INI files</p>
 <p>It is lowercase, and words are separated by hyphens.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.env_var_name">
-<span class="sig-name descname"><span class="pre">env_var_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.enums.Derived.html#configpile.enums.Derived" title="configpile.enums.Derived"><span class="pre">configpile.enums.Derived</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.env_var_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">env_var_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.enums.Derived.html#configpile.enums.Derived" title="configpile.enums.Derived"><span class="pre">configpile.enums.Derived</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.env_var_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Environment variable name</p>
 <p>The environment variable name has a prefix, followed by the
 Python identifier in uppercase, with underscore as separator.</p>
@@ -788,16 +805,16 @@ Python identifier in uppercase, with underscore as separator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Argument field name</p></li>
-<li><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Argument docstring which describes the argument role</p></li>
-<li><p><strong>env_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Uppercase prefix for all environment variables</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Argument field name</p></li>
+<li><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Argument docstring which describes the argument role</p></li>
+<li><p><strong>env_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Uppercase prefix for all environment variables</p></li>
 </ul>
 </dd>
 </dl>
 <p>Returns:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -808,7 +825,7 @@ Python identifier in uppercase, with underscore as separator.</p>
 <dd><p>Returns a sequence of all forms of command line options</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Command line options</p>
@@ -822,7 +839,7 @@ Python identifier in uppercase, with underscore as separator.</p>
 <dd><p>Returns a sequence of all forms of command line options</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Command line options</p>
@@ -836,7 +853,7 @@ Python identifier in uppercase, with underscore as separator.</p>
 <dd><p>Returns whether the argument is required</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -847,7 +864,7 @@ Python identifier in uppercase, with underscore as separator.</p>
 <dd><p>Returns the keyword arguments for use with argparse.ArgumentParser.add_argument</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Mapping" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Keyword arguments mapping</p>
@@ -861,10 +878,10 @@ Python identifier in uppercase, with underscore as separator.</p>
 <dd><p>Updates a config processor with the processing required by this argument</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pf</strong> (<a class="reference internal" href="configpile.processor.ProcessorFactory.html#configpile.processor.ProcessorFactory" title="configpile.processor.ProcessorFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorFactory</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]) – Processor factory</p>
+<dd class="field-odd"><p><strong>pf</strong> (<a class="reference internal" href="configpile.processor.ProcessorFactory.html#configpile.processor.ProcessorFactory" title="configpile.processor.ProcessorFactory"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProcessorFactory</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Config</span></code>, bound= <a class="reference internal" href="configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a>)]) – Processor factory</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -878,24 +895,46 @@ if the default_value <code class="docutils literal notranslate"><span class="pre
 the parameter cannot be omitted.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parser</strong> (<a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value_co</span></code>, covariant=True)]) – Parser that transforms a string into a value</p>
+<dd class="field-odd"><p><strong>parser</strong> (<a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value_co</span></code>, covariant=True)]) – Parser that transforms a string into a value</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>help</strong> – Help description (autodoc/docstring is used otherwise)</p></li>
 <li><p><strong>default_value</strong> – Default value</p></li>
 <li><p><strong>positional</strong> – Whether this parameter is present in positional arguments</p></li>
-<li><p><strong>short_flag_name</strong> – Short option name (optional)</p></li>
+<li><p><strong>short_flag_name</strong> – </p></li>
 <li><p><strong>long_flag_name</strong> – Long option name (auto. derived from fieldname by default)</p></li>
 <li><p><strong>config_key_name</strong> – Config key name (auto. derived from fieldname by default)</p></li>
 <li><p><strong>env_var_name</strong> – Environment variable name (forbidden by default)</p></li>
 </ul>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value_co</span></code>, covariant=True)]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Value_co</span></code>, covariant=True)]</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The constructed Param instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.arg.Param.root_path">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">help</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">short_flag_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_flag_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Derived.KEBAB_CASE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_var_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/arg.html#Param.root_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.arg.Param.root_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a parameter that describes a root path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>help</strong> – Help description (autodoc/docstring is used otherwise)</p></li>
+<li><p><strong>short_flag_name</strong> – Short option name (optional)</p></li>
+<li><p><strong>long_flag_name</strong> – Long option name (auto. derived from fieldname by default)</p></li>
+<li><p><strong>env_var_name</strong> – Environment variable name (forbidden by default)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A root path parameter</p>
 </dd>
 </dl>
 </dd></dl>
@@ -914,7 +953,7 @@ the parameter cannot be omitted.</p>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>]]</p>
+<dd class="field-even"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>]]</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A configuration files parameter</p>
@@ -930,7 +969,7 @@ the parameter cannot be omitted.</p>
 creates a parameter that appends single items to a sequence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parser</strong> (<a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]) – Parser that transforms a string into a single value item</p>
+<dd class="field-odd"><p><strong>parser</strong> (<a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]) – Parser that transforms a string into a single value item</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
 <dd class="field-even"><ul class="simple">
@@ -943,7 +982,7 @@ creates a parameter that appends single items to a sequence.</p>
 </ul>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -954,7 +993,7 @@ creates a parameter that appends single items to a sequence.</p>
 <dd><p>Returns a newly created argument that joins parsed sequences of values</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>parser</strong> (<a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]]) – Parser that transforms a string into a sequence of values</p>
+<dd class="field-odd"><p><strong>parser</strong> (<a class="reference internal" href="configpile.parsers.Parser.html#configpile.parsers.Parser" title="configpile.parsers.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]]) – Parser that transforms a string into a sequence of values</p>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
 <dd class="field-even"><ul class="simple">
@@ -967,14 +1006,14 @@ creates a parameter that appends single items to a sequence.</p>
 </ul>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]]</p>
+<dd class="field-odd"><p><a class="reference internal" href="#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Item_co</span></code>, covariant=True)]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configpile.arg.Param.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">help</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">short_flag_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_flag_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_key_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_var_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.arg.Param.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">help</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">short_flag_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_flag_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_root_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positional</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_key_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_var_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.arg.Param.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -988,7 +1027,7 @@ creates a parameter that appends single items to a sequence.</p>
 <dd><p>Returns a sequence of all forms of command line flags</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1000,14 +1039,14 @@ creates a parameter that appends single items to a sequence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>self</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Arg</span></code>, bound= <a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arg</span></code></a>)) – </p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Identifier name</p></li>
-<li><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Help string (derived from autodoc syntax)</p></li>
-<li><p><strong>env_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Environment prefix</p></li>
+<li><p><strong>self</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Arg</span></code>, bound= <a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arg</span></code></a>)) – </p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Identifier name</p></li>
+<li><p><strong>help</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Help string (derived from autodoc syntax)</p></li>
+<li><p><strong>env_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Environment prefix</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Arg</span></code>, bound= <a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arg</span></code></a>)</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Arg</span></code>, bound= <a class="reference internal" href="configpile.arg.Arg.html#configpile.arg.Arg" title="configpile.arg.Arg"><code class="xref py py-class docutils literal notranslate"><span class="pre">Arg</span></code></a>)</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Updated argument</p>
@@ -1017,19 +1056,19 @@ creates a parameter that appends single items to a sequence.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.help">
-<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.help" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">help</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.help" title="Permalink to this definition">¶</a></dt>
 <dd><p>Help for the argument</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.short_flag_name">
-<span class="sig-name descname"><span class="pre">short_flag_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.short_flag_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">short_flag_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.short_flag_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Short option name, used in command line parsing, prefixed by a single hyphen</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configpile.arg.Param.long_flag_name">
-<span class="sig-name descname"><span class="pre">long_flag_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.enums.Derived.html#configpile.enums.Derived" title="configpile.enums.Derived"><span class="pre">configpile.enums.Derived</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.long_flag_name" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">long_flag_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="configpile.enums.Derived.html#configpile.enums.Derived" title="configpile.enums.Derived"><span class="pre">configpile.enums.Derived</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.arg.Param.long_flag_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Long option name used in command line argument parsing</p>
 <p>It is in general lowercase, prefixed with <code class="docutils literal notranslate"><span class="pre">--</span></code> and words are separated by hyphens.,</p>
 <p>If set to</p>

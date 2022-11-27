@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -693,7 +698,7 @@
 <p>How is a configuration processed by <code class="docutils literal notranslate"><span class="pre">configpile</span></code>, for example when calling
 <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_command_line_()</span></code></a>?</p>
 <ol>
-<li><p>First, the configuration class, which is a <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a> inheriting from
+<li><p>First, the configuration class, which is a <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclass()</span></code></a> inheriting from
 <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config" title="configpile.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> is inspected. All the dataclass fields should be annotated
 with a <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> instance, see <a class="reference internal" href="params.html#concepts-params"><span class="std std-ref">Params (parameters)</span></a>. <code class="docutils literal notranslate"><span class="pre">configpile</span></code> makes
 a list of triggers, for environment variables, INI files key/value pairs, and command-line
@@ -733,7 +738,7 @@ dataclass is returned.</p></li>
 <p>This whole process is short-circuited in a few cases.</p>
 <ul class="simple">
 <li><p>By default, the command-line flags <code class="docutils literal notranslate"><span class="pre">-h</span></code> and <code class="docutils literal notranslate"><span class="pre">--help</span></code> display the usage information and exit the
-program using <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.exit" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sys.exit()</span></code></a>.</p></li>
+program using <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.exit" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sys.exit()</span></code></a>.</p></li>
 <li><p>In the future, we may support other special actions such as displaying the program version
 using a <code class="docutils literal notranslate"><span class="pre">--version</span></code> flag for example.</p></li>
 </ul>
@@ -741,7 +746,7 @@ using a <code class="docutils literal notranslate"><span class="pre">--version</
 a configuration.</p>
 <ul class="simple">
 <li><p>The <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.from_command_line_" title="configpile.config.Config.from_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_command_line_()</span></code></a> method, in case of errors, displays
-usage information and exits through <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.exit" title="(in Python v3.10)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sys.exit()</span></code></a>.</p></li>
+usage information and exits through <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.exit" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sys.exit()</span></code></a>.</p></li>
 <li><p>The <a class="reference internal" href="../_autosummary/configpile.config.Config.html#configpile.config.Config.parse_command_line_" title="configpile.config.Config.parse_command_line_"><code class="xref py py-meth docutils literal notranslate"><span class="pre">parse_command_line_()</span></code></a> method, always returns to the caller,
 and returns either a constructed configuration dataclass, a token corresponding to a special
 action (such as a command to display help information or the version number), or finally
@@ -774,18 +779,6 @@ the construction.</p>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Err</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter a=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="si">}</span><span class="s2"> should be &gt; than b=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">Input In [1],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
-
-<span class="ne">AttributeError</span>: module &#39;configpile&#39; has no attribute &#39;fun&#39;
 </pre></div>
 </div>
 </div>

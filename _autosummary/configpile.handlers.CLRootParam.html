@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>filter_types &#8212; configpile</title>
+    <title>CLRootParam &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="filter_types_single" href="configpile.util.filter_types_single.html" />
-    <link rel="prev" title="filter_sequence_by_value_type" href="configpile.util.filter_sequence_by_value_type.html" />
+    <link rel="next" title="CLSpecialAction" href="configpile.handlers.CLSpecialAction.html" />
+    <link rel="prev" title="CLPos" href="configpile.handlers.CLPos.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -299,16 +299,16 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 has-children">
+   <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="configpile.handlers.html">
      handlers
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
     <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
-    <ul>
+    <ul class="current">
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLConfigParam.html">
        CLConfigParam
@@ -334,8 +334,8 @@
        CLPos
       </a>
      </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
        CLRootParam
       </a>
      </li>
@@ -512,16 +512,16 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
+   <li class="toctree-l2 has-children">
     <a class="reference internal" href="configpile.util.html">
      util
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
     <label for="toctree-checkbox-12">
      <i class="fas fa-chevron-down">
      </i>
     </label>
-    <ul class="current">
+    <ul>
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.util.assert_never.html">
        assert_never
@@ -547,8 +547,8 @@
        filter_sequence_by_value_type
       </a>
      </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
+     <li class="toctree-l3">
+      <a class="reference internal" href="configpile.util.filter_types.html">
        filter_types
       </a>
      </li>
@@ -622,7 +622,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>filter_types</h1>
+                <h1>CLRootParam</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -633,31 +633,97 @@
             
               <div>
                 
-  <div class="section" id="filter-types">
-<h1>filter_types<a class="headerlink" href="#filter-types" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="configpile.util.filter_types">
-<span class="sig-name descname"><span class="pre">filter_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_el</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_el</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/util.html#filter_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.util.filter_types" title="Permalink to this definition">¶</a></dt>
-<dd><p>Searches for elements of a given type in a sequence</p>
+  <div class="section" id="clrootparam">
+<h1>CLRootParam<a class="headerlink" href="#clrootparam" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="configpile.handlers.CLRootParam">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CLRootParam</span></span><a class="reference internal" href="../_modules/configpile/handlers.html#CLRootParam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.handlers.CLRootParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="configpile.handlers.CLParam.html#configpile.handlers.CLParam" title="configpile.handlers.CLParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.handlers.CLParam</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a>]</p>
+<p>A root path parameter handler</p>
+<p>Changes the root path used to resolve configuration file relative paths</p>
+<p class="rubric">Attributes</p>
+<p><em>Note: attributes inherited from parent classes are not shown here, if any</em></p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.handlers.CLRootParam.action" title="configpile.handlers.CLRootParam.action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action</span></code></a></p></td>
+<td><p>A method called on the successful parse of a value</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.handlers.CLRootParam.handle" title="configpile.handlers.CLRootParam.handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle</span></code></a></p></td>
+<td><p>Processes arguments, possibly updating the state or returning errors</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">List of members of CLRootParam</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.CLRootParam.action">
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/handlers.html#CLRootParam.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.handlers.CLRootParam.action" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method called on the successful parse of a value</p>
+<p>Can be overridden. By default does nothing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Type" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Class</span></code>)]) – Type to search for</p></li>
-<li><p><strong>seq</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]) – Sequence to search in</p></li>
-<li><p><strong>min_el</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Minimum number of elements to recover</p></li>
-<li><p><strong>max_el</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]) – Maximum number of elements to recover (optional)</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Parsed value</p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="configpile.processor.State.html#configpile.processor.State" title="configpile.processor.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>) – State to possibly update</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – if the number of recovered elements is not between <code class="docutils literal notranslate"><span class="pre">min_el</span></code> and <code class="docutils literal notranslate"><span class="pre">max_el</span></code></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_Class</span></code>)]</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A sequence of elements of the given type</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An optional error</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.CLRootParam.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.handlers.CLRootParam.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.CLRootParam.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.handlers.CLRootParam.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.CLRootParam.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.handlers.CLRootParam.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes arguments, possibly updating the state or returning errors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – Command-line arguments not processed yet</p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="configpile.processor.State.html#configpile.processor.State" title="configpile.processor.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>) – (Mutable) state to possibly update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The updated command-line and an optional error</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.handlers.CLRootParam.param">
+<span class="sig-name descname"><span class="pre">param</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><span class="pre">configpile.arg.Param</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="configpile.handlers.html#configpile.handlers._Value" title="configpile.handlers._Value"><span class="pre">configpile.handlers._Value</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.handlers.CLRootParam.param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter to handle</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -668,17 +734,17 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="configpile.util.filter_sequence_by_value_type.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="configpile.handlers.CLPos.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">filter_sequence_by_value_type</p>
+            <p class="prev-next-title">CLPos</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="configpile.util.filter_types_single.html" title="next page">
+    <a class='right-next' id="next-link" href="configpile.handlers.CLSpecialAction.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">filter_types_single</p>
+        <p class="prev-next-title">CLSpecialAction</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

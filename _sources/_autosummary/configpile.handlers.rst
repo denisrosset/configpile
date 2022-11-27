@@ -24,11 +24,13 @@
       CLInserter
       CLParam
       CLPos
+      CLRootParam
       CLSpecialAction
       CLStdHandler
       KVConfigParam
       KVHandler
       KVParam
+      KVRootParam
    
    
 

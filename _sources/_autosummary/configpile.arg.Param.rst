@@ -20,6 +20,7 @@ Param
    
       ~Param.parser
       ~Param.is_config
+      ~Param.is_root_path
       ~Param.collector
       ~Param.default_value
       ~Param.name
@@ -47,6 +48,7 @@ Param
       ~Param.argparse_argument_kwargs
       ~Param.config
       ~Param.is_required
+      ~Param.root_path
       ~Param.store
       ~Param.update_dict_
       ~Param.update_processor

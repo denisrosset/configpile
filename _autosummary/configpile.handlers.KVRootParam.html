@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flatMap &#8212; configpile</title>
+    <title>KVRootParam &#8212; configpile</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -41,8 +41,8 @@
     <script src="../_static/sphinx-book-theme.9d8b4a8b9bb19db25eeaddc40d639ba2.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="flat_map" href="configpile.userr.flat_map.html" />
-    <link rel="prev" title="collect_seq" href="configpile.userr.collect_seq.html" />
+    <link rel="next" title="parsers" href="configpile.parsers.html" />
+    <link rel="prev" title="KVParam" href="configpile.handlers.KVParam.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -299,16 +299,16 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 has-children">
+   <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="configpile.handlers.html">
      handlers
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
     <label for="toctree-checkbox-8">
      <i class="fas fa-chevron-down">
      </i>
     </label>
-    <ul>
+    <ul class="current">
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLConfigParam.html">
        CLConfigParam
@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -445,16 +455,16 @@
      </li>
     </ul>
    </li>
-   <li class="toctree-l2 current active has-children">
+   <li class="toctree-l2 has-children">
     <a class="reference internal" href="configpile.userr.html">
      userr
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
     <label for="toctree-checkbox-11">
      <i class="fas fa-chevron-down">
      </i>
     </label>
-    <ul class="current">
+    <ul>
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect.html">
        collect
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -617,7 +622,7 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>flatMap</h1>
+                <h1>KVRootParam</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -628,18 +633,97 @@
             
               <div>
                 
-  <div class="section" id="flatmap">
-<h1>flatMap<a class="headerlink" href="#flatmap" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="configpile.userr.flatMap">
-<span class="sig-name descname"><span class="pre">flatMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/userr.html#flatMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.userr.flatMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enables the chaining computations that can error (deprecated)</p>
-<p>See also: <a class="reference internal" href="configpile.userr.flat_map.html#configpile.userr.flat_map" title="configpile.userr.flat_map"><code class="xref py py-func docutils literal notranslate"><span class="pre">flat_map()</span></code></a></p>
+  <div class="section" id="kvrootparam">
+<h1>KVRootParam<a class="headerlink" href="#kvrootparam" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="configpile.handlers.KVRootParam">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KVRootParam</span></span><a class="reference internal" href="../_modules/configpile/handlers.html#KVRootParam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.handlers.KVRootParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="configpile.handlers.KVParam.html#configpile.handlers.KVParam" title="configpile.handlers.KVParam"><code class="xref py py-class docutils literal notranslate"><span class="pre">configpile.handlers.KVParam</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a>]</p>
+<p>A root path parameter handler</p>
+<p>Changes the root path used to resolve configuration file relative paths</p>
+<p class="rubric">Attributes</p>
+<p><em>Note: attributes inherited from parent classes are not shown here, if any</em></p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#configpile.handlers.KVRootParam.action" title="configpile.handlers.KVRootParam.action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action</span></code></a></p></td>
+<td><p>A method called on the successful parse of a value</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#configpile.handlers.KVRootParam.handle" title="configpile.handlers.KVRootParam.handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle</span></code></a></p></td>
+<td><p>Processes</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">List of members of KVRootParam</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.KVRootParam.action">
+<span class="sig-name descname"><span class="pre">action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/configpile/handlers.html#KVRootParam.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configpile.handlers.KVRootParam.action" title="Permalink to this definition">¶</a></dt>
+<dd><p>A method called on the successful parse of a value</p>
+<p>Can be overridden. By default does nothing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">_ReturnType</span></code>), <a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Parsed value</p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="configpile.processor.State.html#configpile.processor.State" title="configpile.processor.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>) – State to possibly update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An optional error</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.KVRootParam.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.handlers.KVRootParam.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.KVRootParam.__new__">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.handlers.KVRootParam.__new__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configpile.handlers.KVRootParam.handle">
+<span class="sig-name descname"><span class="pre">handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configpile.handlers.KVRootParam.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – Value to parse and process</p></li>
+<li><p><strong>state</strong> (<a class="reference internal" href="configpile.processor.State.html#configpile.processor.State" title="configpile.processor.State"><code class="xref py py-class docutils literal notranslate"><span class="pre">State</span></code></a>) – State to update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference internal" href="configpile.userr.Err.html#configpile.userr.Err" title="configpile.userr.Err"><code class="xref py py-class docutils literal notranslate"><span class="pre">Err</span></code></a>]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An error if an error occurred</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configpile.handlers.KVRootParam.param">
+<span class="sig-name descname"><span class="pre">param</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><span class="pre">configpile.arg.Param</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="configpile.handlers.html#configpile.handlers._Value" title="configpile.handlers._Value"><span class="pre">configpile.handlers._Value</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configpile.handlers.KVRootParam.param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter to handle</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -650,17 +734,17 @@
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="configpile.userr.collect_seq.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="configpile.handlers.KVParam.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">collect_seq</p>
+            <p class="prev-next-title">KVParam</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="configpile.userr.flat_map.html" title="next page">
+    <a class='right-next' id="next-link" href="configpile.parsers.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">flat_map</p>
+        <p class="prev-next-title">parsers</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

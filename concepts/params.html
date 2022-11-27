@@ -335,6 +335,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -357,6 +362,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -463,11 +473,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -720,8 +725,8 @@
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="params-parameters">
 <span id="concepts-params"></span><h1>Params (parameters)<a class="headerlink" href="#params-parameters" title="Permalink to this headline">¶</a></h1>
-<p>Parameters are what constitute a configuration. The values in a configuration dataclass are fields that are annotated with a <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> instance, using the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> type.</p>
-<p>(Note that the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> type needs to be imported from the
+<p>Parameters are what constitute a configuration. The values in a configuration dataclass are fields that are annotated with a <a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> instance, using the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> type.</p>
+<p>(Note that the <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Annotated" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">typing.Annotated</span></code></a> type needs to be imported from the
 <a class="reference external" href="https://github.com/python/typing/blob/master/typing_extensions/README.rst">typing_extensions</a>
 package instead if one is not using Python &gt;= 3.9).</p>
 <p><a class="reference internal" href="../_autosummary/configpile.arg.Param.html#configpile.arg.Param" title="configpile.arg.Param"><code class="xref py py-class docutils literal notranslate"><span class="pre">Param</span></code></a> is modeled after the <a class="reference external" href="https://docs.python.org/3/library/argparse.html#the-add-argument-method">add_argument</a> method in the <a class="reference external" href="https://docs.python.org/3/library/argparse.html">argparse</a> standard library module.</p>
@@ -761,18 +766,6 @@ configuration.</p>
 
     <span class="c1">#: Here is a parameter that accumulates</span>
     <span class="n">files</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">Param</span><span class="o">.</span><span class="n">append1</span><span class="p">(</span><span class="n">parsers</span><span class="o">.</span><span class="n">path_parser</span><span class="p">)]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">Input In [1],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">configpile</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-
-<span class="ne">AttributeError</span>: module &#39;configpile&#39; has no attribute &#39;fun&#39;
 </pre></div>
 </div>
 </div>
@@ -852,7 +845,7 @@ required arguments:
 if <code class="docutils literal notranslate"><span class="pre">long_flag_name</span> <span class="pre">is</span> <span class="pre">set</span> <span class="pre">(it</span> <span class="pre">is</span> <span class="pre">set</span> <span class="pre">to</span> <span class="pre">{attr}</span></code>~configpile.arg.Derive.KEBAB_CASE`, by default)</p></li>
 <li><p>command-line arguments, after a short flag (i.e. <code class="docutils literal notranslate"><span class="pre">-f</span></code>), if <code class="docutils literal notranslate"><span class="pre">short_flag_name</span></code> is set (it is
 not, by default),</p></li>
-<li><p>positional command-line arguments, if <code class="docutils literal notranslate"><span class="pre">positional</span></code> is not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> (it is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> by
+<li><p>positional command-line arguments, if <code class="docutils literal notranslate"><span class="pre">positional</span></code> is not <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> (it is <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> by
 default).</p></li>
 </ul>
 <div class="section" id="environment-variables">
@@ -902,7 +895,7 @@ default).</p></li>
 </div>
 <div class="section" id="ini-configuration-files">
 <h3>INI configuration files<a class="headerlink" href="#ini-configuration-files" title="Permalink to this headline">¶</a></h3>
-<p>Here is an example. The <code class="docutils literal notranslate"><span class="pre">config_key_name</span></code> keyword argument can be set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> to forbid its
+<p>Here is an example. The <code class="docutils literal notranslate"><span class="pre">config_key_name</span></code> keyword argument can be set to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> to forbid its
 presence in INI files. This part is not demonstrated below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -976,7 +969,7 @@ flag.</p>
 <p>There can be more than one positional argument present. They are filled in order by the command-line
 strings that are <em>not</em> recognized as flags for other parameters.</p>
 <p>Their order is given by the order of declaration in the dataclass.</p>
-<p>We advise setting <code class="docutils literal notranslate"><span class="pre">long_flag_name</span></code> to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> as using a parameter both in a positional manner
+<p>We advise setting <code class="docutils literal notranslate"><span class="pre">long_flag_name</span></code> to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">None</span></code></a> as using a parameter both in a positional manner
 and with flags can lead to counter-intuitive behavior.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

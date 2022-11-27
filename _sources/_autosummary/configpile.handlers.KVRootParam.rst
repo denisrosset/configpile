@@ -1,9 +1,9 @@
-State
-=====
+KVRootParam
+===========
 
-.. currentmodule:: configpile.processor
+.. currentmodule:: configpile.handlers
 
-.. autoclass:: State
+.. autoclass:: KVRootParam
    :show-inheritance:
    :members:
    :undoc-members:
@@ -18,10 +18,7 @@ State
 
    .. autosummary::
    
-      ~State.root_path
-      ~State.instances
-      ~State.config_files_to_process
-      ~State.special_action
+      ~KVRootParam.param
    
    
 
@@ -32,10 +29,10 @@ State
    .. autosummary::
       :nosignatures:
    
-      ~State.append
-      ~State.make
+      ~KVRootParam.action
+      ~KVRootParam.handle
    
    
 
 
-   .. rubric:: List of members of State
+   .. rubric:: List of members of KVRootParam

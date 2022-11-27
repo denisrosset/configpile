@@ -333,6 +333,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.CLRootParam.html">
+       CLRootParam
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.CLSpecialAction.html">
        CLSpecialAction
       </a>
@@ -355,6 +360,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.handlers.KVParam.html">
        KVParam
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../_autosummary/configpile.handlers.KVRootParam.html">
+       KVRootParam
       </a>
      </li>
     </ul>
@@ -461,11 +471,6 @@
      <li class="toctree-l3">
       <a class="reference internal" href="../../_autosummary/configpile.userr.collect_seq.html">
        collect_seq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../_autosummary/configpile.userr.flatMap.html">
-       flatMap
       </a>
      </li>
      <li class="toctree-l3">
@@ -685,11 +690,20 @@
     <span class="n">Tuple</span><span class="p">,</span>
     <span class="n">TypeVar</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.collector</span> <span class="kn">import</span> <span class="n">Collector</span>
 <span class="kn">from</span> <span class="nn">.enums</span> <span class="kn">import</span> <span class="n">Derived</span><span class="p">,</span> <span class="n">Positional</span>
-<span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="n">CLConfigParam</span><span class="p">,</span> <span class="n">CLInserter</span><span class="p">,</span> <span class="n">CLParam</span><span class="p">,</span> <span class="n">KVConfigParam</span><span class="p">,</span> <span class="n">KVParam</span>
+<span class="kn">from</span> <span class="nn">.handlers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CLConfigParam</span><span class="p">,</span>
+    <span class="n">CLInserter</span><span class="p">,</span>
+    <span class="n">CLParam</span><span class="p">,</span>
+    <span class="n">CLRootParam</span><span class="p">,</span>
+    <span class="n">KVConfigParam</span><span class="p">,</span>
+    <span class="n">KVParam</span><span class="p">,</span>
+    <span class="n">KVRootParam</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.parsers</span> <span class="kn">import</span> <span class="n">Parser</span><span class="p">,</span> <span class="n">path_parser</span>
 
 <span class="c1"># documented in the module docstring</span>
@@ -886,7 +900,9 @@
     <span class="c1">#: Argument type, parser from string to value</span>
     <span class="n">parser</span><span class="p">:</span> <span class="n">Parser</span><span class="p">[</span><span class="n">_Value_co</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
 
-    <span class="n">is_config</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#: Whether this represent a list of config files</span>
+    <span class="n">is_config</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#: Whether this represents a list of config files</span>
+
+    <span class="n">is_root_path</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1">#: Whether this represents a root path</span>
 
     <span class="c1">#: Argument collector</span>
     <span class="n">collector</span><span class="p">:</span> <span class="n">Collector</span><span class="p">[</span><span class="n">_Value_co</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
@@ -975,15 +991,20 @@
             <span class="n">pf</span><span class="o">.</span><span class="n">cl_positionals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_flags</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_config</span><span class="p">:</span>
-                <span class="n">pf</span><span class="o">.</span><span class="n">cl_flag_handlers</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLConfigParam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">pf</span><span class="o">.</span><span class="n">cl_flag_handlers</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLConfigParam</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Param</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">]],</span> <span class="bp">self</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root_path</span><span class="p">:</span>
+                <span class="n">pf</span><span class="o">.</span><span class="n">cl_flag_handlers</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLRootParam</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Param</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="bp">self</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pf</span><span class="o">.</span><span class="n">cl_flag_handlers</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">CLParam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_config_key_names</span><span class="p">():</span>
             <span class="n">pf</span><span class="o">.</span><span class="n">ini_handlers</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">KVParam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_env_var_names</span><span class="p">():</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_config</span><span class="p">:</span>
-                <span class="n">pf</span><span class="o">.</span><span class="n">env_handlers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">KVConfigParam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">pf</span><span class="o">.</span><span class="n">env_handlers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">KVConfigParam</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Param</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">]],</span> <span class="bp">self</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root_path</span><span class="p">:</span>
+                <span class="n">pf</span><span class="o">.</span><span class="n">env_handlers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">KVRootParam</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Param</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="bp">self</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">pf</span><span class="o">.</span><span class="n">env_handlers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">KVParam</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -1019,7 +1040,7 @@
 <span class="sd">            help: Help description (autodoc/docstring is used otherwise)</span>
 <span class="sd">            default_value: Default value</span>
 <span class="sd">            positional: Whether this parameter is present in positional arguments</span>
-<span class="sd">            short_flag_name: Short option name (optional)</span>
+<span class="sd">            short_flag_name:</span>
 <span class="sd">            long_flag_name: Long option name (auto. derived from fieldname by default)</span>
 <span class="sd">            config_key_name: Config key name (auto. derived from fieldname by default)</span>
 <span class="sd">            env_var_name: Environment variable name (forbidden by default)</span>
@@ -1040,6 +1061,42 @@
             <span class="n">config_key_name</span><span class="o">=</span><span class="n">config_key_name</span><span class="p">,</span>
             <span class="n">env_var_name</span><span class="o">=</span><span class="n">env_var_name</span><span class="p">,</span>
             <span class="n">is_config</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_root_path</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Param.root_path"><a class="viewcode-back" href="../../_autosummary/configpile.arg.Param.html#configpile.arg.Param.root_path">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">root_path</span><span class="p">(</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">help</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># pylint: disable=redefined-builtin,</span>
+        <span class="n">short_flag_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">long_flag_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Derived</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">Derived</span><span class="o">.</span><span class="n">KEBAB_CASE</span><span class="p">,</span>
+        <span class="n">env_var_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Derived</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Param</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a parameter that describes a root path</span>
+
+<span class="sd">        Keyword Args:</span>
+<span class="sd">            help: Help description (autodoc/docstring is used otherwise)</span>
+<span class="sd">            short_flag_name: Short option name (optional)</span>
+<span class="sd">            long_flag_name: Long option name (auto. derived from fieldname by default)</span>
+<span class="sd">            env_var_name: Environment variable name (forbidden by default)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A root path parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Param</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="n">help</span><span class="p">,</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">path_parser</span><span class="p">,</span>
+            <span class="n">collector</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="n">Collector</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">Collector</span><span class="o">.</span><span class="n">keep_last</span><span class="p">()),</span>
+            <span class="n">positional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">short_flag_name</span><span class="o">=</span><span class="n">short_flag_name</span><span class="p">,</span>
+            <span class="n">long_flag_name</span><span class="o">=</span><span class="n">long_flag_name</span><span class="p">,</span>
+            <span class="n">config_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">env_var_name</span><span class="o">=</span><span class="n">env_var_name</span><span class="p">,</span>
+            <span class="n">is_config</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_root_path</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Param.config"><a class="viewcode-back" href="../../_autosummary/configpile.arg.Param.html#configpile.arg.Param.config">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -1066,13 +1123,14 @@
             <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="n">help</span><span class="p">,</span>
             <span class="n">parser</span><span class="o">=</span><span class="n">path_parser</span><span class="o">.</span><span class="n">separated_by</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_empty</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-            <span class="n">collector</span><span class="o">=</span><span class="n">Collector</span><span class="o">.</span><span class="n">append</span><span class="p">(),</span>  <span class="c1"># type: ignore</span>
+            <span class="n">collector</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="n">Collector</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Path</span><span class="p">]],</span> <span class="n">Collector</span><span class="o">.</span><span class="n">append</span><span class="p">()),</span>
             <span class="n">positional</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">short_flag_name</span><span class="o">=</span><span class="n">short_flag_name</span><span class="p">,</span>
             <span class="n">long_flag_name</span><span class="o">=</span><span class="n">long_flag_name</span><span class="p">,</span>
             <span class="n">config_key_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">env_var_name</span><span class="o">=</span><span class="n">env_var_name</span><span class="p">,</span>
             <span class="n">is_config</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_root_path</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -1116,6 +1174,7 @@
             <span class="n">config_key_name</span><span class="o">=</span><span class="n">config_key_name</span><span class="p">,</span>
             <span class="n">env_var_name</span><span class="o">=</span><span class="n">env_var_name</span><span class="p">,</span>
             <span class="n">is_config</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_root_path</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Param.append"><a class="viewcode-back" href="../../_autosummary/configpile.arg.Param.html#configpile.arg.Param.append">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -1155,6 +1214,7 @@
             <span class="n">config_key_name</span><span class="o">=</span><span class="n">config_key_name</span><span class="p">,</span>
             <span class="n">env_var_name</span><span class="o">=</span><span class="n">env_var_name</span><span class="p">,</span>
             <span class="n">is_config</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_root_path</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span></div></div>
 </pre></div>
 
